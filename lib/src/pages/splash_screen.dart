@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recreoexploreiqtapp/src/pages/home_screen.dart';
+import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key? key}) : super(key: key);
@@ -12,11 +12,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    var d = const Duration(seconds: 10);
+    var d = const Duration(seconds: 6);
     Future.delayed(d, () {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => WelcomeSplah()),
         (route) => false,
       );
     });
