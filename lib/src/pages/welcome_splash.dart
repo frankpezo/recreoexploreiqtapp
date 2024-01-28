@@ -17,13 +17,13 @@ class _WelcomeSplahState extends State<WelcomeSplah> {
         children: [
           ColorFiltered(
             colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.3),
+              Colors.black.withOpacity(0.2),
               BlendMode.srcOver,
             ),
             child: AnotherCarousel(
               images: const [
                 AssetImage("assets/images/2.jpg"),
-                AssetImage("assets/images/3.jpg"),
+                AssetImage("assets/images/3.1.jpg"),
                 AssetImage("assets/images/1.jpg"),
               ],
               dotSize: 6,
