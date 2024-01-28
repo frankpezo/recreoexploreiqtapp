@@ -1,5 +1,8 @@
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/src/pages/user/login_user.dart';
+
+import 'admin/login_admin.dart';
 
 class WelcomeSplah extends StatefulWidget {
   WelcomeSplah({Key? key}) : super(key: key);
@@ -58,9 +61,11 @@ class _WelcomeSplahState extends State<WelcomeSplah> {
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    // Acciones cuando se toca el primer botón
-                  },
+                  //1. Para login de usuario
+                  //Si queremos reemplazar la página un vez cliqueada
+                  //utlizamos: pushReplacement
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginUser())),
                   child: Container(
                     width: 270.0, // Ancho ajustado según tus necesidades
                     padding: EdgeInsets.all(16.0),
@@ -81,9 +86,9 @@ class _WelcomeSplahState extends State<WelcomeSplah> {
                 ),
                 SizedBox(height: 16.0),
                 GestureDetector(
-                  onTap: () {
-                    // Acciones cuando se toca el segundo botón
-                  },
+                  //Registro admin
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginAdmin())),
                   child: Container(
                     width: 270.0, // Ancho ajustado según tus necesidades
                     padding: EdgeInsets.all(16.0),
