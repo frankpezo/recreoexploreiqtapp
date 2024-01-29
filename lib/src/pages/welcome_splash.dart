@@ -67,11 +67,11 @@ class _WelcomeSplahState extends State<WelcomeSplah> {
                   onTap: () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginUser())),
                   child: Container(
-                    width: 270.0, // Ancho ajustado según tus necesidades
+                    width: 275.0, // Ancho ajustado según tus necesidades
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: Color(0xFF238F8F),
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(4.0),
                     ),
                     child: Text(
                       'Buscar recreo turístico',
@@ -90,11 +90,11 @@ class _WelcomeSplahState extends State<WelcomeSplah> {
                   onTap: () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginAdmin())),
                   child: Container(
-                    width: 270.0, // Ancho ajustado según tus necesidades
+                    width: 275.0, // Ancho ajustado según tus necesidades
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: Color(0xFF238F8F),
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(4.0),
                     ),
                     child: Text(
                       'Registrar recreo turístico',
