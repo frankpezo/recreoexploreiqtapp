@@ -20,7 +20,6 @@ class _RegisterAdminState extends State<RegisterAdmin> {
   //2. Api para insertar en la bd
   Future<void> insertUser() async {
     if (nombre.text.isNotEmpty &&
-        apellido.text.isNotEmpty &&
         email.text.isNotEmpty &&
         password.text.isNotEmpty) {
       print("Registro con éxito");
@@ -161,7 +160,7 @@ class _RegisterAdminState extends State<RegisterAdmin> {
                                     ),
                                   ),
                                 ),
-                              
+
                                 SizedBox(height: 5),
                                 //2. Email
                                 Container(
