@@ -144,7 +144,7 @@ class _LoginAdminState extends State<LoginAdmin> {
                                       ),
                                       fillColor: Colors.white,
                                       filled: true,
-                                      hintText: 'Email',
+                                      hintText: 'Email empresa',
                                       hintStyle:
                                           TextStyle(color: Colors.grey[500]),
                                     ),

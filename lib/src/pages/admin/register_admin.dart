@@ -12,7 +12,6 @@ class RegisterAdmin extends StatefulWidget {
 class _RegisterAdminState extends State<RegisterAdmin> {
   //1. Text Controllers
   TextEditingController nombre = TextEditingController();
-  TextEditingController apellido = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   bool obscurePassword = true;
@@ -156,54 +155,15 @@ class _RegisterAdminState extends State<RegisterAdmin> {
                                       ),
                                       fillColor: Colors.white,
                                       filled: true,
-                                      hintText: 'Nombre',
+                                      hintText: 'Nombre empresa',
                                       hintStyle:
                                           TextStyle(color: Colors.grey[500]),
                                     ),
                                   ),
                                 ),
+                              
                                 SizedBox(height: 5),
-                                //2. Apellido
-                                Container(
-                                  margin: EdgeInsets.only(left: 20, right: 20),
-                                  width: 325,
-                                  height: 70,
-                                  padding:
-                                      const EdgeInsets.only(top: 3, left: 15),
-                                  child: TextFormField(
-                                    controller: apellido,
-                                    obscureText: false,
-                                    keyboardType: TextInputType.name,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Por favor, ingrese su apellido';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(13),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey.shade400),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.red),
-                                      ),
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      hintText: 'Apellido',
-                                      hintStyle:
-                                          TextStyle(color: Colors.grey[500]),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                //3. Email
+                                //2. Email
                                 Container(
                                   margin: EdgeInsets.only(left: 20, right: 20),
                                   width: 325,
@@ -236,7 +196,7 @@ class _RegisterAdminState extends State<RegisterAdmin> {
                                       ),
                                       fillColor: Colors.white,
                                       filled: true,
-                                      hintText: 'Email',
+                                      hintText: 'Email empresa',
                                       hintStyle:
                                           TextStyle(color: Colors.grey[500]),
                                     ),
