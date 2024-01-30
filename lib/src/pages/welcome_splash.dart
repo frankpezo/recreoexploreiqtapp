@@ -26,8 +26,8 @@ class _WelcomeSplahState extends State<WelcomeSplah> {
             child: AnotherCarousel(
               images: const [
                 AssetImage("assets/images/2.jpg"),
-                AssetImage("assets/images/3.1.jpg"),
                 AssetImage("assets/images/1.jpg"),
+                AssetImage("assets/images/3.1.jpg"),
               ],
               dotSize: 6,
               indicatorBgPadding: 5.0,
