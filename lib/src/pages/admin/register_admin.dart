@@ -135,7 +135,7 @@ class _RegisterAdminState extends State<RegisterAdmin> {
                                     keyboardType: TextInputType.name,
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return 'Por favor, ingrese su nombre';
+                                        return 'Por favor, ingrese el nombre de su empresa';
                                       }
                                       return null;
                                     },
@@ -176,7 +176,7 @@ class _RegisterAdminState extends State<RegisterAdmin> {
                                     keyboardType: TextInputType.emailAddress,
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return 'Por favor, ingrese su correo electrónico';
+                                        return 'Por favor, ingrese correo electrónico de empresa';
                                       }
                                       return null;
                                     },
