@@ -12,8 +12,8 @@ class BottomNavUser extends StatefulWidget {
 
 class _BottomNavUserState extends State<BottomNavUser> {
   //1. Contador que nos permitirá detectar el cambio
-  //2.Lista de las páginas del navBar
   int currentIndex = 0;
+  //2.Lista de las páginas del user
   List<Widget> pages = [
     HomeUserScreen(),
     FavoriteUserScreen(),
@@ -25,7 +25,7 @@ class _BottomNavUserState extends State<BottomNavUser> {
     return Scaffold(
       //3. Diseño del navBar
       bottomNavigationBar: Container(
-        margin: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+        margin: EdgeInsets.symmetric(horizontal: 70, vertical: 50),
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(

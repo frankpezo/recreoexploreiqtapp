@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/register_user.dart';
 
 import '../../../componentes/controller.dart';
-import '../../bottomNav/bottom_navAdmin.dart';
+import '../../bottomNav/bottom_UserNav.dart';
 
 class LoginUser extends StatefulWidget {
   LoginUser({Key? key}) : super(key: key);
