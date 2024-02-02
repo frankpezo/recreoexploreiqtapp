@@ -35,7 +35,7 @@ class _RegisterAdminState extends State<RegisterAdmin> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        duration: Duration(seconds: 5),
+        duration: Duration(seconds: 3),
       ));
     }
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/register_user.dart';
 
 import '../../../componentes/controller.dart';
+import '../../bottomNav/bottom_navAdmin.dart';
 
 class LoginUser extends StatefulWidget {
   LoginUser({Key? key}) : super(key: key);
@@ -21,6 +22,8 @@ class _LoginUserState extends State<LoginUser> {
   Future<void> getDatos() async {
     if (email.text.isNotEmpty && password.text.isNotEmpty) {
       print("Se inició sesión con éxito");
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => BottomNavUser()));
       // Lógica para consumir la API
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

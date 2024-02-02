@@ -32,7 +32,7 @@ class _LoginAdminState extends State<LoginAdmin> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        duration: Duration(seconds: 5),
+        duration: Duration(seconds: 3),
       ));
     }
   }

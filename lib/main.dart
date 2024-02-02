@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/src/pages/Splash_screen.dart';
-import 'package:recreoexploreiqtapp/src/pages/home_screen.dart';
 import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
 
 void main() {
@@ -22,7 +21,6 @@ class MyApp extends StatelessWidget {
       routes: {
         "splash": (context) => SplashScreen(),
         "welcomeSplah": (context) => WelcomeSplah(),
-        "home": (context) => const HomeScreen()
       },
     );
   }

@@ -38,7 +38,7 @@ class _RegisterUserState extends State<RegisterUser> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        duration: Duration(seconds: 5),
+        duration: Duration(seconds: 3),
       ));
     }
   }
