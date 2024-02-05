@@ -1,6 +1,7 @@
 //1. Esta clase será mostrada para los card
 class PlaceModel {
   //1.1. Declaramos los atributos
+  int id;
   String imagePlace;
   String nombrePlace;
   String direPlace;
@@ -10,7 +11,8 @@ class PlaceModel {
 
   //1.2. Constructor
   PlaceModel(
-      {required this.imagePlace,
+      {required this.id,
+      required this.imagePlace,
       required this.nombrePlace,
       required this.direPlace,
       required this.horarioPlace,

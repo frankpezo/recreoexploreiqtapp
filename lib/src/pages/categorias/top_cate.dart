@@ -14,6 +14,7 @@ class _TopCateState extends State<TopCate> {
   final List<PlaceModel> placesTop = [
     //a.
     PlaceModel(
+        id: 1,
         imagePlace: "quis.jpg",
         nombrePlace: "Quistococha",
         direPlace: "Carretera Iquitos - Nauta, km 6.5",
@@ -21,13 +22,15 @@ class _TopCateState extends State<TopCate> {
         estadoPlace: "Abierto",
         rakingPlace: 5.0),
     PlaceModel(
+        id: 2,
         imagePlace: "4.jpg",
         nombrePlace: "Don Pepe",
         direPlace: "Pilar Nores de García",
         horarioPlace: "Lunes a domingo, 9:00am - 6:00pm",
-        estadoPlace: "Abierto",
+        estadoPlace: "Cerrado",
         rakingPlace: 5.0),
     PlaceModel(
+        id: 3,
         imagePlace: "5.jpg",
         nombrePlace: "King Kong",
         direPlace: "Carretera Zungarococha km 8.8",
@@ -44,7 +47,7 @@ class _TopCateState extends State<TopCate> {
             padding: EdgeInsets.only(bottom: 10),
             itemCount: placesTop.length,
             itemBuilder: (context, index) {
-              return buildPlaceCard(context, placesTop[index]);
+              return YourWidget(place: placesTop[index]);
             }));
   }
 }
