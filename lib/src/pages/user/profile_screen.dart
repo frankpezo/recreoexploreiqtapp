@@ -75,7 +75,8 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                   children: [
                     Text(
                       '${widget.currentUser.nombreUser} ${widget.currentUser.apellidoUser}', //Datos dinámicos
-                      style: TextStyle(fontSize: 17),
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       '${widget.currentUser.emailUser}',
