@@ -19,14 +19,6 @@ class _FavoriteUserScreenState extends State<FavoriteUserScreen> {
         horarioPlace: "Lunes a domingo, 7:30am - 5:30pm",
         estadoPlace: "Abierto",
         rakingPlace: 5.0),
-    PlaceModel(
-        id: 1,
-        imagePlace: "quis.jpg",
-        nombrePlace: "Quistococha",
-        direPlace: "Carretera Iquitos - Nauta, km 6.5",
-        horarioPlace: "Lunes a domingo, 7:30am - 5:30pm",
-        estadoPlace: "Abierto",
-        rakingPlace: 5.0),
   ];
 
   @override

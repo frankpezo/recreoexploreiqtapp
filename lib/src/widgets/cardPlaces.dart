@@ -23,7 +23,8 @@ class _YourWidgetState extends State<YourWidget> {
 //3. Crearemos un widget que servirá de retorno en cada categoría
   Widget buildPlaceCard(BuildContext context, PlaceModel place) {
     return Card(
-      margin: EdgeInsets.all(10.0),
+      margin: EdgeInsets.all(18.0),
+      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
@@ -42,6 +43,8 @@ class _YourWidgetState extends State<YourWidget> {
                 fit: BoxFit.cover,
               ),
             ),
+            //id
+            Visibility(visible: false, child: Text("${place.id}")),
             SizedBox(width: 10.0), // Espacio entre la imagen y el texto
             // 3.2. Contenido del lugar
             Expanded(
@@ -55,7 +58,7 @@ class _YourWidgetState extends State<YourWidget> {
                       Text(
                         place.nombrePlace,
                         style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 17.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -75,7 +78,7 @@ class _YourWidgetState extends State<YourWidget> {
                       SizedBox(width: 5.0),
                       Text(
                         place.direPlace,
-                        style: TextStyle(fontSize: 14.0),
+                        style: TextStyle(fontSize: 13.0),
                       ),
                     ],
                   ),
@@ -88,7 +91,7 @@ class _YourWidgetState extends State<YourWidget> {
                       SizedBox(width: 5.0),
                       Text(
                         '${place.horarioPlace}',
-                        style: TextStyle(fontSize: 14.0),
+                        style: TextStyle(fontSize: 12.0),
                       ),
                     ],
                   ),

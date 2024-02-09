@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/register_user.dart';
-
+import 'package:collection/collection.dart';
 import '../../../componentes/controller.dart';
 import '../../bottomNav/bottom_UserNav.dart';
 
@@ -16,14 +17,85 @@ class _LoginUserState extends State<LoginUser> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   bool obscurePassword = true;
-  //1.1. Audio de notificación
+
+  //1.1. Lista de usuario (de mmomento de ejemplo)
+  //lISTA DEL USUARIO
+  final List<ModelUser> users = [
+    ModelUser(
+      id: 1,
+      nombreUser: "Pierina",
+      apellidoUser: "Ruíz",
+      emailUser: "pierina@gmail.com",
+      passwordUser: "12345",
+      imgUser: '6.jpg',
+    ),
+    ModelUser(
+      id: 2,
+      nombreUser: "Josefa",
+      apellidoUser: "Torres",
+      emailUser: "josefa@gmail.com",
+      passwordUser: "12345",
+      imgUser: 'profile.jpg',
+    ),
+  ];
 
   //2. Para el Api
   Future<void> getDatos() async {
     if (email.text.isNotEmpty && password.text.isNotEmpty) {
-      print("Se inició sesión con éxito");
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => BottomNavUser()));
+      try {
+        final emailC = email.text.trim();
+        final passC = password.text.trim();
+        //Verificamos si coinciden
+        final user = users.firstWhere(
+          (user) => user.emailUser == emailC && user.passwordUser == passC,
+          orElse: null,
+        );
+
+        if (user != null) {
+          print("Se inició sesión con éxito");
+
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BottomNavUser(
+                        user: user,
+                      )));
+        } else {
+          //print('falló');
+          // Envolver el Scaffold con Builder para obtener un nuevo contexto
+          /*  ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Color.fromARGB(255, 242, 48, 48),
+              content: Text(
+                'Los datos no coinciden',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              duration: Duration(seconds: 3),
+            ),
+          ); */
+        }
+      } catch (e) {
+        String e = "fallo";
+        print(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color.fromARGB(255, 242, 48, 48),
+            content: Text(
+              'Los datos no coinciden',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
       // Lógica para consumir la API
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

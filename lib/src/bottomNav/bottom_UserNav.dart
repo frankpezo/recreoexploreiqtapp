@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/favorite_screen.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/home_screen.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/profile_screen.dart';
 
 class BottomNavUser extends StatefulWidget {
-  BottomNavUser({Key? key}) : super(key: key);
+  final ModelUser user;
+  BottomNavUser({Key? key, required this.user}) : super(key: key);
 
   @override
   State<BottomNavUser> createState() => _BottomNavUserState();
@@ -14,11 +16,20 @@ class _BottomNavUserState extends State<BottomNavUser> {
   //1. Contador que nos permitirá detectar el cambio
   int currentIndex = 0;
   //2.Lista de las páginas del user
-  List<Widget> pages = [
-    HomeUserScreen(),
-    FavoriteUserScreen(),
-    ProfileUserScreen()
-  ];
+  //2.Lista de las páginas del user
+  late List<Widget> pages;
+
+  @override
+  void initState() {
+    super.initState();
+    pages = [
+      HomeUserScreen(),
+      FavoriteUserScreen(),
+      ProfileUserScreen(
+          currentUser: widget
+              .user), // Inicializar pages después de que widget.user esté disponible
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {

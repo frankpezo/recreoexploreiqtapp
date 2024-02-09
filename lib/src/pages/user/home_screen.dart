@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/belen_cate.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/iquitos_cate.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/punchana_cate.dart';
@@ -22,6 +23,14 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
     "Punchana",
     "Belén"
   ];
+  //Lista para buscar elementos de la categoría
+  List<PlaceModel> lugares = [];
+  void initState() {
+    super.initState();
+    // Popular
+    lugares.addAll(TopCate.placesTop);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,5 +135,43 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
         BelenCate()
       ],
     );
+  }
+
+  //3.2. Buscador
+  Widget buildSearchTextField() {
+    return Container(
+      width: double.infinity,
+      child: TextField(
+        onChanged: buscarElementoCate,
+        style: TextStyle(color: Colors.black),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Color.fromARGB(255, 234, 233, 233),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide.none,
+          ),
+          hintText: 'Buscar recreo turístico... ',
+          hintStyle: TextStyle(fontSize: 14),
+          suffixIcon: Icon(Icons.search),
+          suffixIconColor: Color.fromARGB(255, 19, 19, 19),
+          contentPadding: EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 20.0,
+          ), // Ajusta según sea necesario
+        ),
+      ),
+    );
+  }
+
+  //3.3. Buscar contenido de la categoría
+  void buscarElementoCate(String value) {
+    setState(() {
+      lugares = lugares
+          .where((place) =>
+              place.nombrePlace.toLowerCase().contains(value.toLowerCase()) ||
+              place.direPlace.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    });
   }
 }
