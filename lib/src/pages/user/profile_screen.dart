@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
+import 'package:recreoexploreiqtapp/src/bottomNav/bottom_UserNav.dart';
+import 'package:recreoexploreiqtapp/src/pages/user/edit_perfil.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/login_user.dart';
 
 class ProfileUserScreen extends StatefulWidget {
@@ -94,7 +96,11 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Acción para eliminar cuenta
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  EditPefil(userEdt: widget.currentUser)));
                     },
                     style: ElevatedButton.styleFrom(
                       primary:
