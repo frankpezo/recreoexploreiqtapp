@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/componentes/controller.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottom_UserNav.dart';
-import 'package:recreoexploreiqtapp/src/pages/user/profile_screen.dart';
 
 class EditPefil extends StatefulWidget {
   final ModelUser userEdt;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/register_user.dart';
-import 'package:collection/collection.dart';
 import '../../../componentes/controller.dart';
 import '../../bottomNav/bottom_UserNav.dart';
 
@@ -51,7 +50,7 @@ class _LoginUserState extends State<LoginUser> {
           orElse: null,
         );
 
-        if (user != null) {
+        if (user != '') {
           print("Se inició sesión con éxito");
 
           Navigator.pushReplacement(

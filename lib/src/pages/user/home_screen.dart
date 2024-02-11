@@ -6,8 +6,6 @@ import 'package:recreoexploreiqtapp/src/pages/categorias/punchana_cate.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/sanjuan_cate.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/top_cate.dart';
 
-import '../../widgets/buscador.dart';
-
 class HomeUserScreen extends StatefulWidget {
   HomeUserScreen({Key? key}) : super(key: key);
 
