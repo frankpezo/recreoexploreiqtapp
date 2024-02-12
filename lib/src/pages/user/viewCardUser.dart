@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/instalaciones_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
@@ -24,11 +26,16 @@ class _ViewCardUserState extends State<ViewCardUser> {
     ),
   ]; */
 
-  final categoryList = [
-    "Zoológico",
+  /* final categoryList = [
+    "Cancha deportiva",
+    "Parqueo",
     "Piscina",
-    //"Play",
-  ];
+    "Playa",
+    "Restaurante",
+    "Zona de juegos",
+    "Zoológico"
+  ]; */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -257,7 +264,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
               child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: DefaultTabController(
-                  length: categoryList.length,
+                  length: widget.placeView.catePlace.length,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -272,7 +279,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                 24.0), // Puedes cambiar el color del círculo resaltado
                           ),
                           isScrollable: true,
-                          tabs: categoryList.map((category) {
+                          tabs: (widget.placeView.catePlace.keys.toList())
+                              .map((category) {
                             return Tab(
                               text: category,
                             );
@@ -280,9 +288,13 @@ class _ViewCardUserState extends State<ViewCardUser> {
                         ),
                       ),
                       SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
                         height: 100, // Tamaño fijo para el TabBarView
                         child: TabBarView(
-                          children: categoryList.map((category) {
+                          children: (widget.placeView.catePlace.keys.toList())
+                              .map((category) {
                             return _buildCategoryContent(category);
                           }).toList(),
                         ),
@@ -310,12 +322,19 @@ class _ViewCardUserState extends State<ViewCardUser> {
   Widget _buildCategoryContent(category) {
     // Aquí puedes personalizar el contenido según la categoría seleccionada
     switch (category) {
-      case "Zoológico":
-        return Text("Contenido del Zoológico");
+      case "Cancha deportiva":
+        return Text("Contenido de cancha deportiva");
+      case "Parqueo":
+        return Text("Contenido del Parqueo");
       case "Piscina":
         return Text("Contenido de la Piscinaaa");
-      case "Play":
-        return Text("Contenido de Play");
+      case "Playa":
+        return Text("Contenido de Playa");
+      case "Restaurante":
+        return Text("Contenido de restaurante");
+      case "Zoológico":
+        return Text("Contenido del Zoológico");
+
       default:
         return Container(); // Por defecto, un contenedor vacío
     }

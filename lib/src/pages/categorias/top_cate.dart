@@ -29,25 +29,33 @@ class TopCate extends StatefulWidget {
         estadoPlace: "Abierto",
         rakingPlace: 5.0,
         descriptionPlace:
-            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica."),
+            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
+        catePlace: {
+          "Zoológico": '["img1", "img2"]',
+          "Playa": '["img1", "img2"]'
+        }),
     PlaceModel(
-      id: 2,
-      imagePlace: "4.jpg",
-      nombrePlace: "Don Pepe",
-      direPlace: "Pilar Nores de García",
-      distritoPlace: 'Punchana',
-      phonePlace: 9999999999,
-      palabrasClavesP: ['cancha deportiva', 'piscina'],
-      nino_price: 5.0,
-      adulto_price: 10.0,
-      turista_price: 15.0,
-      feriado_price: 15.0,
-      horarioPlace: "Lunes a domingo, 9:00am - 6:00pm",
-      estadoPlace: "Cerrado",
-      rakingPlace: 5.0,
-      descriptionPlace:
-          "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
-    ),
+        id: 2,
+        imagePlace: "4.jpg",
+        nombrePlace: "Don Pepe",
+        direPlace: "Pilar Nores de García",
+        distritoPlace: 'Punchana',
+        phonePlace: 9999999999,
+        palabrasClavesP: ['cancha deportiva', 'piscina'],
+        nino_price: 5.0,
+        adulto_price: 10.0,
+        turista_price: 15.0,
+        feriado_price: 15.0,
+        horarioPlace: "Lunes a domingo, 9:00am - 6:00pm",
+        estadoPlace: "Cerrado",
+        rakingPlace: 5.0,
+        descriptionPlace:
+            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
+        catePlace: {
+          "Parqueo": '["img1", "img2"]',
+          "Piscina": '["img1", "img2"]',
+          "Restaurante": '["img1", "img2"]',
+        }),
     PlaceModel(
         id: 3,
         imagePlace: "5.jpg",
@@ -64,7 +72,11 @@ class TopCate extends StatefulWidget {
         estadoPlace: "Abierto",
         rakingPlace: 5.0,
         descriptionPlace:
-            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica."),
+            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
+        catePlace: {
+          "Cancha deportiva": '["img1", "img2"]',
+          "Restaruante": '["img1", "img2"]'
+        }),
   ];
 }
 

@@ -1,6 +1,7 @@
-//1. Esta clase será mostrada para los card
+import 'package:recreoexploreiqtapp/model/instalaciones_model.dart';
+
 class PlaceModel {
-  //1.1. Declaramos los atributos
+  // Atributos
   int id;
   String imagePlace;
   String nombrePlace;
@@ -16,8 +17,9 @@ class PlaceModel {
   String estadoPlace;
   double rakingPlace;
   String descriptionPlace;
+  Map<String, String> catePlace;
 
-  //1.2. Constructor
+  // Constructor
   PlaceModel(
       {required this.id,
       required this.imagePlace,
@@ -33,5 +35,8 @@ class PlaceModel {
       required this.horarioPlace,
       required this.estadoPlace,
       required this.rakingPlace,
-      required this.descriptionPlace});
+      required this.descriptionPlace,
+      required this.catePlace});
+
+  // Otros métodos si los tienes
 }
