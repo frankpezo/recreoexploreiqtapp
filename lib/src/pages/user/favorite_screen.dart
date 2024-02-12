@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
+import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/widgets/cardPlaces.dart';
 
 class FavoriteUserScreen extends StatefulWidget {
-  FavoriteUserScreen({Key? key}) : super(key: key);
+  final ModelUser userF;
+  FavoriteUserScreen({Key? key, required this.userF}) : super(key: key);
 
   @override
   State<FavoriteUserScreen> createState() => _FavoriteUserScreenState();
@@ -12,21 +14,22 @@ class FavoriteUserScreen extends StatefulWidget {
 class _FavoriteUserScreenState extends State<FavoriteUserScreen> {
   final List<PlaceModel> listFavorite = [
     PlaceModel(
-      id: 3,
-      imagePlace: "5.jpg",
-      nombrePlace: "King Kong",
-      direPlace: "Carretera Zungarococha km 8.8",
-      distritoPlace: 'San Juan Bautista',
-      phonePlace: 9999999999,
-      palabrasClavesP: ['playa', 'carretera'],
-      nino_price: 5.0,
-      adulto_price: 10.0,
-      turista_price: 15.0,
-      feriado_price: 15.0,
-      horarioPlace: "Lunes a domingo, 8:00am - 6:00pm",
-      estadoPlace: "Abierto",
-      rakingPlace: 5.0,
-    ),
+        id: 1,
+        imagePlace: "quis.jpg",
+        nombrePlace: "Quistococha",
+        direPlace: "Carretera Iquitos - Nauta, km 6.5",
+        distritoPlace: 'San Juan Bautista',
+        phonePlace: 9999999999,
+        palabrasClavesP: ['playa', 'piscina', 'zoológico'],
+        nino_price: 5.0,
+        adulto_price: 10.0,
+        turista_price: 15.0,
+        feriado_price: 15.0,
+        horarioPlace: "Lunes a domingo, 7:30am - 5:30pm",
+        estadoPlace: "Abierto",
+        rakingPlace: 5.0,
+        descriptionPlace:
+            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica."),
   ];
 
   @override
@@ -82,7 +85,10 @@ class _FavoriteUserScreenState extends State<FavoriteUserScreen> {
               child: ListView.builder(
                 itemCount: listFavorite.length,
                 itemBuilder: (context, index) {
-                  return YourWidget(place: listFavorite[index]);
+                  return YourWidget(
+                    place: listFavorite[index],
+                    userCard: widget.userF,
+                  );
                 },
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
+import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/belen_cate.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/iquitos_cate.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/punchana_cate.dart';
@@ -7,7 +8,8 @@ import 'package:recreoexploreiqtapp/src/pages/categorias/sanjuan_cate.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/top_cate.dart';
 
 class HomeUserScreen extends StatefulWidget {
-  HomeUserScreen({Key? key}) : super(key: key);
+  final ModelUser userH;
+  HomeUserScreen({Key? key, required this.userH}) : super(key: key);
 
   @override
   State<HomeUserScreen> createState() => _HomeUserScreenState();
@@ -126,9 +128,13 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
     return TabBarView(
       children: [
         //3.1.1. Colocamos las páginas
-        TopCate(),
+        TopCate(
+          userT: widget.userH,
+        ),
         IquitosCate(),
-        SanjuanCate(),
+        SanjuanCate(
+          userS: widget.userH,
+        ),
         PunchanaCate(),
         BelenCate()
       ],

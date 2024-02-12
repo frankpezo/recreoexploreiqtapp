@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
-import 'package:recreoexploreiqtapp/src/bottomNav/bottom_UserNav.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/edit_perfil.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/login_user.dart';
 

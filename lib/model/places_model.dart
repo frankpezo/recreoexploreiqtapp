@@ -7,7 +7,7 @@ class PlaceModel {
   String direPlace;
   String distritoPlace;
   int phonePlace;
-  String palabrasClavesP;
+  List<String> palabrasClavesP;
   double nino_price;
   double adulto_price;
   double turista_price;
@@ -15,6 +15,7 @@ class PlaceModel {
   String horarioPlace;
   String estadoPlace;
   double rakingPlace;
+  String descriptionPlace;
 
   //1.2. Constructor
   PlaceModel(
@@ -31,5 +32,6 @@ class PlaceModel {
       required this.feriado_price,
       required this.horarioPlace,
       required this.estadoPlace,
-      required this.rakingPlace});
+      required this.rakingPlace,
+      required this.descriptionPlace});
 }

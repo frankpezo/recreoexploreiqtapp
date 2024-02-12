@@ -1,14 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/model/instalaciones_model.dart';
+import 'package:recreoexploreiqtapp/model/places_model.dart';
+import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottom_UserNav.dart';
 
+import '../categorias/subcat/subCat1.dart';
+
 class ViewCardUser extends StatefulWidget {
-  ViewCardUser({Key? key}) : super(key: key);
+  final PlaceModel placeView;
+  final ModelUser userView;
+  ViewCardUser({Key? key, required this.placeView, required this.userView})
+      : super(key: key);
 
   @override
   State<ViewCardUser> createState() => _ViewCardUserState();
 }
 
 class _ViewCardUserState extends State<ViewCardUser> {
+  //1.1. Declaramos las instalaciones del luegar
+  /* List<InstaModel> placesInsta = [
+    InstaModel(
+      instPlace: ["Zoológico", "Playa"],
+    ),
+  ]; */
+
+  final categoryList = [
+    "Zoológico",
+    "Piscina",
+    //"Play",
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +39,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
             Stack(
               children: [
                 Image.asset(
-                  'assets/images/quis.jpg',
+                  'assets/images/${widget.placeView.imagePlace}',
                   width: MediaQuery.of(context).size.width,
                   //height: 100.0,
                   fit: BoxFit.cover,
@@ -33,14 +53,16 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      /*  Navigator.push(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BottomNavUser(
-                            user: null,
-                          ),
+                          builder: (context) {
+                            return BottomNavUser(
+                              user: widget.userView,
+                            );
+                          },
                         ),
-                      ); */
+                      );
                     },
                   ),
                 ),
@@ -59,7 +81,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Quistococha',
+                          '${widget.placeView.nombrePlace}',
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -68,7 +90,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                         Row(
                           children: [
                             Icon(Icons.star, color: Colors.amber),
-                            Text('4.5'),
+                            Text('${widget.placeView.rakingPlace}'),
                           ],
                         ),
                       ],
@@ -76,30 +98,40 @@ class _ViewCardUserState extends State<ViewCardUser> {
                     SizedBox(height: 8.0),
                     //1. Lugar horario
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.location_on, color: Colors.red, size: 16.0),
-                        SizedBox(width: 5.0),
-                        Text(
-                          'Carretera Iquitos - Nauta, km 6.5',
-                          style: TextStyle(fontSize: 13.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(Icons.location_on,
+                                color: Colors.red, size: 16.0),
+                            Text(
+                              '${widget.placeView.direPlace}',
+                              style: TextStyle(fontSize: 13.0),
+                            ),
+                          ],
                         ),
                         SizedBox(width: 90.0),
-                        Text(
-                          //Realizamos una condicional para hacer el cambio de estado
-                          'Abierto',
-                          style: TextStyle(
-                            color: 'Abierto' == "Abierto"
-                                ? Colors.green
-                                : Color.fromARGB(255, 111, 54, 50),
-                            fontSize: 15,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              //Realizamos una condicional para hacer el cambio de estado
+                              '${widget.placeView.estadoPlace}',
+                              style: TextStyle(
+                                color: widget.placeView.estadoPlace == "Abierto"
+                                    ? Colors.green
+                                    : Colors.red,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                     //Distrito
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: [Text('San Juan')],
+                      children: [Text('${widget.placeView.distritoPlace}')],
                     ),
                     //Precios
                     SizedBox(
@@ -127,7 +159,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                     color: Color(0xFF238F8F), size: 16.0),
                                 SizedBox(width: 5.0),
                                 Text(
-                                  'Lunes a domingo, 7:30am - 5:30pm',
+                                  '${widget.placeView.horarioPlace}',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
@@ -143,19 +175,19 @@ class _ViewCardUserState extends State<ViewCardUser> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Niño - S/. 5",
+                              "Niño - S/. ${widget.placeView.nino_price}",
                               style: TextStyle(fontSize: 13),
                             ),
                             Text(
-                              "Adulto - S/. 10",
+                              "Adulto - S/. ${widget.placeView.adulto_price}",
                               style: TextStyle(fontSize: 13),
                             ),
                             Text(
-                              "Turistas - S/. 15",
+                              "Turistas - S/. ${widget.placeView.turista_price}",
                               style: TextStyle(fontSize: 13),
                             ),
                             Text(
-                              "Feriados - S/. 5",
+                              "Feriados - S/. ${widget.placeView.feriado_price}",
                               style: TextStyle(fontSize: 13),
                             ),
                           ],
@@ -166,7 +198,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                 color: Color(0xFF238F8F), size: 16.0),
                             SizedBox(width: 5.0),
                             Text(
-                              '999999999',
+                              '${widget.placeView.phonePlace}',
                               style: TextStyle(fontSize: 12.0),
                             ),
                           ],
@@ -187,8 +219,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF238F8F)),
                         ),
-                        Text(
-                            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
+                        Text("${widget.placeView.descriptionPlace}",
                             textAlign: TextAlign.justify),
 
                         SizedBox(
@@ -205,7 +236,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                               ),
                             ),
                             Text(
-                              "Playa, animales, zoológico",
+                              "${widget.placeView.palabrasClavesP.join(', ')}",
                               style: TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.bold,
@@ -221,9 +252,72 @@ class _ViewCardUserState extends State<ViewCardUser> {
             ),
 
             //2. Card 2
+            Card(
+              margin: EdgeInsets.all(16.0),
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: DefaultTabController(
+                  length: categoryList.length,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 35,
+                        child: TabBar(
+                          labelColor: Colors.white,
+                          unselectedLabelColor: Colors.black,
+                          indicator: BoxDecoration(
+                            color: Color(0xFF238F8F),
+                            borderRadius: BorderRadius.circular(
+                                24.0), // Puedes cambiar el color del círculo resaltado
+                          ),
+                          isScrollable: true,
+                          tabs: categoryList.map((category) {
+                            return Tab(
+                              text: category,
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 100, // Tamaño fijo para el TabBarView
+                        child: TabBarView(
+                          children: categoryList.map((category) {
+                            return _buildCategoryContent(category);
+                          }).toList(),
+                        ),
+                      ),
+
+                      /*  Expanded(
+                        child: TabBarView(
+                          children: categoryList.map((category) {
+                            return _buildCategoryContent(category);
+                          }).toList(),
+                        ),
+                      ), */
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  //1.1. Función de la categoría
+  Widget _buildCategoryContent(category) {
+    // Aquí puedes personalizar el contenido según la categoría seleccionada
+    switch (category) {
+      case "Zoológico":
+        return Text("Contenido del Zoológico");
+      case "Piscina":
+        return Text("Contenido de la Piscinaaa");
+      case "Play":
+        return Text("Contenido de Play");
+      default:
+        return Container(); // Por defecto, un contenedor vacío
+    }
   }
 }

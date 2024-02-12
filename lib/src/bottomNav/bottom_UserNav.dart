@@ -23,8 +23,12 @@ class _BottomNavUserState extends State<BottomNavUser> {
   void initState() {
     super.initState();
     pages = [
-      HomeUserScreen(),
-      FavoriteUserScreen(),
+      HomeUserScreen(
+        userH: widget.user,
+      ),
+      FavoriteUserScreen(
+        userF: widget.user,
+      ),
       ProfileUserScreen(
           currentUser: widget
               .user), // Inicializar pages después de que widget.user esté disponible

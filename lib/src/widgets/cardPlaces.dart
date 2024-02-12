@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
+import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/viewCardUser.dart';
 
 class YourWidget extends StatefulWidget {
   //1. Traemos el model de los datos del local
   final PlaceModel place;
+  final ModelUser userCard;
 
-  YourWidget({required this.place});
+  YourWidget({required this.place, required this.userCard});
 
   @override
   _YourWidgetState createState() => _YourWidgetState();
@@ -28,7 +30,10 @@ class _YourWidgetState extends State<YourWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ViewCardUser(),
+            builder: (context) => ViewCardUser(
+              placeView: place,
+              userView: widget.userCard,
+            ),
           ),
         );
       },
