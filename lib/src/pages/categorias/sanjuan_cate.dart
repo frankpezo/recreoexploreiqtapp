@@ -30,10 +30,9 @@ class _SanjuanCateState extends State<SanjuanCate> {
         estadoPlace: "Abierto",
         rakingPlace: 5.0,
         descriptionPlace:
-            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
+            "Tu centro de esparcimiento familiar, con amplias áreas verdes y naturales, conectándote con la naturaleza para brindarte la mejor experiencia de relax y diversión junto a tu familia, alejada del bullicio de la ciudad. Te ofrecemos quebradas naturales, canchas de fútbol y voley, voley acuático, juegos de destreza física,pesca, zona de camping, circuito de super cross, música variada, platos regionales y bebidas en su punto. Ven y disfruta de una experiencia distinta rodeado de la naturaleza mágica de nuestra selva. También atendemos eventos corporativos y grupos de estudio.",
         catePlace: {
-          "Zoológico": '["img1", "img2"]',
-          "Playa": '["img1", "img2"]'
+          "Lugar": '["qk1.jpg","qk2.jpg", "qk3.jpg"]',
         }),
   ];
   @override

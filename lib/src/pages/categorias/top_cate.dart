@@ -31,8 +31,8 @@ class TopCate extends StatefulWidget {
         descriptionPlace:
             "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
         catePlace: {
-          "Zoológico": '["img1", "img2"]',
-          "Playa": '["img1", "img2"]'
+          "Zoológico": '["7.jpg", "8.jpg", "9.jpg"]',
+          "Playa": '["pquis1.jpg", "pquis2.jpg"]'
         }),
     PlaceModel(
         id: 2,
@@ -41,7 +41,7 @@ class TopCate extends StatefulWidget {
         direPlace: "Pilar Nores de García",
         distritoPlace: 'Punchana',
         phonePlace: 9999999999,
-        palabrasClavesP: ['cancha deportiva', 'piscina'],
+        palabrasClavesP: ['cancha deportiva', 'piscina', 'punchana'],
         nino_price: 5.0,
         adulto_price: 10.0,
         turista_price: 15.0,
@@ -50,11 +50,9 @@ class TopCate extends StatefulWidget {
         estadoPlace: "Cerrado",
         rakingPlace: 5.0,
         descriptionPlace:
-            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
+            "Recreo Turístico “Don Pepe” Iquitos es un excelente centro de esparcimiento que debe conocer en su visita a la ciudad de Iquitos. Recreo Turístico “Don Pepe” Iquitos cuenta con Piscinas en Iquitos, para niños y adultos, Restaurante Campestre que ofrece deliciosas comidas típicas, Canchas de Voley, cancha sintética de Fútbol en Iquitos.",
         catePlace: {
-          "Parqueo": '["img1", "img2"]',
-          "Piscina": '["img1", "img2"]',
-          "Restaurante": '["img1", "img2"]',
+          "Piscina": '["ppis1.jpg","ppis2.jpg", "ppis3.jpg"]',
         }),
     PlaceModel(
         id: 3,
@@ -72,10 +70,9 @@ class TopCate extends StatefulWidget {
         estadoPlace: "Abierto",
         rakingPlace: 5.0,
         descriptionPlace:
-            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
+            "Tu centro de esparcimiento familiar, con amplias áreas verdes y naturales, conectándote con la naturaleza para brindarte la mejor experiencia de relax y diversión junto a tu familia, alejada del bullicio de la ciudad. Te ofrecemos quebradas naturales, canchas de fútbol y voley, voley acuático, juegos de destreza física,pesca, zona de camping, circuito de super cross, música variada, platos regionales y bebidas en su punto. Ven y disfruta de una experiencia distinta rodeado de la naturaleza mágica de nuestra selva. También atendemos eventos corporativos y grupos de estudio.",
         catePlace: {
-          "Cancha deportiva": '["img1", "img2"]',
-          "Restaruante": '["img1", "img2"]'
+          "Lugar": '["qk1.jpg","qk2.jpg", "qk3.jpg"]',
         }),
   ];
 }

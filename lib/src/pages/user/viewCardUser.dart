@@ -77,7 +77,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
             ),
             //1. Card description
             Card(
-              margin: EdgeInsets.all(16.0),
+              margin: EdgeInsets.all(15),
+              elevation: 10,
               child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Column(
@@ -323,17 +324,180 @@ class _ViewCardUserState extends State<ViewCardUser> {
     // Aquí puedes personalizar el contenido según la categoría seleccionada
     switch (category) {
       case "Cancha deportiva":
-        return Text("Contenido de cancha deportiva");
+        return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.placeView.catePlace['Cancha deportiva'] != null)
+                  for (final image in jsonDecode(
+                      widget.placeView.catePlace['Cancha deportiva']!))
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: SizedBox(
+                          width: 130,
+                          height: 140,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.asset('assets/images/$image'),
+                          ),
+                        ),
+                      ),
+                    ),
+              ],
+            ));
+      case "Lugar":
+        return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.placeView.catePlace['Lugar'] != null)
+                  for (final image
+                      in jsonDecode(widget.placeView.catePlace['Lugar']!))
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: SizedBox(
+                          width: 130,
+                          height: 140,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.asset('assets/images/$image'),
+                          ),
+                        ),
+                      ),
+                    ),
+              ],
+            ));
       case "Parqueo":
-        return Text("Contenido del Parqueo");
+        return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.placeView.catePlace['Parqueo'] != null)
+                  for (final image
+                      in jsonDecode(widget.placeView.catePlace['Parqueo']!))
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: SizedBox(
+                          width: 130,
+                          height: 140,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.asset('assets/images/$image'),
+                          ),
+                        ),
+                      ),
+                    ),
+              ],
+            ));
       case "Piscina":
-        return Text("Contenido de la Piscinaaa");
+        return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.placeView.catePlace['Piscina'] != null)
+                  for (final image
+                      in jsonDecode(widget.placeView.catePlace['Piscina']!))
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: SizedBox(
+                          width: 130,
+                          height: 140,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.asset('assets/images/$image'),
+                          ),
+                        ),
+                      ),
+                    ),
+              ],
+            ));
       case "Playa":
-        return Text("Contenido de Playa");
+        return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.placeView.catePlace['Playa'] != null)
+                  for (final image
+                      in jsonDecode(widget.placeView.catePlace['Playa']!))
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: SizedBox(
+                          width: 130,
+                          height: 140,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.asset('assets/images/$image'),
+                          ),
+                        ),
+                      ),
+                    ),
+              ],
+            ));
       case "Restaurante":
-        return Text("Contenido de restaurante");
+        return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.placeView.catePlace['Restaurante'] != null)
+                  for (final image
+                      in jsonDecode(widget.placeView.catePlace['Restaurante']!))
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: SizedBox(
+                          width: 130,
+                          height: 140,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.asset('assets/images/$image'),
+                          ),
+                        ),
+                      ),
+                    ),
+              ],
+            ));
       case "Zoológico":
-        return Text("Contenido del Zoológico");
+        return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.placeView.catePlace['Zoológico'] != null)
+                  for (final image
+                      in jsonDecode(widget.placeView.catePlace['Zoológico']!))
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: SizedBox(
+                          width: 130,
+                          height: 140,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.asset('assets/images/$image'),
+                          ),
+                        ),
+                      ),
+                    ),
+              ],
+            ));
 
       default:
         return Container(); // Por defecto, un contenedor vacío

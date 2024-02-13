@@ -31,8 +31,8 @@ class _FavoriteUserScreenState extends State<FavoriteUserScreen> {
         descriptionPlace:
             "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
         catePlace: {
-          "Zoológico": '["img1", "img2"]',
-          "Playa": '["img1", "img2"]'
+          "Zoológico": '["7.jpg", "8.jpg", "9.jpg"]',
+          "Playa": '["pquis1.jpg", "pquis2.jpg"]'
         }),
   ];
 
