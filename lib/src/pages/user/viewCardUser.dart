@@ -35,7 +35,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
     "Zona de juegos",
     "Zoológico"
   ]; */
-
+  TextEditingController comentarioU = TextEditingController();
+  double fontSize = 11.0; // Definir la variable fontSize aquí
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -312,6 +313,232 @@ class _ViewCardUserState extends State<ViewCardUser> {
                   ),
                 ),
               ),
+            ),
+            //Card comentario y puntuación
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                //Card Comentarios
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Card(
+                    margin: EdgeInsets.all(10.0),
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Comentarios',
+                            style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF238F8F)),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: AssetImage(
+                                    'assets/images/profile.jpg'), // Ruta de la imagen del usuario
+                                radius: 20,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              // Nombre de usuario y Email
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Josefa Torres', //Datos dinámicos
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'El lugar está bonito', //Datos dinámicos
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                    size: 17,
+                                  ),
+                                  Text('3.0'),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                //Card puntuación
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Card(
+                    margin: EdgeInsets.all(10.0),
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Column(children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Puntuar',
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF238F8F)),
+                            ),
+                            SizedBox(
+                                width:
+                                    10), // Espacio entre el texto y la lista desplegable
+                            DropdownButton<int>(
+                              value: 1, // Valor predeterminado
+                              items: [
+                                DropdownMenuItem<int>(
+                                  value: 1,
+                                  child: Text('1'),
+                                ),
+                                DropdownMenuItem<int>(
+                                  value: 2,
+                                  child: Text('2'),
+                                ),
+                                DropdownMenuItem<int>(
+                                  value: 3,
+                                  child: Text('3'),
+                                ),
+                                DropdownMenuItem<int>(
+                                  value: 4,
+                                  child: Text('4'),
+                                ),
+                                DropdownMenuItem<int>(
+                                  value: 5,
+                                  child: Text('5'),
+                                ),
+                              ],
+                              onChanged: (int? value) {
+                                // Aquí puedes manejar el cambio de valor
+                                print('Seleccionaste: $value');
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        //Comentario
+                        Container(
+                          margin: EdgeInsets.only(right: 20),
+                          width: 100,
+                          height: 30,
+                          padding: const EdgeInsets.only(top: 3, left: 15),
+                          child: TextFormField(
+                            controller: comentarioU,
+                            obscureText: false,
+                            keyboardType: TextInputType.text,
+                            onChanged: (text) {
+                              // Verifica si el texto ingresado tiene al menos un carácter
+                              if (text.isNotEmpty) {
+                                // Cambia el tamaño de la letra
+                                setState(() {
+                                  // Puedes ajustar el tamaño de la letra según lo necesites
+                                  // Por ejemplo, aquí se establece un tamaño de fuente más pequeño
+                                  fontSize = 9.0;
+                                });
+                              } else {
+                                setState(() {
+                                  // Si el campo está vacío, restaura el tamaño de la letra original
+                                  fontSize = 9.0;
+                                });
+                              }
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey.shade400),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: 'Comentar...',
+                              // Utiliza la variable fontSize para establecer el tamaño de la letra
+                              hintStyle: TextStyle(
+                                  color: Colors.grey[500], fontSize: fontSize),
+                            ),
+                          ),
+                        ),
+
+                        GestureDetector(
+                          onTap: () {
+                            /* setState(() {
+                                      if (formKey.currentState!.validate()) {}
+                                    });
+                                    getDatos(); */
+                            //. Mensaje de éxito en caso se subió
+                            //
+                            print("Subido");
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor:
+                                  Color.fromARGB(255, 36, 246, 116),
+                              content: Text(
+                                'Se subió con éxito',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              duration: Duration(seconds: 5),
+                            ));
+                          },
+                          child: Container(
+                            margin:
+                                EdgeInsets.only(left: 20, right: 10, top: 20),
+                            width: 100, // Ancho original del botón
+                            height: 25,
+                            padding: const EdgeInsets.only(top: 3, left: 10),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF238F8F),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Subir',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

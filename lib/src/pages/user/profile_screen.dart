@@ -47,6 +47,12 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                     ],
                   ),
                 ),
+                Row(
+                  children: [
+                    Icon(Icons.star, color: Colors.amber),
+                    Text('4.0'),
+                  ],
+                ),
               ],
             ),
             SizedBox(height: 50),
