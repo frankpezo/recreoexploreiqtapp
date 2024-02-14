@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/cardRegister.dart';
 import 'package:recreoexploreiqtapp/src/widgets/carEditPlaces.dart';
 
 class HomeAdminScreen extends StatefulWidget {
@@ -107,63 +108,80 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
             ),
             // Aquí puedes agregar más elementos según sea necesario
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        "Mi local",
-                        style: TextStyle(fontSize: 17),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      print("Cambió de pantalla xd");
-                    },
-                    child: Card(
-                      margin: EdgeInsets.all(16.0),
-                      child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Row(children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xFF238F8F),
-                            ),
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
+              child: Container(
+                width: 500,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "Mi local",
+                          style: TextStyle(fontSize: 17),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CardRegister(
+                              userCard: widget.userH,
                             ),
                           ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Agregar local",
-                            style: TextStyle(
-                                color: Color(0xFF238F8F),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                          )
-                        ]),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: ListView.builder(
-                      padding: EdgeInsets.only(bottom: 10),
-                      itemCount: HomeAdminScreen.placeE.length,
-                      itemBuilder: (context, index) {
-                        return YourWidgetEditP(
-                          place: HomeAdminScreen.placeE[index],
-                          userC: widget.userH,
                         );
                       },
+                      child: Card(
+                        margin: EdgeInsets.all(16.0),
+                        child: SizedBox(
+                          width: double.infinity, // Ancho completo
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Row(children: [
+                              Container(
+                                width: 60, // Ancho del icono
+                                height: 60, // Alto del icono
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xFF238F8F),
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                  width:
+                                      20), // Espacio entre el icono y el texto
+                              Expanded(
+                                child: Text(
+                                  "Agregar local",
+                                  style: TextStyle(
+                                      color: Color(0xFF238F8F),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17),
+                                ),
+                              ),
+                            ]),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                    Flexible(
+                      child: ListView.builder(
+                        padding: EdgeInsets.only(bottom: 10),
+                        itemCount: HomeAdminScreen.placeE.length,
+                        itemBuilder: (context, index) {
+                          return YourWidgetEditP(
+                            place: HomeAdminScreen.placeE[index],
+                            userC: widget.userH,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
