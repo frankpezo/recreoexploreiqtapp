@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/componentes/controller.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/cardInsta.dart';
 
 class CardRegister extends StatefulWidget {
   final EmpresaModel userCard;
@@ -42,7 +43,26 @@ class _CardRegisterState extends State<CardRegister> {
         turista.text.isNotEmpty &&
         feriado.text.isNotEmpty &&
         _status != null) {
-      print("Registro con éxito");
+      print("Registo de local con éxito");
+      print("Subido");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Color.fromARGB(255, 36, 246, 116),
+        content: Text(
+          'Se subió con éxito',
+          style: TextStyle(
+              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        duration: Duration(seconds: 5),
+      ));
+      //No llevará a la parte de seleccionar instalaciones
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CardInsta(
+            userI: widget.userCard,
+          ),
+        ),
+      );
       // Lógica para consumir la API
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
