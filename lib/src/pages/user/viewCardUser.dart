@@ -37,6 +37,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
   ]; */
   TextEditingController comentarioU = TextEditingController();
   double fontSize = 11.0; // Definir la variable fontSize aquí
+  int selectedValue = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -409,7 +410,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                 width:
                                     10), // Espacio entre el texto y la lista desplegable
                             DropdownButton<int>(
-                              value: 1, // Valor predeterminado
+                              value:
+                                  selectedValue, // Utiliza una variable de estado para almacenar el valor seleccionado
                               items: [
                                 DropdownMenuItem<int>(
                                   value: 1,
@@ -433,20 +435,22 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                 ),
                               ],
                               onChanged: (int? value) {
-                                // Aquí puedes manejar el cambio de valor
-                                print('Seleccionaste: $value');
+                                // Actualiza el estado con el nuevo valor seleccionado
+                                setState(() {
+                                  selectedValue = value!;
+                                });
                               },
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 3,
                         ),
                         //Comentario
                         Container(
                           margin: EdgeInsets.only(right: 20),
-                          width: 100,
-                          height: 30,
+                          width: 110,
+                          height: 50,
                           padding: const EdgeInsets.only(top: 3, left: 15),
                           child: TextFormField(
                             controller: comentarioU,
@@ -516,7 +520,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                             margin:
                                 EdgeInsets.only(left: 20, right: 10, top: 20),
                             width: 100, // Ancho original del botón
-                            height: 25,
+                            height: 30,
                             padding: const EdgeInsets.only(top: 3, left: 10),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -528,7 +532,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                 'Subir',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 14,
+                                  fontSize: 15,
                                 ),
                               ),
                             ),
@@ -564,8 +568,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
                         child: SizedBox(
-                          width: 130,
-                          height: 140,
+                          width: 160,
+                          height: 160,
                           child: FittedBox(
                             fit: BoxFit.cover,
                             child: Image.asset('assets/images/$image'),
@@ -589,8 +593,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
                         child: SizedBox(
-                          width: 130,
-                          height: 140,
+                          width: 160,
+                          height: 160,
                           child: FittedBox(
                             fit: BoxFit.cover,
                             child: Image.asset('assets/images/$image'),
@@ -614,8 +618,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
                         child: SizedBox(
-                          width: 130,
-                          height: 140,
+                          width: 160,
+                          height: 160,
                           child: FittedBox(
                             fit: BoxFit.cover,
                             child: Image.asset('assets/images/$image'),
@@ -639,8 +643,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
                         child: SizedBox(
-                          width: 130,
-                          height: 140,
+                          width: 160,
+                          height: 160,
                           child: FittedBox(
                             fit: BoxFit.cover,
                             child: Image.asset('assets/images/$image'),
@@ -664,8 +668,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
                         child: SizedBox(
-                          width: 130,
-                          height: 140,
+                          width: 160,
+                          height: 160,
                           child: FittedBox(
                             fit: BoxFit.cover,
                             child: Image.asset('assets/images/$image'),
@@ -689,8 +693,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
                         child: SizedBox(
-                          width: 130,
-                          height: 140,
+                          width: 160,
+                          height: 160,
                           child: FittedBox(
                             fit: BoxFit.cover,
                             child: Image.asset('assets/images/$image'),
@@ -714,8 +718,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
                         child: SizedBox(
-                          width: 130,
-                          height: 140,
+                          width: 160,
+                          height: 160,
                           child: FittedBox(
                             fit: BoxFit.cover,
                             child: Image.asset('assets/images/$image'),

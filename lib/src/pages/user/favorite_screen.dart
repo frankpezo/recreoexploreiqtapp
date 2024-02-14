@@ -14,26 +14,51 @@ class FavoriteUserScreen extends StatefulWidget {
 class _FavoriteUserScreenState extends State<FavoriteUserScreen> {
   final List<PlaceModel> listFavorite = [
     PlaceModel(
-        id: 1,
-        imagePlace: "quis.jpg",
-        nombrePlace: "Quistococha",
-        direPlace: "Carretera Iquitos - Nauta, km 6.5",
-        distritoPlace: 'San Juan Bautista',
-        phonePlace: 9999999999,
-        palabrasClavesP: ['playa', 'piscina', 'zoológico'],
-        nino_price: 5.0,
-        adulto_price: 10.0,
-        turista_price: 15.0,
-        feriado_price: 15.0,
-        horarioPlace: "Lunes a domingo, 7:30am - 5:30pm",
-        estadoPlace: "Abierto",
-        rakingPlace: 5.0,
-        descriptionPlace:
-            "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
-        catePlace: {
-          "Zoológico": '["7.jpg", "8.jpg", "9.jpg"]',
-          "Playa": '["pquis1.jpg", "pquis2.jpg"]'
-        }),
+      id: 1,
+      imagePlace: "quis.jpg",
+      nombrePlace: "Quistococha",
+      direPlace: "Carretera Iquitos - Nauta, km 6.5",
+      distritoPlace: 'San Juan Bautista',
+      phonePlace: 9999999999,
+      palabrasClavesP: ['playa', 'piscina', 'zoológico'],
+      nino_price: 5.0,
+      adulto_price: 10.0,
+      turista_price: 15.0,
+      feriado_price: 15.0,
+      horarioPlace: "Lunes a domingo, 7:30am - 5:30pm",
+      estadoPlace: "Abierto",
+      rakingPlace: 5.0,
+      descriptionPlace:
+          "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
+      catePlace: {
+        "Zoológico": '["7.jpg", "8.jpg", "9.jpg"]',
+        "Playa": '["pquis1.jpg", "pquis2.jpg"]'
+      },
+      comentPlace: [
+        {
+          "id": 1,
+          'profileImage': 'assets/images/profile.jpg',
+          'username': 'Usuario 1',
+          'comment': 'Comentario del usuario 1',
+          'rating': 3.0,
+        },
+        {
+          "id": 2,
+          'profileImage': 'assets/images/profile.jpg',
+          'username': 'Usuario 2',
+          'comment': 'Comentario del usuario 2',
+          'rating': 4.0,
+        },
+        // Puedes agregar más comentarios aquí
+        {
+          "id": 2,
+          'profileImage': 'assets/images/profile.jpg',
+          'username': 'Usuario 3',
+          'comment': 'Comentario del usuario 3',
+          'rating': 5.0,
+        },
+      ],
+    ),
   ];
 
   @override

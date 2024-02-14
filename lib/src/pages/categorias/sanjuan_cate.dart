@@ -15,25 +15,47 @@ class _SanjuanCateState extends State<SanjuanCate> {
   //1. Creamos la lista
   final List<PlaceModel> placeSanJuan = [
     PlaceModel(
-        id: 3,
-        imagePlace: "5.jpg",
-        nombrePlace: "King Kong",
-        direPlace: "Carretera Zungarococha km 8.8",
-        distritoPlace: 'San Juan Bautista',
-        phonePlace: 9999999999,
-        palabrasClavesP: ['playa', 'carretera'],
-        nino_price: 5.0,
-        adulto_price: 10.0,
-        turista_price: 15.0,
-        feriado_price: 15.0,
-        horarioPlace: "Lunes a domingo, 8:00am - 6:00pm",
-        estadoPlace: "Abierto",
-        rakingPlace: 5.0,
-        descriptionPlace:
-            "Tu centro de esparcimiento familiar, con amplias áreas verdes y naturales, conectándote con la naturaleza para brindarte la mejor experiencia de relax y diversión junto a tu familia, alejada del bullicio de la ciudad. Te ofrecemos quebradas naturales, canchas de fútbol y voley, voley acuático, juegos de destreza física,pesca, zona de camping, circuito de super cross, música variada, platos regionales y bebidas en su punto. Ven y disfruta de una experiencia distinta rodeado de la naturaleza mágica de nuestra selva. También atendemos eventos corporativos y grupos de estudio.",
-        catePlace: {
-          "Lugar": '["qk1.jpg","qk2.jpg", "qk3.jpg"]',
-        }),
+      id: 3,
+      imagePlace: "5.jpg",
+      nombrePlace: "King Kong",
+      direPlace: "Carretera Zungarococha km 8.8",
+      distritoPlace: 'San Juan Bautista',
+      phonePlace: 9999999999,
+      palabrasClavesP: ['playa', 'carretera'],
+      nino_price: 5.0,
+      adulto_price: 10.0,
+      turista_price: 15.0,
+      feriado_price: 15.0,
+      horarioPlace: "Lunes a domingo, 8:00am - 6:00pm",
+      estadoPlace: "Abierto",
+      rakingPlace: 5.0,
+      descriptionPlace:
+          "Tu centro de esparcimiento familiar, con amplias áreas verdes y naturales, conectándote con la naturaleza para brindarte la mejor experiencia de relax y diversión junto a tu familia, alejada del bullicio de la ciudad. Te ofrecemos quebradas naturales, canchas de fútbol y voley, voley acuático, juegos de destreza física,pesca, zona de camping, circuito de super cross, música variada, platos regionales y bebidas en su punto. Ven y disfruta de una experiencia distinta rodeado de la naturaleza mágica de nuestra selva. También atendemos eventos corporativos y grupos de estudio.",
+      catePlace: {
+        "Lugar": '["qk1.jpg","qk2.jpg", "qk3.jpg"]',
+      },
+      comentPlace: [
+        {
+          'profileImage': 'assets/images/profile.jpg',
+          'username': 'Usuario 1',
+          'comment': 'Comentario del usuario 1',
+          'rating': 3.0,
+        },
+        {
+          'profileImage': 'assets/images/profile.jpg',
+          'username': 'Usuario 2',
+          'comment': 'Comentario del usuario 2',
+          'rating': 4.0,
+        },
+        // Puedes agregar más comentarios aquí
+        {
+          'profileImage': 'assets/images/profile.jpg',
+          'username': 'Usuario 3',
+          'comment': 'Comentario del usuario 3',
+          'rating': 5.0,
+        },
+      ],
+    ),
   ];
   @override
   Widget build(BuildContext context) {

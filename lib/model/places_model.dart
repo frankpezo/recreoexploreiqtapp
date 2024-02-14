@@ -18,6 +18,7 @@ class PlaceModel {
   double rakingPlace;
   String descriptionPlace;
   Map<String, String> catePlace;
+  List<Map<String, dynamic>> comentPlace;
 
   // Constructor
   PlaceModel(
@@ -36,7 +37,8 @@ class PlaceModel {
       required this.estadoPlace,
       required this.rakingPlace,
       required this.descriptionPlace,
-      required this.catePlace});
+      required this.catePlace,
+      required this.comentPlace});
 
   // Otros métodos si los tienes
 }
