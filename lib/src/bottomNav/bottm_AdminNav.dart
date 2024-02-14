@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/homeAdmin_screen.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/profileAdmin_screen.dart';
 
 class BottomNavAdmin extends StatefulWidget {
-  BottomNavAdmin({Key? key}) : super(key: key);
+  final EmpresaModel user;
+  BottomNavAdmin({Key? key, required this.user}) : super(key: key);
 
   @override
   State<BottomNavAdmin> createState() => _BottomNavAdminState();
@@ -13,7 +15,18 @@ class _BottomNavAdminState extends State<BottomNavAdmin> {
   //1. Contador que nos permitirá detectar el cambio
   int currentIndex = 0;
   //2. LIsta de las páginas del admin
-  List<Widget> pages = [HomeAdminScreen(), ProfileAdminScreen()];
+  late List<Widget> pages;
+  @override
+  void initState() {
+    super.initState();
+    pages = [
+      HomeAdminScreen(
+        userH: widget.user,
+      ),
+      ProfileAdminScreen() // Inicializar pages después de que widget.user esté disponible
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

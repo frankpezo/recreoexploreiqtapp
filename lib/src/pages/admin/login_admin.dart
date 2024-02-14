@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/componentes/controller.dart';
+import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/register_admin.dart';
 
@@ -15,14 +16,74 @@ class _LoginAdminState extends State<LoginAdmin> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   bool obscurePassword = true;
-  //1.1. Audio de notificación
+  //1.1. Lista de usuario
+  final List<EmpresaModel> userE = [
+    EmpresaModel(
+        id: 1,
+        nombreEmpresa: "Cuistococha",
+        emailEmpresa: "quistococha@gmail.com",
+        passwordEmpresa: '12345',
+        img: '1.jpg'),
+  ];
 
   //2. Para el Api
   Future<void> getDatos() async {
     if (email.text.isNotEmpty && password.text.isNotEmpty) {
-      print("Se inició sesión con éxito");
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => BottomNavAdmin()));
+      try {
+        final emailC = email.text.trim();
+        final passC = password.text.trim();
+        //Verificamos si coinciden
+        final user = userE.firstWhere(
+          (user) =>
+              user.emailEmpresa == emailC && user.passwordEmpresa == passC,
+          orElse: null,
+        );
+
+        if (user != '') {
+          print("Se inició sesión con éxito");
+
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BottomNavAdmin(
+                        user: user,
+                      )));
+        } else {
+          //print('falló');
+          // Envolver el Scaffold con Builder para obtener un nuevo contexto
+          /*  ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Color.fromARGB(255, 242, 48, 48),
+              content: Text(
+                'Los datos no coinciden',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              duration: Duration(seconds: 3),
+            ),
+          ); */
+        }
+      } catch (e) {
+        String e = "fallo";
+        print(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color.fromARGB(255, 242, 48, 48),
+            content: Text(
+              'Los datos no coinciden',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
       // Lógica para consumir la API
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -35,7 +96,7 @@ class _LoginAdminState extends State<LoginAdmin> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 5),
       ));
     }
   }
