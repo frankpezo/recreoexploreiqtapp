@@ -1,37 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
-import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
-import 'package:recreoexploreiqtapp/src/pages/admin/cardImages.dart';
-import 'package:recreoexploreiqtapp/src/pages/admin/cardRegister.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/cardInsta.dart';
 
-class CardInsta extends StatefulWidget {
-  final EmpresaModel userI;
-  CardInsta({Key? key, required this.userI}) : super(key: key);
+class CardImages extends StatefulWidget {
+  final EmpresaModel userIma;
+  final List<String> selectedInstallations;
+  CardImages(
+      {Key? key, required this.userIma, required this.selectedInstallations})
+      : super(key: key);
 
   @override
-  State<CardInsta> createState() => _CardInstaState();
+  State<CardImages> createState() => _CardImagesState();
 }
 
-class _CardInstaState extends State<CardInsta> {
-  Map<String, bool> categories = {
-    'Cancha deportiva': false,
-    'Lugar': false,
-    'Parqueo': false,
-    'Piscina': false,
-    'Playa': false,
-    'Restaurante': false,
-    'Zona de juegos': false,
-    'Zoológico': false,
-  };
+class _CardImagesState extends State<CardImages> {
+  List<String> selectedCategories = [];
 
-  List<String> getSelectedInstallations() {
-    List<String> selectedInstallations = [];
-    categories.forEach((key, value) {
-      if (value) {
-        selectedInstallations.add(key);
-      }
-    });
-    return selectedInstallations;
+  @override
+  void initState() {
+    super.initState();
+    // Actualizar selectedCategories con las instalaciones seleccionadas
+    selectedCategories = List.from(widget.selectedInstallations);
   }
 
   @override
@@ -60,8 +49,8 @@ class _CardInstaState extends State<CardInsta> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CardRegister(
-                                    userCard: widget.userI,
+                                  builder: (context) => CardInsta(
+                                    userI: widget.userIma,
                                   ),
                                 ),
                               );
@@ -94,14 +83,14 @@ class _CardInstaState extends State<CardInsta> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BottomNavAdmin(
-                                        user: widget.userI,
-                                      ),
-                                    ),
-                                  );
+                                  /* Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BottomNavAdmin(
+                                    user: widget.userCard,
+                                  ),
+                                ),
+                              ); */
                                 },
                                 child: Row(
                                   children: [
@@ -140,69 +129,72 @@ class _CardInstaState extends State<CardInsta> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("Instalaciones",
-                                        style: TextStyle(
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFF238F8F)))
+                                    Text(
+                                      "Instalaciones",
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF238F8F),
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 SizedBox(height: 15),
-                                Column(
-                                  children: categories.keys.map((String key) {
-                                    return CheckboxListTile(
-                                      title: Text(key),
-                                      value: categories[key] ?? false,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          categories[key] = value!;
-                                          print('$key: ${categories[key]}');
-                                        });
-                                      },
-                                      activeColor: Color(0xFF238F8F),
-                                      checkColor: Colors.white,
-                                    );
-                                  }).toList(),
-                                ),
-                                SizedBox(
-                                    height:
-                                        20), // Espacio adicional para separar del botón
-                                GestureDetector(
-                                  onTap: () {
-                                    // Aquí puedes guardar las categorías seleccionadas para su uso en otra página
-                                    // Por ejemplo, puedes usar el estado 'categories'
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 36, 246, 116),
-                                      content: Text(
-                                        'Se guardó instalaciones',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
+                                DefaultTabController(
+                                  length: selectedCategories.length,
+                                  child: Column(
+                                    children: [
+                                      TabBar(
+                                        labelColor: Colors.white,
+                                        unselectedLabelColor: Colors.black,
+                                        indicator: BoxDecoration(
+                                          color: Color(0xFF238F8F),
+                                          borderRadius: BorderRadius.circular(
+                                              24.0), // Puedes cambiar el color del círculo resaltado
+                                        ),
+                                        isScrollable: true,
+                                        tabs: selectedCategories
+                                            .map((category) =>
+                                                Tab(text: category))
+                                            .toList(),
                                       ),
-                                      duration: Duration(seconds: 5),
-                                    ));
-                                    //No llevará a la parte de seleccionar instalaciones
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CardImages(
-                                          userIma: widget.userI,
-                                          selectedInstallations:
-                                              getSelectedInstallations(),
+                                      SizedBox(
+                                        height: 200, // Altura del TabView
+                                        child: TabBarView(
+                                          children: selectedCategories
+                                              .map((category) {
+                                            return Center(
+                                              child: Text(
+                                                'Contenido para $category',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
                                         ),
                                       ),
-                                    );
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    // Aquí puedes usar las variables para saber qué opciones han sido seleccionadas
+                                    // Luego puedes guardar estos valores como desees.
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(
-                                        left: 20, right: 10, top: 20),
+                                      left: 20,
+                                      right: 10,
+                                      top: 20,
+                                    ),
                                     width: 325, // Ancho original del botón
                                     height: 45,
-                                    padding:
-                                        const EdgeInsets.only(top: 3, left: 10),
+                                    padding: const EdgeInsets.only(
+                                      top: 3,
+                                      left: 10,
+                                    ),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: Color(0xFF238F8F),
@@ -210,7 +202,7 @@ class _CardInstaState extends State<CardInsta> {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        'Guardar',
+                                        'Agregar imágenes',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 20,

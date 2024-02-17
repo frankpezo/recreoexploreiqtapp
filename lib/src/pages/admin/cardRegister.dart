@@ -29,6 +29,7 @@ class _CardRegisterState extends State<CardRegister> {
   TextEditingController turista = TextEditingController();
   TextEditingController feriado = TextEditingController();
   String? _status = 'Abierto';
+  List<String> keywords = []; //Lista donde se almacenará las palabras claves
   //Para mensaje de Scaffol
   Future<void> insertLocal() async {
     if (nombreLocal.text.isNotEmpty &&
@@ -36,14 +37,10 @@ class _CardRegisterState extends State<CardRegister> {
         telefono.text.isNotEmpty &&
         horario.text.isNotEmpty &&
         descripcion.text.isNotEmpty &&
-        palabrasCLave.text.isNotEmpty &&
-        // imgUser.text.isNotEmpty &&
-        ninos.text.isNotEmpty &&
-        adulto.text.isNotEmpty &&
-        turista.text.isNotEmpty &&
-        feriado.text.isNotEmpty &&
+        keywords
+            .isNotEmpty && // Al menos una palabra clave debe estar ingresada
         _status != null) {
-      print("Registo de local con éxito");
+      print("Registro de local con éxito");
       print("Subido");
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Color.fromARGB(255, 36, 246, 116),
@@ -68,7 +65,7 @@ class _CardRegisterState extends State<CardRegister> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Color.fromARGB(255, 242, 48, 48),
         content: Text(
-          'Todos los campos deben ser completados',
+          'Todos los campos deben ser completados, incluyendo al menos una palabra clave',
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -78,6 +75,22 @@ class _CardRegisterState extends State<CardRegister> {
         duration: Duration(seconds: 3),
       ));
     }
+  }
+
+  void addKeyword(String keyword) {
+    setState(() {
+      if (!keywords.contains(keyword)) {
+        keywords.add(keyword);
+        palabrasCLave.text = keywords.join(", ");
+      }
+    });
+  }
+
+  void removeKeyword(String keyword) {
+    setState(() {
+      keywords.remove(keyword);
+      palabrasCLave.text = keywords.join(", ");
+    });
   }
 
   @override
@@ -459,45 +472,78 @@ class _CardRegisterState extends State<CardRegister> {
                                     ),
                                   ),
                                 ),
+                                //Palabras claves
                                 Container(
                                   margin: EdgeInsets.only(left: 20, right: 20),
                                   width: 325,
-                                  height: 70,
+                                  height:
+                                      150, // Ajuste de altura para mostrar las palabras clave
                                   padding:
                                       const EdgeInsets.only(top: 3, left: 15),
-                                  child: TextFormField(
-                                    controller: palabrasCLave,
-                                    obscureText: false,
-                                    keyboardType: TextInputType.name,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Por favor, ingrese palabras claves';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(13),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextFormField(
+                                        controller: palabrasCLave,
+                                        obscureText: false,
+                                        keyboardType: TextInputType.name,
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Por favor, ingrese palabras claves';
+                                          }
+                                          return null;
+                                        },
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.all(13),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey.shade400),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.red),
+                                          ),
+                                          fillColor: Colors.white,
+                                          filled: true,
+                                          hintText: 'Palabras claves',
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey[500]),
+                                          suffixIcon: IconButton(
+                                            onPressed: () {
+                                              if (palabrasCLave
+                                                  .text.isNotEmpty) {
+                                                addKeyword(palabrasCLave.text);
+                                                palabrasCLave.clear();
+                                              }
+                                            },
+                                            icon: Icon(Icons.add),
+                                          ),
+                                        ),
                                       ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey.shade400),
+                                      SizedBox(
+                                          height:
+                                              4), // Espacio entre el campo de texto y las palabras clave
+                                      Wrap(
+                                        spacing:
+                                            4.0, // Espacio entre las palabras clave
+                                        children: keywords.map((keyword) {
+                                          return InputChip(
+                                            label: Text(keyword),
+                                            onDeleted: () {
+                                              removeKeyword(keyword);
+                                            },
+                                          );
+                                        }).toList(),
                                       ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.red),
-                                      ),
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      hintText: 'Palabras claves',
-                                      hintStyle:
-                                          TextStyle(color: Colors.grey[500]),
-                                    ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(height: 2),
+                                SizedBox(height: 5),
                                 //pRECIOS
                                 //NIÑO
                                 Container(
