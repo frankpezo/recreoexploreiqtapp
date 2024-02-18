@@ -5,6 +5,7 @@ import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottom_UserNav.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/cadEdRegister.dart';
 
 class ViewCardAdmin extends StatefulWidget {
   final PlaceModel placeViewA;
@@ -90,15 +91,15 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                             GestureDetector(
                               onTap: () {
                                 // Aquí puedes agregar la lógica para editar
-                                /* Navigator.push(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ViewCardAdmin(
-                                      placeViewA: place,
-                                      userViewA: widget.userC,
+                                    builder: (context) => CardEdRegister(
+                                      userCardEd: widget.userViewA,
+                                      placeViewEd: widget.placeViewA,
                                     ),
                                   ),
-                                ); */
+                                );
                               },
                               child: Container(
                                 padding: EdgeInsets.all(5),
@@ -303,9 +304,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                           }).toList(),
                         ),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
+                      SizedBox(height: 20),
                       SizedBox(
                         height: 100, // Tamaño fijo para el TabBarView
                         child: TabBarView(

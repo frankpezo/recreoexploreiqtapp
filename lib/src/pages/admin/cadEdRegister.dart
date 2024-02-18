@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:recreoexploreiqtapp/componentes/controller.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
-import 'package:recreoexploreiqtapp/src/pages/admin/cardInsta.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/viewAdminCard.dart';
 
-class CardRegister extends StatefulWidget {
-  final EmpresaModel userCard;
-  CardRegister({Key? key, required this.userCard}) : super(key: key);
+class CardEdRegister extends StatefulWidget {
+  final EmpresaModel userCardEd;
+  final PlaceModel placeViewEd;
+  CardEdRegister(
+      {Key? key, required this.userCardEd, required this.placeViewEd})
+      : super(key: key);
 
   @override
-  State<CardRegister> createState() => _CardRegisterState();
+  State<CardEdRegister> createState() => _CardEdRegisterState();
 }
 
-class _CardRegisterState extends State<CardRegister> {
-  final GlobalKey<FormState> formKeySix =
+class _CardEdRegisterState extends State<CardEdRegister> {
+  final GlobalKey<FormState> formKeySeven =
       GlobalKey<FormState>(); // Nueva GlobalKey
-
+  TextEditingController id = TextEditingController();
   TextEditingController nombreLocal = TextEditingController();
   TextEditingController direccionLocal = TextEditingController();
   TextEditingController telefono = TextEditingController();
@@ -52,14 +55,14 @@ class _CardRegisterState extends State<CardRegister> {
         duration: Duration(seconds: 5),
       ));
       //No llevará a la parte de seleccionar instalaciones
-      Navigator.push(
+      /*  Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => CardInsta(
             userI: widget.userCard,
           ),
         ),
-      );
+      ); */
       // Lógica para consumir la API
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -95,13 +98,35 @@ class _CardRegisterState extends State<CardRegister> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // Inicializar los controladores de los campos de texto con los datos del usuario
+    id.text = widget.placeViewEd.id.toString();
+    nombreLocal.text = widget.placeViewEd.nombrePlace;
+    direccionLocal.text = widget.placeViewEd.direPlace;
+    telefono.text = widget.placeViewEd.phonePlace.toString();
+    horario.text = widget.placeViewEd.horarioPlace;
+    descripcion.text = widget.placeViewEd.descriptionPlace;
+    ninos.text = widget.placeViewEd.nino_price.toString();
+    adulto.text = widget.placeViewEd.adulto_price.toString();
+    turista.text = widget.placeViewEd.turista_price.toString();
+    feriado.text = widget.placeViewEd.feriado_price.toString();
+    imgUser.text = widget.placeViewEd.imagePlace;
+    // Flata que se vea el distrito en la lista, las palabras claves y el estado
+    selectedValue = widget.placeViewEd
+        .distritoPlace; // Asumiendo que tienes un campo distrito en tu modelo
+    _status = widget.placeViewEd.estadoPlace;
+    palabrasCLave.text = widget.placeViewEd.palabrasClavesP.join(', ');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Form(
-            key: formKeySix, // Asignar la nueva GlobalKey al Form
+            key: formKeySeven, // Asignar la nueva GlobalKey al Form
             child: SafeArea(
               child: Container(
                 child: Column(
@@ -121,8 +146,9 @@ class _CardRegisterState extends State<CardRegister> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => BottomNavAdmin(
-                                    user: widget.userCard,
+                                  builder: (context) => ViewCardAdmin(
+                                    userViewA: widget.userCardEd,
+                                    placeViewA: widget.placeViewEd,
                                   ),
                                 ),
                               );
@@ -189,7 +215,7 @@ class _CardRegisterState extends State<CardRegister> {
                                         children: [
                                           CircleAvatar(
                                             backgroundImage: AssetImage(
-                                                'assets/images/profileGray.jpg'),
+                                                'assets/images/${widget.placeViewEd.imagePlace}'),
                                             radius: 35,
                                           ),
                                           Positioned(
@@ -827,7 +853,7 @@ class _CardRegisterState extends State<CardRegister> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      if (formKeySix.currentState!
+                                      if (formKeySeven.currentState!
                                           .validate()) {}
                                     });
                                     insertLocal();
