@@ -6,6 +6,7 @@ import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottom_UserNav.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cadEdRegister.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/instaEd.dart';
 
 class ViewCardAdmin extends StatefulWidget {
   final PlaceModel placeViewA;
@@ -332,15 +333,14 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                           GestureDetector(
                             onTap: () {
                               // Aquí puedes agregar la lógica para editar
-                              /* Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ViewCardAdmin(
-                                      placeViewA: place,
-                                      userViewA: widget.userC,
-                                    ),
-                                  ),
-                                ); */
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => InstaEd(
+                                      placeViewEd: widget.placeViewA,
+                                      userInstEd: widget.userViewA),
+                                ),
+                              );
                             },
                             child: Container(
                               padding: EdgeInsets.all(5),
