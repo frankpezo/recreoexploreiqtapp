@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/imagesEd.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/viewAdminCard.dart';
 
 class InstaEd extends StatefulWidget {
@@ -110,14 +111,17 @@ class _InstaEdState extends State<InstaEd> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  /*  Navigator.push(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => BottomNavAdmin(
-                                        user: widget.userI,
+                                      builder: (context) => ImaEd(
+                                        placeViewI: widget.placeViewEd,
+                                        selectedInstallations:
+                                            getSelectedInstallations(),
+                                        userIED: widget.userInstEd,
                                       ),
                                     ),
-                                  ); */
+                                  );
                                 },
                                 child: Row(
                                   children: [
