@@ -23,7 +23,7 @@ class _LoginAdminState extends State<LoginAdmin> {
         nombreEmpresa: "Cuistococha",
         emailEmpresa: "quistococha@gmail.com",
         passwordEmpresa: '12345',
-        img: '1.jpg'),
+        img: 'quisLogo.jpg'),
   ];
 
   //2. Para el Api

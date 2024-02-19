@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:recreoexploreiqtapp/model/instalaciones_model.dart';
+
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottom_UserNav.dart';

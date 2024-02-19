@@ -1,5 +1,3 @@
-import 'package:recreoexploreiqtapp/model/instalaciones_model.dart';
-
 class PlaceModel {
   // Atributos
   int id;

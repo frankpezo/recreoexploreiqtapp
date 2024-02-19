@@ -23,7 +23,9 @@ class _BottomNavAdminState extends State<BottomNavAdmin> {
       HomeAdminScreen(
         userH: widget.user,
       ),
-      ProfileAdminScreen() // Inicializar pages después de que widget.user esté disponible
+      ProfileAdminScreen(
+        userP: widget.user,
+      ) // Inicializar pages después de que widget.user esté disponible
     ];
   }
 
