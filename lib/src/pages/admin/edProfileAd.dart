@@ -1,34 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/componentes/controller.dart';
-import 'package:recreoexploreiqtapp/model/user_model.dart';
-import 'package:recreoexploreiqtapp/src/bottomNav/bottom_UserNav.dart';
+import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 
-class EditPefil extends StatefulWidget {
-  final ModelUser userEdt;
-  EditPefil({Key? key, required this.userEdt}) : super(key: key);
+class EdProfileAdmin extends StatefulWidget {
+  final EmpresaModel userAdEd;
+  EdProfileAdmin({Key? key, required this.userAdEd}) : super(key: key);
 
   @override
-  State<EditPefil> createState() => _EditPefilState();
+  State<EdProfileAdmin> createState() => _EdProfileAdminState();
 }
 
-class _EditPefilState extends State<EditPefil> {
-  //1. Variables de los campos
+class _EdProfileAdminState extends State<EdProfileAdmin> {
+  final GlobalKey<FormState> formKeyO = GlobalKey<FormState>();
+  //1. Text Controllers
   TextEditingController id = TextEditingController();
   TextEditingController nombre = TextEditingController();
-  TextEditingController apellido = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  TextEditingController imgUser = TextEditingController();
-  //1.1. Contraseña password
   bool obscurePassword = true;
+  List<dynamic> userData = []; //Nos servirá para el registro
 
-  //Api
-  Future<void> modifyUser() async {
+  //2. Api para insertar en la bd
+  Future<void> modifyAdmin() async {
     if (nombre.text.isNotEmpty &&
-        apellido.text.isNotEmpty &&
         email.text.isNotEmpty &&
         password.text.isNotEmpty) {
-      print("Se modificó datos con éxito");
+      print("Registro con éxito");
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Color.fromARGB(255, 36, 246, 116),
         content: Text(
@@ -55,17 +53,14 @@ class _EditPefilState extends State<EditPefil> {
     }
   }
 
-  //Para traer los datos desde la otra página
-  @override
   void initState() {
     super.initState();
     // Inicializar los controladores de los campos de texto con los datos del usuario
-    id.text = widget.userEdt.id.toString();
-    nombre.text = widget.userEdt.nombreUser;
-    apellido.text = widget.userEdt.apellidoUser;
-    email.text = widget.userEdt.emailUser;
-    password.text = widget.userEdt.passwordUser;
-    imgUser.text = widget.userEdt.imgUser;
+    id.text = widget.userAdEd.id.toString();
+    nombre.text = widget.userAdEd.nombreEmpresa;
+    email.text = widget.userAdEd.emailEmpresa;
+    password.text = widget.userAdEd.passwordEmpresa;
+    //imgUser.text = widget.userEdt.imgUser;
     // Puedes inicializar el campo de contraseña si es necesario
     // password.text = widget.userEdt.password;
   }
@@ -77,7 +72,7 @@ class _EditPefilState extends State<EditPefil> {
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Form(
-            key: formKeyFive,
+            key: formKeyO,
             child: SafeArea(
               child: Container(
                 child: Column(
@@ -93,10 +88,9 @@ class _EditPefilState extends State<EditPefil> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BottomNavUser(
-                                user: widget.userEdt,
-                              ),
-                            ),
+                                builder: (context) => BottomNavAdmin(
+                                      user: widget.userAdEd,
+                                    )),
                           );
                         },
                         child: Row(
@@ -145,7 +139,6 @@ class _EditPefilState extends State<EditPefil> {
                                   ],
                                 ),
                                 SizedBox(height: 15),
-
                                 Container(
                                   padding: const EdgeInsets.only(
                                     top: 3,
@@ -160,7 +153,7 @@ class _EditPefilState extends State<EditPefil> {
                                         children: [
                                           CircleAvatar(
                                             backgroundImage: AssetImage(
-                                                'assets/images/${widget.userEdt.imgUser}'),
+                                                'assets/images/${widget.userAdEd.img}'),
                                             radius: 35,
                                           ),
                                           Positioned(
@@ -269,7 +262,7 @@ class _EditPefilState extends State<EditPefil> {
                                       ),
                                       fillColor: Colors.white,
                                       filled: true,
-                                      hintText: 'Nombre',
+                                      hintText: 'Nombre empresa',
                                       hintStyle:
                                           TextStyle(color: Colors.grey[500]),
                                     ),
@@ -277,44 +270,7 @@ class _EditPefilState extends State<EditPefil> {
                                 ),
                                 SizedBox(height: 2),
                                 //2. Apellido
-                                Container(
-                                  margin: EdgeInsets.only(left: 20, right: 20),
-                                  width: 325,
-                                  height: 70,
-                                  padding:
-                                      const EdgeInsets.only(top: 3, left: 15),
-                                  child: TextFormField(
-                                    controller: apellido,
-                                    obscureText: false,
-                                    keyboardType: TextInputType.name,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Por favor, ingrese su apellido';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(13),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey.shade400),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.red),
-                                      ),
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      hintText: 'Apellido',
-                                      hintStyle:
-                                          TextStyle(color: Colors.grey[500]),
-                                    ),
-                                  ),
-                                ),
+
                                 SizedBox(height: 2),
                                 //3. Email
                                 Container(
@@ -349,7 +305,7 @@ class _EditPefilState extends State<EditPefil> {
                                       ),
                                       fillColor: Colors.white,
                                       filled: true,
-                                      hintText: 'Email',
+                                      hintText: 'Email empresa',
                                       hintStyle:
                                           TextStyle(color: Colors.grey[500]),
                                     ),
@@ -410,10 +366,9 @@ class _EditPefilState extends State<EditPefil> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      if (formKeyFive.currentState!
-                                          .validate()) {}
+                                      if (formKeyO.currentState!.validate()) {}
                                     });
-                                    modifyUser();
+                                    modifyAdmin();
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(

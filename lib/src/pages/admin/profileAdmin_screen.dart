@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/edProfileAd.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/login_admin.dart';
 
 class ProfileAdminScreen extends StatefulWidget {
   final EmpresaModel userP;
@@ -122,12 +124,13 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                   children: [
                                     ElevatedButton(
                                       onPressed: () {
-                                        /*  Navigator.pushReplacement(
+                                        Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => EditPefil(
-                                                    userEdt:
-                                                        widget.currentUser))); */
+                                                builder: (context) =>
+                                                    EdProfileAdmin(
+                                                        userAdEd:
+                                                            widget.userP)));
                                       },
                                       style: ElevatedButton.styleFrom(
                                         primary: Colors
@@ -159,11 +162,11 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                     SizedBox(height: 10),
                                     ElevatedButton(
                                       onPressed: () {
-                                        /*  Navigator.pushReplacement(
+                                        Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    LoginUser())); */
+                                                    LoginAdmin()));
                                       },
                                       style: ElevatedButton.styleFrom(
                                         primary: Colors
