@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/componentes/controller.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/login_admin.dart';
+//EL http, importante para que funcione la api
+import 'package:http/http.dart' as http;
 
 class RegisterAdmin extends StatefulWidget {
   RegisterAdmin({Key? key}) : super(key: key);
@@ -24,6 +28,41 @@ class _RegisterAdminState extends State<RegisterAdmin> {
         password.text.isNotEmpty) {
       print("Registro con éxito");
       // Lógica para consumir la API
+      try {
+        //2.1. Traemos el link que contiene la consulta php
+        Uri url = Uri.parse(
+            "http://10.0.2.2/recreoExplorePHP/admin/registroEmpresa.php");
+
+        //2.2. Hacemos la petición
+        var res = await http.post(url, body: {
+          'nombre': nombre.text,
+          'email': email.text,
+          'password': password.text
+        });
+        print(res
+            .body); //Para que se muestre el success: true en caso se haya subido correctamente
+        //2.3. Decodificamos
+        var response = jsonDecode(res.body);
+        print('Se registró con éxito');
+        if (response['success'] == "true") {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => LoginAdmin()));
+          //Mensaje de éxito
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Color.fromARGB(255, 36, 246, 116),
+            content: Text(
+              'Se registró empresa con éxito ',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+            duration: Duration(seconds: 5),
+          ));
+        }
+      } catch (e) {
+        print(e);
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Color.fromARGB(255, 242, 48, 48),
