@@ -60,10 +60,11 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
             ),
             //1. Card description
             Card(
+              color: Colors.white,
               margin: EdgeInsets.all(15),
               elevation: 10,
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(13.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

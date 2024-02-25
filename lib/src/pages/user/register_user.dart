@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/login_user.dart';
+import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
 
 import '../../../componentes/controller.dart';
 
@@ -61,6 +62,45 @@ class _RegisterUserState extends State<RegisterUser> {
               child: Container(
                 child: Column(
                   children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 8,
+                            right:
+                                20, // Ajusta el padding aquí para alinear la flecha con el borde derecho
+                            left:
+                                20, // Añade un padding izquierdo para alinear la flecha con el borde izquierdo
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => WelcomeSplah(),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 24,
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  'Regresar',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     Container(
                       child: Card(
                         shape: RoundedRectangleBorder(

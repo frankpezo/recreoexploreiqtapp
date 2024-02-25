@@ -67,6 +67,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Card(
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
                         20.0), // Ajustar el radio del borde del Card
@@ -120,7 +121,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                               userEdt: widget.currentUser)));
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors
+                                  backgroundColor: Colors
                                       .white, // Cambiar el color de fondo del botón
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
@@ -155,7 +156,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                           builder: (context) => LoginUser()));
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors
+                                  backgroundColor: Colors
                                       .white, // Cambiar el color de fondo del botón
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
@@ -187,7 +188,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                   // Acción para eliminar cuenta
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors
+                                  backgroundColor: Colors
                                       .red, // Cambiar el color de fondo del botón
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
@@ -202,9 +203,12 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                   children: [
                                     // Icono a la izquierda del texto
                                     // Espacio entre el icono y el texto
-                                    Text('Eliminar cuenta'),
+                                    Text(
+                                      'Eliminar cuenta',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                     SizedBox(width: 10),
-                                    Icon(Icons.delete),
+                                    Icon(Icons.delete, color: Colors.white),
                                   ],
                                 ),
                               ),
