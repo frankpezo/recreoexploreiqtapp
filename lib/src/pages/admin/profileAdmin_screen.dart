@@ -133,7 +133,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                                             widget.userP)));
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors
+                                        backgroundColor: Colors
                                             .white, // Cambiar el color de fondo del botón
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
@@ -169,7 +169,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                                     LoginAdmin()));
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors
+                                        backgroundColor: Colors
                                             .white, // Cambiar el color de fondo del botón
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
@@ -201,7 +201,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                         // Acción para eliminar cuenta
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors
+                                        backgroundColor: Colors
                                             .red, // Cambiar el color de fondo del botón
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(

@@ -120,7 +120,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                               userEdt: widget.currentUser)));
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors
+                                  backgroundColor: Colors
                                       .white, // Cambiar el color de fondo del botón
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
@@ -155,7 +155,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                           builder: (context) => LoginUser()));
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors
+                                  backgroundColor: Colors
                                       .white, // Cambiar el color de fondo del botón
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
@@ -187,7 +187,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                   // Acción para eliminar cuenta
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors
+                                  backgroundColor: Colors
                                       .red, // Cambiar el color de fondo del botón
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
