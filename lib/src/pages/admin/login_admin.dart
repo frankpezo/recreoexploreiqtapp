@@ -24,11 +24,11 @@ class _LoginAdminState extends State<LoginAdmin> {
   //1.1. Lista de usuario
   final List<EmpresaModel> userE = [
     EmpresaModel(
-        id: 1,
+        idEmpresa: 1,
         nombreEmpresa: "Cuistococha",
         emailEmpresa: "quistococha@gmail.com",
         passwordEmpresa: '12345',
-        img: 'quisLogo.jpg'),
+        imgEmpresa: 'quisLogo.jpg'),
   ];
 
   //2. Para el Api

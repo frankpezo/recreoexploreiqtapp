@@ -56,7 +56,7 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
   void initState() {
     super.initState();
     // Inicializar los controladores de los campos de texto con los datos del usuario
-    id.text = widget.userAdEd.id.toString();
+    id.text = widget.userAdEd.idEmpresa.toString();
     nombre.text = widget.userAdEd.nombreEmpresa;
     email.text = widget.userAdEd.emailEmpresa;
     password.text = widget.userAdEd.passwordEmpresa;
@@ -153,7 +153,7 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
                                         children: [
                                           CircleAvatar(
                                             backgroundImage: AssetImage(
-                                                'assets/images/${widget.userAdEd.img}'),
+                                                'assets/images/${widget.userAdEd.imgEmpresa}'),
                                             radius: 35,
                                           ),
                                           Positioned(

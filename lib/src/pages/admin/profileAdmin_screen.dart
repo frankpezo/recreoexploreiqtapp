@@ -91,7 +91,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                 children: [
                                   CircleAvatar(
                                     backgroundImage: AssetImage(
-                                        'assets/images/${widget.userP.img}'), // Ruta de la imagen del usuario
+                                        'assets/images/${widget.userP.imgEmpresa}'), // Ruta de la imagen del usuario
                                     radius: 35,
                                   ),
                                   SizedBox(
