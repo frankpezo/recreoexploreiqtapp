@@ -7,10 +7,110 @@ import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cardInsta.dart';
 import 'package:sqflite/sqflite.dart';
 
+class CardRegister extends StatefulWidget {
+  final EmpresaModel? empresaCR;
+  final PlaceModel? localCR;
 
+  CardRegister({
+    Key? key,
+    this.empresaCR,
+    this.localCR,
+  }) : super(key: key);
 
+  @override
+  State<CardRegister> createState() => _CardRegisterState();
+}
+
+class _CardRegisterState extends State<CardRegister> {
+  //1. Creamos los campos
+  final GlobalKey<FormState> formKeySeven =
+      GlobalKey<FormState>(); // Nueva GlobalKey
+  //   TextEditingController imgUser = TextEditingController();
+  //TextEditingController id = TextEditingController();
+  TextEditingController nombreLocal = TextEditingController();
+  TextEditingController direccionLocal = TextEditingController();
+  String selectedValue = '';
+  TextEditingController telefono = TextEditingController();
+  TextEditingController horario = TextEditingController();
+  TextEditingController descripcion = TextEditingController();
+  TextEditingController palabrasCLave = TextEditingController();
+  TextEditingController ninos = TextEditingController();
+  TextEditingController adulto = TextEditingController();
+  TextEditingController turista = TextEditingController();
+  TextEditingController feriado = TextEditingController();
+  String? _status = 'Abierto';
+  List<String> keywords = []; //Lista donde se almacenará las palabras claves
+
+  //1.1.  Inicalizamos los campos
+  @override
+  void initState() {
+    super.initState();
+    if (widget.empresaCR != null) {
+      nombreLocal.text = widget.localCR!.nombrePlace!;
+      direccionLocal.text = widget.localCR!.direPlace!;
+      selectedValue = widget.localCR!.distritoPlace!;
+      telefono.text = widget.localCR!.phonePlace!;
+      horario.text = widget.localCR!.horarioPlace!;
+      descripcion.text = widget.localCR!.descriptionPlace!;
+      palabrasCLave.text = widget.localCR!.palabrasClavesP!.join(', ');
+      ninos.text = widget.localCR!.nino_price!;
+      adulto.text = widget.localCR!.adulto_price!;
+      turista.text = widget.localCR!.turista_price!;
+      feriado.text = widget.localCR!.feriado_price!;
+      _status = widget.localCR!.estadoPlace!;
+    }
+  }
+
+  // 2. Función para insertar local
+  Future<void> registrarLocal() async {
+    if (nombreLocal.text.isNotEmpty &&
+        direccionLocal.text.isNotEmpty &&
+        telefono.text.isNotEmpty &&
+        horario.text.isNotEmpty &&
+        descripcion.text.isNotEmpty &&
+        keywords
+            .isNotEmpty && // Al menos una palabra clave debe estar ingresada
+        _status != null) {
+      try {
         print("Registro de local con éxito");
-        /*  print("Subido");
+
+        print(nombreLocal.text);
+        print(direccionLocal.text);
+        print(selectedValue);
+        print(telefono.text);
+        print(horario.text);
+        print(descripcion.text);
+        print(keywords);
+        print(ninos.text);
+        print(adulto.text);
+        print(turista.text);
+        print(feriado.text);
+        print(_status);
+
+        // 2.1. Lógica de insertar en la bd sqlite
+        String palabrasClavesString = keywords.join(', ');
+        PlaceModel local = PlaceModel(
+          nombrePlace: nombreLocal.text,
+          direPlace: direccionLocal.text,
+          distritoPlace: selectedValue,
+          phonePlace: telefono.text,
+          horarioPlace: horario.text,
+          descriptionPlace: descripcion.text,
+          palabrasClavesP: keywords.toList(), // Convertir lista a cadena
+          nino_price: ninos.text,
+          adulto_price: adulto.text,
+          turista_price: turista.text,
+          feriado_price: feriado.text,
+          estadoPlace: _status,
+          imagePlace: "assets/images/10.jpg",
+        );
+        // 2.2. Condicional para que se realice el registro
+        if (widget.localCR == null) {
+          await Databasehelper.instance.insertLocal(local);
+          print("Se regsitró local con éxito");
+        }
+
+        /*    print("Subido");
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Color.fromARGB(255, 36, 246, 116),
         content: Text(
@@ -21,7 +121,7 @@ import 'package:sqflite/sqflite.dart';
         duration: Duration(seconds: 5),
       )); */
         //No llevará a la parte de seleccionar instalaciones
-        /* Navigator.push(
+        /*  Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => CardInsta(
@@ -32,6 +132,7 @@ import 'package:sqflite/sqflite.dart';
       } catch (e) {
         print("El error fue: ${e}");
       }
+      // Lógica para consumir la API
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Color.fromARGB(255, 242, 48, 48),
@@ -801,7 +902,7 @@ import 'package:sqflite/sqflite.dart';
                                   onTap: () {
                                     setState(() {
                                       if (formKeySix.currentState!.validate()) {
-                                        insertLocal();
+                                        registrarLocal();
                                       }
                                     });
                                   },
