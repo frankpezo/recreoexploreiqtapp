@@ -16,7 +16,7 @@ class HomeAdminScreen extends StatefulWidget {
   static List<PlaceModel> placeE = [
     PlaceModel(
       idLocal: 1,
-      imagePlace: "quis.jpg",
+      //imagePlace: "quis.jpg",
       nombrePlace: "Quistococha",
       direPlace: "Carretera Iquitos - Nauta, km 6.5",
       distritoPlace: 'San Juan Bautista',

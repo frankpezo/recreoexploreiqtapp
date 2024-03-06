@@ -90,20 +90,19 @@ class _CardRegisterState extends State<CardRegister> {
         // 2.1. Lógica de insertar en la bd sqlite
         String palabrasClavesString = keywords.join(', ');
         PlaceModel local = PlaceModel(
-          nombrePlace: nombreLocal.text,
-          direPlace: direccionLocal.text,
-          distritoPlace: selectedValue,
-          phonePlace: telefono.text,
-          horarioPlace: horario.text,
-          descriptionPlace: descripcion.text,
-          palabrasClavesP: keywords.toList(), // Convertir lista a cadena
-          nino_price: ninos.text,
-          adulto_price: adulto.text,
-          turista_price: turista.text,
-          feriado_price: feriado.text,
-          estadoPlace: _status,
-          imagePlace: "assets/images/10.jpg",
-        );
+            imagePlace: "assets/images/10.jpg",
+            nombrePlace: nombreLocal.text,
+            direPlace: direccionLocal.text,
+            distritoPlace: selectedValue,
+            phonePlace: telefono.text,
+            horarioPlace: horario.text,
+            descriptionPlace: descripcion.text,
+            palabrasClavesP: keywords.toList(), // Convertir lista a cadena
+            nino_price: ninos.text,
+            adulto_price: adulto.text,
+            turista_price: turista.text,
+            feriado_price: feriado.text,
+            estadoPlace: _status);
         // 2.2. Condicional para que se realice el registro
         if (widget.localCR == null) {
           await Databasehelper.instance.insertLocal(local);

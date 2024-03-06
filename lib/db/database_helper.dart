@@ -82,6 +82,7 @@ class Databasehelper {
     await db.execute('''
      CREATE TABLE $_tblLocal(
       idLocal INTEGER PRIMARY KEY AUTOINCREMENT, 
+      imageLocal TEXT NOT NULL, 
       nombreLocal TEXT NOT NULL, 
       direccionLocal TEXT NOT NULL
       distritoLocal TEXT NOT NULL, 
@@ -94,7 +95,6 @@ class Databasehelper {
       turistaPrice TEXT NOT NULL, 
       feriadoPrice TEXT NOT NULL, 
       estadoLocal TEXT NOT NULL,
-         imageLocal TEXT NOT NULL, 
       FOREIGN KEY(idEmpresa) REFERENCES $_tblEmpresa(idEmpresa)
      )
   ''');
