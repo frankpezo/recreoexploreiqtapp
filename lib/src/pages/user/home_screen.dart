@@ -171,11 +171,11 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
   //3.3. Buscar contenido de la categoría
   void buscarElementoCate(String value) {
     setState(() {
-      lugares = lugares
+      /*  lugares = lugares
           .where((place) =>
               place.nombrePlace.toLowerCase().contains(value.toLowerCase()) ||
               place.direPlace.toLowerCase().contains(value.toLowerCase()))
-          .toList();
+          .toList(); */
     });
   }
 }

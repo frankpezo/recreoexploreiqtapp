@@ -1,14 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:recreoexploreiqtapp/componentes/controller.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
+import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/login_admin.dart';
 //EL http, importante para que funcione la api
 import 'package:http/http.dart' as http;
 import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
 
 class RegisterAdmin extends StatefulWidget {
-  RegisterAdmin({Key? key}) : super(key: key);
+  final EmpresaModel? empresaM;
+  RegisterAdmin({Key? key, this.empresaM}) : super(key: key);
 
   @override
   State<RegisterAdmin> createState() => _RegisterAdminState();
@@ -16,43 +18,49 @@ class RegisterAdmin extends StatefulWidget {
 
 class _RegisterAdminState extends State<RegisterAdmin> {
   //1. Text Controllers
+  final GlobalKey<FormState> formKeyFour = GlobalKey<FormState>();
   TextEditingController nombre = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   bool obscurePassword = true;
   List<dynamic> userData = []; //Nos servirá para el registro
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.empresaM != null) {
+      nombre.text = widget.empresaM!.nombreEmpresa!;
+      email.text = widget.empresaM!.emailEmpresa!;
+      password.text = widget.empresaM!.passwordEmpresa!;
+    }
+  }
+
   //2. Api para insertar en la bd
   Future<void> insertUser() async {
     if (nombre.text.isNotEmpty &&
         email.text.isNotEmpty &&
         password.text.isNotEmpty) {
-      print("Registro con éxito");
+      //print("Registro con éxito");
       // Lógica para consumir la API
       try {
-        //2.1. Traemos el link que contiene la consulta php
-        Uri url = Uri.parse(
-            "http://10.0.2.2/recreoExplorePHP/admin/registroEmpresa.php");
-
-        //2.2. Hacemos la petición
-        var res = await http.post(url, body: {
-          'nombre': nombre.text,
-          'email': email.text,
-          'password': password.text
-        });
-        print(res
-            .body); //Para que se muestre el success: true en caso se haya subido correctamente
-        //2.3. Decodificamos
-        var response = jsonDecode(res.body);
-        print('Se registró con éxito');
-        if (response['success'] == "true") {
+        //2.1. Instanciamos
+        EmpresaModel empresa = EmpresaModel(
+            // idEmpresa: widget.empresaM?.idEmpresa,
+            nombreEmpresa: nombre.text,
+            emailEmpresa: email.text,
+            passwordEmpresa: password.text,
+            imgEmpresa: "assets/images/10.jpg");
+        //2.2. Hacemos condicional para ver si se registra
+        if (widget.empresaM == null) {
+          await Databasehelper.instance.insertEmpresa(empresa);
+          print("Se registró empresa con éxito");
+          //Para que nos mande al Login
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => LoginAdmin()));
-          //Mensaje de éxito
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Color.fromARGB(255, 36, 246, 116),
             content: Text(
-              'Se registró empresa con éxito',
+              'Se subió con éxito',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -60,9 +68,13 @@ class _RegisterAdminState extends State<RegisterAdmin> {
             ),
             duration: Duration(seconds: 5),
           ));
+          print("Lista de empresas registradas");
+          await Databasehelper.instance.mostrarEmpresas();
+        } else {
+          print("Error al registrar");
         }
       } catch (e) {
-        print(e);
+        print("El error es: ${e}");
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -365,9 +377,10 @@ class _RegisterAdminState extends State<RegisterAdmin> {
                                   onTap: () {
                                     setState(() {
                                       if (formKeyFour.currentState!
-                                          .validate()) {}
+                                          .validate()) {
+                                        insertUser();
+                                      }
                                     });
-                                    insertUser();
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(

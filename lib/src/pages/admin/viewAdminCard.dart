@@ -43,16 +43,16 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      /*  Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
                             return BottomNavAdmin(
-                              user: widget.userViewA,
-                            );
+                                // empresaB: widget.userViewA,
+                                );
                           },
                         ),
-                      );
+                      ); */
                     },
                   ),
                 ),
@@ -262,7 +262,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                               ),
                             ),
                             Text(
-                              "${widget.placeViewA.palabrasClavesP.join(', ')}",
+                              "${widget.placeViewA.palabrasClavesP?.join(', ')}",
                               style: TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.bold,
@@ -278,7 +278,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
             ),
 
             //2. Card 2
-            Card(
+            /*  Card(
               margin: EdgeInsets.all(16.0),
               child: Padding(
                 padding: EdgeInsets.all(16.0),
@@ -362,7 +362,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                   ),
                 ),
               ),
-            ),
+            ), */
           ],
         ),
       ),
@@ -373,7 +373,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
   Widget _buildCategoryContent(category) {
     // Aquí puedes personalizar el contenido según la categoría seleccionada
     switch (category) {
-      case "Cancha deportiva":
+      /* case "Cancha deportiva":
         return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -547,7 +547,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                       ),
                     ),
               ],
-            ));
+            )); */
 
       default:
         return Container(); // Por defecto, un contenedor vacío

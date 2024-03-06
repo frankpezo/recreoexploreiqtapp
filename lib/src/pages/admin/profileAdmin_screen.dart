@@ -4,8 +4,11 @@ import 'package:recreoexploreiqtapp/src/pages/admin/edProfileAd.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/login_admin.dart';
 
 class ProfileAdminScreen extends StatefulWidget {
-  final EmpresaModel userP;
-  ProfileAdminScreen({Key? key, required this.userP}) : super(key: key);
+  //final EmpresaModel? empresaP;
+  ProfileAdminScreen({
+    Key? key,
+    /*  required this.empresaP */
+  }) : super(key: key);
 
   @override
   State<ProfileAdminScreen> createState() => _ProfileAdminScreenState();
@@ -75,7 +78,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Card(
+                    /* Card(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
@@ -91,7 +94,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                 children: [
                                   CircleAvatar(
                                     backgroundImage: AssetImage(
-                                        'assets/images/${widget.userP.imgEmpresa}'), // Ruta de la imagen del usuario
+                                        'assets/images/${widget.empresaP?.imgEmpresa}'), // Ruta de la imagen del usuario
                                     radius: 35,
                                   ),
                                   SizedBox(
@@ -103,13 +106,13 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '${widget.userP.nombreEmpresa} ', //Datos dinámicos
+                                        '${widget.empresaP?.nombreEmpresa} ', //Datos dinámicos
                                         style: TextStyle(
                                             fontSize: 17,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        '${widget.userP.emailEmpresa}',
+                                        '${widget.empresaP?.emailEmpresa}',
                                         style: TextStyle(fontSize: 15),
                                       ),
                                     ],
@@ -130,8 +133,8 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     EdProfileAdmin(
-                                                        userAdEd:
-                                                            widget.userP)));
+                                                        userAdEd: widget
+                                                            .empresaP!))); //###
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors
@@ -234,7 +237,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                               )
                             ],
                           ),
-                        ))
+                        )) */
                   ],
                 ),
               ),

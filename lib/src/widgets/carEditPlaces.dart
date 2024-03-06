@@ -50,7 +50,7 @@ class _YourWidgetEditPState extends State<YourWidgetEditP> {
                 ),
               ),
               //id
-              Visibility(visible: false, child: Text("${place.id}")),
+              Visibility(visible: false, child: Text("${place.idLocal}")),
               SizedBox(width: 10.0), // Espacio entre la imagen y el texto
               // 3.2. Contenido del lugar
               Expanded(
@@ -62,7 +62,7 @@ class _YourWidgetEditPState extends State<YourWidgetEditP> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          place.nombrePlace,
+                          '${place.nombrePlace}',
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,

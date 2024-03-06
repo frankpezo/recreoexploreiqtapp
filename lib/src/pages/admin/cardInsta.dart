@@ -57,14 +57,14 @@ class _CardInstaState extends State<CardInsta> {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
+                              /*  Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CardRegister(
                                     userCard: widget.userI,
                                   ),
                                 ),
-                              );
+                              ); */
                             },
                             child: Row(
                               children: [
@@ -94,14 +94,14 @@ class _CardInstaState extends State<CardInsta> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
+                                  /*   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => BottomNavAdmin(
-                                        user: widget.userI,
+                                       // empresaB: widget.userI,
                                       ),
                                     ),
-                                  );
+                                  ); */
                                 },
                                 child: Row(
                                   children: [

@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cardRegister.dart';
 import 'package:recreoexploreiqtapp/src/widgets/carEditPlaces.dart';
 
 class HomeAdminScreen extends StatefulWidget {
-  final EmpresaModel userH;
-  HomeAdminScreen({Key? key, required this.userH}) : super(key: key);
+  final EmpresaModel? empresaH;
+
+  HomeAdminScreen({Key? key, required this.empresaH}) : super(key: key);
 
   @override
   State<HomeAdminScreen> createState() => _HomeAdminScreenState();
   static List<PlaceModel> placeE = [
     PlaceModel(
-      id: 1,
+      idLocal: 1,
       imagePlace: "quis.jpg",
       nombrePlace: "Quistococha",
       direPlace: "Carretera Iquitos - Nauta, km 6.5",
       distritoPlace: 'San Juan Bautista',
-      phonePlace: 9999999999,
+      phonePlace: '9999999999',
       palabrasClavesP: ['playa', 'piscina', 'zoológico'],
-      nino_price: 5.0,
-      adulto_price: 10.0,
-      turista_price: 15.0,
-      feriado_price: 15.0,
+      nino_price: '5.0',
+      adulto_price: '10.0',
+      turista_price: '15.0',
+      feriado_price: '15.0',
       horarioPlace: "Lunes a domingo, 7:30am - 5:30pm",
       estadoPlace: "Abierto",
-      rakingPlace: 5.0,
+      /*  rakingPlace: 5.0,
       descriptionPlace:
           "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
       catePlace: {
@@ -55,12 +58,31 @@ class HomeAdminScreen extends StatefulWidget {
           'comment': 'Comentario del usuario 3',
           'rating': 5.0,
         },
-      ],
+      ], */
     ),
   ];
 }
 
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
+  int? idEmpresaa;
+  List<EmpresaModel> usuarios = [];
+
+  @override
+  void initState() {
+    super.initState();
+    //_cargarUsuarios();
+  }
+
+  /*  Future<void> _cargarUsuarios() async {
+    List<Map<String, dynamic>> listaUsuarios =
+        await Databasehelper.instance.traerTodosEmpresas();
+    List<EmpresaModel> empresa =
+        listaUsuarios.map((ele) => EmpresaModel.fromMap(ele)).toList();
+    setState(() {
+      usuarios = empresa;
+    });
+  } */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,6 +137,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                   children: [
                     Row(
                       children: [
+                        // Text("ID: ${usuarios[0].idEmpresa}S"),
                         Text(
                           "Mi local",
                           style: TextStyle(fontSize: 17),
@@ -127,7 +150,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => CardRegister(
-                              userCard: widget.userH,
+                              empresaCR: widget.empresaH,
+                              // ####
                             ),
                           ),
                         );
@@ -168,18 +192,31 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                         ),
                       ),
                     ),
-                    Flexible(
+                    /*  Flexible(
                       child: ListView.builder(
                         padding: EdgeInsets.only(bottom: 10),
                         itemCount: HomeAdminScreen.placeE.length,
                         itemBuilder: (context, index) {
                           return YourWidgetEditP(
                             place: HomeAdminScreen.placeE[index],
-                            userC: widget.userH,
+                            userC: widget.empresaH!, //####
                           );
                         },
                       ),
-                    ),
+                    ), */
+
+                    /*  Flexible(
+                      child: ListView.builder(
+                        itemCount: usuarios.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            //title: Text('${usuarios[index].nombreEmpresa}'),
+                            //subtitle: Text('${usuarios[index].emailEmpresa}'),
+                            trailing: Text('ID: ${usuarios[index].idEmpresa}'),
+                          );
+                        },
+                      ),
+                    ), */
                   ],
                 ),
               ),

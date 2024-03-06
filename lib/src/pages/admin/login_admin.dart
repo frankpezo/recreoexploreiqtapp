@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/componentes/controller.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/register_admin.dart';
@@ -9,13 +10,15 @@ import 'package:http/http.dart' as http;
 import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart'; //Para consumir la Api
 
 class LoginAdmin extends StatefulWidget {
-  LoginAdmin({Key? key}) : super(key: key);
+  final EmpresaModel? empresaL;
+  LoginAdmin({Key? key, this.empresaL}) : super(key: key);
 
   @override
   State<LoginAdmin> createState() => _LoginAdminState();
 }
 
 class _LoginAdminState extends State<LoginAdmin> {
+  final GlobalKey<FormState> formKeyTres = GlobalKey<FormState>();
   //1. Controller para los campos
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -31,12 +34,53 @@ class _LoginAdminState extends State<LoginAdmin> {
         imgEmpresa: 'quisLogo.jpg'),
   ];
 
+/*   @override
+  void initState() {
+    super.initState();
+    if (widget.empresaL != null) {
+      email.text = widget.empresaL!.emailEmpresa!;
+      password.text = widget.empresaL!.passwordEmpresa!;
+    }
+  }
+ */
   //2. Para el Api
   Future<void> getDatos() async {
     if (email.text.isNotEmpty && password.text.isNotEmpty) {
       try {
-        //Lógico para los datos estáticos del MODEL
+        //1. Lógica
         final emailC = email.text.trim();
+        final passC = password.text.trim();
+
+        final success =
+            await Databasehelper.instance.loginEmpresa(emailC, passC);
+
+        if (success) {
+          print('Se inicio sesión con éxito');
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BottomNavAdmin(
+                        empresaB: widget.empresaL,
+                      )));
+        } else {
+          print('Los datos no coinciden');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Color.fromARGB(255, 242, 48, 48),
+              content: Text(
+                'Los datos no coinciden',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+        //Lógico para los datos estáticos del MODEL
+        /* final emailC = email.text.trim();
         final passC = password.text.trim();
         //Verificamos si coinciden
         final user = userE.firstWhere(
@@ -56,42 +100,10 @@ class _LoginAdminState extends State<LoginAdmin> {
                       )));
         }
 
-        //Lógica de la API para traer los datos desde la bd
-        //1. Traemos el link
-        /* Uri url = Uri.parse(
-            "http://10.0.2.2/recreoExplorePHP/admin/loginEmpresa.php");
-        //2. Hacemos la petición
-        var res = await http
-            .post(url, body: {'email': email.text, 'password': password.text});
-        print(res.body); //Para ver si da el mensaje de éxito
-
-        //3. Convertimos la respuesta en json
-        var response = jsonDecode(res.body);
-        if (response.length != 0) {
-         /*  Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => BottomNavAdmin(
-                        user: response['id'].toString(),
-                      ))); */
         } */
       } catch (e) {
         String e = "fallo";
         print(e);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Color.fromARGB(255, 242, 48, 48),
-            content: Text(
-              'Los datos no coinciden',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            duration: Duration(seconds: 3),
-          ),
-        );
       }
       // Lógica para consumir la API
     } else {
@@ -356,9 +368,10 @@ class _LoginAdminState extends State<LoginAdmin> {
                                       onTap: () {
                                         setState(() {
                                           if (formKeyTres.currentState!
-                                              .validate()) {}
+                                              .validate()) {
+                                            getDatos();
+                                          }
                                         });
-                                        getDatos();
                                       },
                                       child: Container(
                                         margin: EdgeInsets.only(

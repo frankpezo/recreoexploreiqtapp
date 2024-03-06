@@ -4,8 +4,8 @@ import 'package:recreoexploreiqtapp/src/pages/admin/homeAdmin_screen.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/profileAdmin_screen.dart';
 
 class BottomNavAdmin extends StatefulWidget {
-  final EmpresaModel user;
-  BottomNavAdmin({Key? key, required this.user}) : super(key: key);
+  final EmpresaModel? empresaB;
+  BottomNavAdmin({Key? key, required this.empresaB}) : super(key: key);
 
   @override
   State<BottomNavAdmin> createState() => _BottomNavAdminState();
@@ -19,13 +19,14 @@ class _BottomNavAdminState extends State<BottomNavAdmin> {
   @override
   void initState() {
     super.initState();
+
     pages = [
       HomeAdminScreen(
-        userH: widget.user,
+        empresaH: widget.empresaB,
       ),
       ProfileAdminScreen(
-        userP: widget.user,
-      ) // Inicializar pages después de que widget.user esté disponible
+          //empresaP: widget.empresaB,
+          ) // Inicializar pages después de que widget.user esté disponible
     ];
   }
 

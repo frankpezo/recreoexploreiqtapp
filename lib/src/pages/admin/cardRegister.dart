@@ -1,47 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/componentes/controller.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cardInsta.dart';
+import 'package:sqflite/sqflite.dart';
 
-class CardRegister extends StatefulWidget {
-  final EmpresaModel userCard;
-  CardRegister({Key? key, required this.userCard}) : super(key: key);
 
-  @override
-  State<CardRegister> createState() => _CardRegisterState();
-}
 
-class _CardRegisterState extends State<CardRegister> {
-  final GlobalKey<FormState> formKeySix =
-      GlobalKey<FormState>(); // Nueva GlobalKey
-
-  TextEditingController nombreLocal = TextEditingController();
-  TextEditingController direccionLocal = TextEditingController();
-  TextEditingController telefono = TextEditingController();
-  TextEditingController horario = TextEditingController();
-  TextEditingController descripcion = TextEditingController();
-  TextEditingController palabrasCLave = TextEditingController();
-  TextEditingController imgUser = TextEditingController();
-  String selectedValue = '';
-  TextEditingController ninos = TextEditingController();
-  TextEditingController adulto = TextEditingController();
-  TextEditingController turista = TextEditingController();
-  TextEditingController feriado = TextEditingController();
-  String? _status = 'Abierto';
-  List<String> keywords = []; //Lista donde se almacenará las palabras claves
-  //Para mensaje de Scaffol
-  Future<void> insertLocal() async {
-    if (nombreLocal.text.isNotEmpty &&
-        direccionLocal.text.isNotEmpty &&
-        telefono.text.isNotEmpty &&
-        horario.text.isNotEmpty &&
-        descripcion.text.isNotEmpty &&
-        keywords
-            .isNotEmpty && // Al menos una palabra clave debe estar ingresada
-        _status != null) {
-      print("Registro de local con éxito");
-      print("Subido");
+        print("Registro de local con éxito");
+        /*  print("Subido");
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Color.fromARGB(255, 36, 246, 116),
         content: Text(
@@ -50,17 +19,19 @@ class _CardRegisterState extends State<CardRegister> {
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
         ),
         duration: Duration(seconds: 5),
-      ));
-      //No llevará a la parte de seleccionar instalaciones
-      Navigator.push(
+      )); */
+        //No llevará a la parte de seleccionar instalaciones
+        /* Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => CardInsta(
             userI: widget.userCard,
           ),
         ),
-      );
-      // Lógica para consumir la API
+      ); */
+      } catch (e) {
+        print("El error fue: ${e}");
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Color.fromARGB(255, 242, 48, 48),
@@ -122,7 +93,7 @@ class _CardRegisterState extends State<CardRegister> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => BottomNavAdmin(
-                                    user: widget.userCard,
+                                    empresaB: widget.empresaCR,
                                   ),
                                 ),
                               );
@@ -368,7 +339,7 @@ class _CardRegisterState extends State<CardRegister> {
                                   child: TextFormField(
                                     controller: telefono,
                                     obscureText: false,
-                                    keyboardType: TextInputType.number,
+                                    keyboardType: TextInputType.text,
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'Por favor, ingrese un teléfono';
@@ -478,7 +449,7 @@ class _CardRegisterState extends State<CardRegister> {
                                   margin: EdgeInsets.only(left: 20, right: 20),
                                   width: 325,
                                   height:
-                                      150, // Ajuste de altura para mostrar las palabras clave
+                                      190, // Ajuste de altura para mostrar las palabras clave
                                   padding:
                                       const EdgeInsets.only(top: 3, left: 15),
                                   child: Column(
@@ -527,12 +498,13 @@ class _CardRegisterState extends State<CardRegister> {
                                         ),
                                       ),
                                       SizedBox(
-                                          height:
-                                              4), // Espacio entre el campo de texto y las palabras clave
+                                        height: 4,
+                                      ), // Espacio entre el campo de texto y las palabras clave
                                       Wrap(
                                         spacing:
                                             4.0, // Espacio entre las palabras clave
-                                        children: keywords.map((keyword) {
+                                        children:
+                                            keywords.take(4).map((keyword) {
                                           return InputChip(
                                             label: Text(keyword),
                                             onDeleted: () {
@@ -544,6 +516,7 @@ class _CardRegisterState extends State<CardRegister> {
                                     ],
                                   ),
                                 ),
+
                                 SizedBox(height: 5),
                                 //pRECIOS
                                 //NIÑO
@@ -585,7 +558,7 @@ class _CardRegisterState extends State<CardRegister> {
                                         child: TextFormField(
                                           controller: ninos,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -641,7 +614,7 @@ class _CardRegisterState extends State<CardRegister> {
                                         child: TextFormField(
                                           controller: adulto,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -696,7 +669,7 @@ class _CardRegisterState extends State<CardRegister> {
                                         child: TextFormField(
                                           controller: turista,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -752,7 +725,7 @@ class _CardRegisterState extends State<CardRegister> {
                                         child: TextFormField(
                                           controller: feriado,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -827,10 +800,10 @@ class _CardRegisterState extends State<CardRegister> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      if (formKeySix.currentState!
-                                          .validate()) {}
+                                      if (formKeySix.currentState!.validate()) {
+                                        insertLocal();
+                                      }
                                     });
-                                    insertLocal();
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(

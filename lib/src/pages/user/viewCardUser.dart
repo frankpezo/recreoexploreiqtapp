@@ -100,7 +100,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                         Row(
                           children: [
                             Icon(Icons.star, color: Colors.amber),
-                            Text('${widget.placeView.rakingPlace}'),
+                            //Text('${widget.placeView.rakingPlace}'),
+                            Text('3'),
                           ],
                         ),
                       ],
@@ -246,7 +247,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                               ),
                             ),
                             Text(
-                              "${widget.placeView.palabrasClavesP.join(', ')}",
+                              "${widget.placeView.palabrasClavesP?.join(', ')}",
                               style: TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.bold,
@@ -262,7 +263,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
             ),
 
             //2. Card 2
-            Card(
+            /*   Card(
               margin: EdgeInsets.all(16.0),
               child: Padding(
                 padding: EdgeInsets.all(16.0),
@@ -314,7 +315,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                   ),
                 ),
               ),
-            ),
+            ), */
             //Card comentario y puntuación
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -554,7 +555,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
   Widget _buildCategoryContent(category) {
     // Aquí puedes personalizar el contenido según la categoría seleccionada
     switch (category) {
-      case "Cancha deportiva":
+      /*     case "Cancha deportiva":
         return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -729,7 +730,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                     ),
               ],
             ));
-
+ */
       default:
         return Container(); // Por defecto, un contenedor vacío
     }

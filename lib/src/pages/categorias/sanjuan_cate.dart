@@ -15,20 +15,20 @@ class _SanjuanCateState extends State<SanjuanCate> {
   //1. Creamos la lista
   final List<PlaceModel> placeSanJuan = [
     PlaceModel(
-      id: 3,
+      idLocal: 3,
       imagePlace: "5.jpg",
       nombrePlace: "King Kong",
       direPlace: "Carretera Zungarococha km 8.8",
       distritoPlace: 'San Juan Bautista',
-      phonePlace: 9999999999,
+      phonePlace: '9999999999',
       palabrasClavesP: ['playa', 'carretera'],
-      nino_price: 5.0,
-      adulto_price: 10.0,
-      turista_price: 15.0,
-      feriado_price: 15.0,
+      nino_price: '5.0',
+      adulto_price: '10.0',
+      turista_price: '15.0',
+      feriado_price: '15.0',
       horarioPlace: "Lunes a domingo, 8:00am - 6:00pm",
       estadoPlace: "Abierto",
-      rakingPlace: 5.0,
+      /*  rakingPlace: 5.0,
       descriptionPlace:
           "Tu centro de esparcimiento familiar, con amplias áreas verdes y naturales, conectándote con la naturaleza para brindarte la mejor experiencia de relax y diversión junto a tu familia, alejada del bullicio de la ciudad. Te ofrecemos quebradas naturales, canchas de fútbol y voley, voley acuático, juegos de destreza física,pesca, zona de camping, circuito de super cross, música variada, platos regionales y bebidas en su punto. Ven y disfruta de una experiencia distinta rodeado de la naturaleza mágica de nuestra selva. También atendemos eventos corporativos y grupos de estudio.",
       catePlace: {
@@ -54,7 +54,7 @@ class _SanjuanCateState extends State<SanjuanCate> {
           'comment': 'Comentario del usuario 3',
           'rating': 5.0,
         },
-      ],
+      ], */
     ),
   ];
   @override

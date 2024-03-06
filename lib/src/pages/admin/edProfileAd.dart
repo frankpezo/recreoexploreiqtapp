@@ -56,10 +56,10 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
   void initState() {
     super.initState();
     // Inicializar los controladores de los campos de texto con los datos del usuario
-    id.text = widget.userAdEd.idEmpresa.toString();
+    /*  id.text = widget.userAdEd.idEmpresa.toString();
     nombre.text = widget.userAdEd.nombreEmpresa;
     email.text = widget.userAdEd.emailEmpresa;
-    password.text = widget.userAdEd.passwordEmpresa;
+    password.text = widget.userAdEd.passwordEmpresa; */
     //imgUser.text = widget.userEdt.imgUser;
     // Puedes inicializar el campo de contraseña si es necesario
     // password.text = widget.userEdt.password;
@@ -85,13 +85,13 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                      /*     Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => BottomNavAdmin(
-                                      user: widget.userAdEd,
+                                    //  empresaB: widget.userAdEd,
                                     )),
-                          );
+                          ); */
                         },
                         child: Row(
                           children: [

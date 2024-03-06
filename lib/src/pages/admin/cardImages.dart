@@ -79,14 +79,14 @@ class _CardImagesState extends State<CardImages> {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                         /*  Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => BottomNavAdmin(
-                                user: widget.userIma,
-                              ),
+                                  //  empresaB: widget.userIma,
+                                  ),
                             ),
-                          );
+                          ); */
                         },
                         child: Text(
                           'Omitir',

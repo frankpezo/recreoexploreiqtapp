@@ -101,7 +101,7 @@ class _CardEdRegisterState extends State<CardEdRegister> {
   void initState() {
     super.initState();
     // Inicializar los controladores de los campos de texto con los datos del usuario
-    id.text = widget.placeViewEd.id.toString();
+    /*  id.text = widget.placeViewEd.idLocal.toString();
     nombreLocal.text = widget.placeViewEd.nombrePlace;
     direccionLocal.text = widget.placeViewEd.direPlace;
     telefono.text = widget.placeViewEd.phonePlace.toString();
@@ -116,7 +116,7 @@ class _CardEdRegisterState extends State<CardEdRegister> {
     selectedValue = widget.placeViewEd
         .distritoPlace; // Asumiendo que tienes un campo distrito en tu modelo
     _status = widget.placeViewEd.estadoPlace;
-    palabrasCLave.text = widget.placeViewEd.palabrasClavesP.join(', ');
+    palabrasCLave.text = widget.placeViewEd.palabrasClavesP.join(', '); */
   }
 
   @override
