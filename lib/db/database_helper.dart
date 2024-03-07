@@ -1,5 +1,6 @@
 //1. importamos el paquete de SQLLITE Y PATH
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -57,7 +58,7 @@ class Databasehelper {
       imgUsuario TEXT NOT NULL
     )
 ''');
-    //Taba PUNTUACIÓN
+    /*    //Taba PUNTUACIÓN
     await db.execute('''
    CREATE TABLE $_tblPuntuacion(
     idPuntuacion INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -65,7 +66,7 @@ class Databasehelper {
     comentario TEXT NOT NULL, 
    FOREIGN KEY(idUsuario) REFERENCES $_tblUsuario(idUsuario)
    );
-''');
+'''); */
 
     //Tabla EMPRESA
     await db.execute('''
@@ -84,7 +85,7 @@ class Databasehelper {
       idLocal INTEGER PRIMARY KEY AUTOINCREMENT, 
       imageLocal TEXT NOT NULL, 
       nombreLocal TEXT NOT NULL, 
-      direccionLocal TEXT NOT NULL
+      direccionLocal TEXT NOT NULL,
       distritoLocal TEXT NOT NULL, 
       telefonoLocal TEXT NOT NULL, 
       horarioLocal TEXT NOT NULL, 
@@ -94,11 +95,11 @@ class Databasehelper {
       adultoPrice TEXT NOT NULL, 
       turistaPrice TEXT NOT NULL, 
       feriadoPrice TEXT NOT NULL, 
-      estadoLocal TEXT NOT NULL,
-      FOREIGN KEY(idEmpresa) REFERENCES $_tblEmpresa(idEmpresa)
-     )
-  ''');
+      estadoLocal TEXT NOT NULL
 
+     );
+  ''');
+/* 
     //Tabla INSTALACIONES
     await db.execute('''
  CREATE TABLE $_tblInstalaciones(
@@ -153,7 +154,7 @@ class Databasehelper {
       FOREIGN KEY(idLocal) REFERENCES $_tblLocal(idLocal),
       FOREIGN KEY(idInstalaciones) REFERENCES $_tblInstalaciones(idInstalaciones)
      )
-    ''');
+    '''); */
   }
 
 //6. Operaciones para el crud en cada sección
@@ -242,7 +243,7 @@ class Databasehelper {
 
   //6.2. Local
   //Registrar Local
-  Future<int> insertLocal(PlaceModel local) async {
+  Future<int> insertLocal(LocalModel local) async {
     Database db = await instance.database;
     return await db.insert(_tblLocal, local.toMap());
   }

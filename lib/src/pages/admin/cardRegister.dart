@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/componentes/controller.dart';
 import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cardInsta.dart';
@@ -9,7 +10,7 @@ import 'package:sqflite/sqflite.dart';
 
 class CardRegister extends StatefulWidget {
   final EmpresaModel? empresaCR;
-  final PlaceModel? localCR;
+  final LocalModel? localCR;
 
   CardRegister({
     Key? key,
@@ -46,18 +47,18 @@ class _CardRegisterState extends State<CardRegister> {
   void initState() {
     super.initState();
     if (widget.empresaCR != null) {
-      nombreLocal.text = widget.localCR!.nombrePlace!;
-      direccionLocal.text = widget.localCR!.direPlace!;
-      selectedValue = widget.localCR!.distritoPlace!;
-      telefono.text = widget.localCR!.phonePlace!;
-      horario.text = widget.localCR!.horarioPlace!;
-      descripcion.text = widget.localCR!.descriptionPlace!;
-      palabrasCLave.text = widget.localCR!.palabrasClavesP!.join(', ');
-      ninos.text = widget.localCR!.nino_price!;
-      adulto.text = widget.localCR!.adulto_price!;
-      turista.text = widget.localCR!.turista_price!;
-      feriado.text = widget.localCR!.feriado_price!;
-      _status = widget.localCR!.estadoPlace!;
+      nombreLocal.text = widget.localCR!.nombreLocal!;
+      direccionLocal.text = widget.localCR!.direccionLocal!;
+      selectedValue = widget.localCR!.distritoLocal!;
+      telefono.text = widget.localCR!.telefonoLocal!;
+      horario.text = widget.localCR!.horarioLocal!;
+      descripcion.text = widget.localCR!.descripcionLocal!;
+      palabrasCLave.text = widget.localCR!.palabrasClaves!.join(', ');
+      ninos.text = widget.localCR!.ninoPrice!;
+      adulto.text = widget.localCR!.adultoPrice!;
+      turista.text = widget.localCR!.turistaPrice!;
+      feriado.text = widget.localCR!.feriadoPrice!;
+      _status = widget.localCR!.estadoLocal!;
     }
   }
 
@@ -89,24 +90,27 @@ class _CardRegisterState extends State<CardRegister> {
 
         // 2.1. Lógica de insertar en la bd sqlite
         String palabrasClavesString = keywords.join(', ');
-        PlaceModel local = PlaceModel(
-            imagePlace: "assets/images/10.jpg",
-            nombrePlace: nombreLocal.text,
-            direPlace: direccionLocal.text,
-            distritoPlace: selectedValue,
-            phonePlace: telefono.text,
-            horarioPlace: horario.text,
-            descriptionPlace: descripcion.text,
-            palabrasClavesP: keywords.toList(), // Convertir lista a cadena
-            nino_price: ninos.text,
-            adulto_price: adulto.text,
-            turista_price: turista.text,
-            feriado_price: feriado.text,
-            estadoPlace: _status);
+        LocalModel local = LocalModel(
+            imageLocal: "assets/images/10.jpg",
+            nombreLocal: nombreLocal.text,
+            direccionLocal: direccionLocal.text,
+            distritoLocal: selectedValue,
+            telefonoLocal: telefono.text,
+            horarioLocal: horario.text,
+            descripcionLocal: descripcion.text,
+            palabrasClaves: keywords.toList(), // Convertir lista a cadena
+            ninoPrice: ninos.text,
+            adultoPrice: adulto.text,
+            turistaPrice: turista.text,
+            feriadoPrice: feriado.text,
+            estadoLocal: _status);
         // 2.2. Condicional para que se realice el registro
         if (widget.localCR == null) {
-          await Databasehelper.instance.insertLocal(local);
-          print("Se regsitró local con éxito");
+          /* await Databasehelper.instance.insertLocal(local);
+          print("Se regsitró local con éxito"); */
+
+          print("Lista del local");
+          await Databasehelper.instance.mostrarLocales();
         }
 
         /*    print("Subido");

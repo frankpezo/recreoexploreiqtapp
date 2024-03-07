@@ -44,8 +44,7 @@ class PlaceModel {
       phonePlace: map['telefonoLocal'],
       horarioPlace: map['horarioLocal'],
       descriptionPlace: map['descripcionLocal'],
-      palabrasClavesP: (map['palabrasClaves'] as String?)
-          ?.split(', '), // Convertir cadena a lista
+      palabrasClavesP: (map['palabrasClaves'] as String?)?.split(', '), // Convertir cadena a lista
       nino_price: map['ninoPrice'],
       adulto_price: map['adultoPrice'],
       turista_price: map['turistaPrice'],
@@ -66,8 +65,7 @@ class PlaceModel {
       'telefonoLocal': phonePlace,
       'horarioLocal': horarioPlace,
       'descripcionLocal': descriptionPlace,
-      'palabrasClaves':
-          palabrasClavesString, // Guardar como cadena en la base de datos
+      'palabrasClaves': palabrasClavesString, // Guardar como cadena en la base de datos
       'ninoPrice': nino_price,
       'adultoPrice': adulto_price,
       'turistaPrice': turista_price,
