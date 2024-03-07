@@ -6,7 +6,9 @@ import 'package:recreoexploreiqtapp/src/pages/admin/profileAdmin_screen.dart';
 class BottomNavAdmin extends StatefulWidget {
   final EmpresaModel? empresaB;
   final String? emailEmpresa;
-  BottomNavAdmin({Key? key, required this.empresaB, this.emailEmpresa})
+  final int? idEmpre;
+  BottomNavAdmin(
+      {Key? key, required this.empresaB, this.emailEmpresa, this.idEmpre})
       : super(key: key);
 
   @override
@@ -25,6 +27,7 @@ class _BottomNavAdminState extends State<BottomNavAdmin> {
     pages = [
       HomeAdminScreen(
         empresaH: widget.empresaB,
+        idEA: widget.idEmpre,
         emailEA: widget.emailEmpresa,
       ),
       ProfileAdminScreen(
@@ -65,8 +68,8 @@ class _BottomNavAdminState extends State<BottomNavAdmin> {
               //4.1. Aquí se producirá el cambio de página y de iconos
               _buildNavItem(Icons.home_outlined, Icons.home,
                   "Inicio ${widget.emailEmpresa}", currentIndex == 0),
-              _buildNavItem(Icons.person_outline, Icons.person, "Perfil",
-                  currentIndex == 1),
+              _buildNavItem(Icons.person_outline, Icons.person,
+                  "Perfil ${widget.idEmpre}", currentIndex == 1),
             ],
           ),
         ),

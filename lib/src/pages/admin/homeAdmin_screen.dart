@@ -8,9 +8,14 @@ import 'package:recreoexploreiqtapp/src/widgets/carEditPlaces.dart';
 
 class HomeAdminScreen extends StatefulWidget {
   final EmpresaModel? empresaH;
+  final int? idEA;
   final String? emailEA;
-  HomeAdminScreen({Key? key, required this.empresaH, this.emailEA})
-      : super(key: key);
+  HomeAdminScreen({
+    Key? key,
+    required this.empresaH,
+    this.idEA,
+    this.emailEA,
+  }) : super(key: key);
 
   @override
   State<HomeAdminScreen> createState() => _HomeAdminScreenState();
@@ -140,7 +145,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       children: [
                         // Text("ID: ${usuarios[0].idEmpresa}S"),
                         Text(
-                          "Mi local ${widget.emailEA}",
+                          "Mi local ${widget.idEA}${widget.emailEA}",
                           style: TextStyle(fontSize: 17),
                         ),
                       ],
@@ -152,6 +157,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                           MaterialPageRoute(
                             builder: (context) => CardRegister(
                               empresaCR: widget.empresaH,
+                              idECR: widget.idEA,
                               emailCR: widget.emailEA,
                               // ####
                             ),

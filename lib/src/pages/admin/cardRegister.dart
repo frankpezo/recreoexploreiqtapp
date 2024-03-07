@@ -11,11 +11,13 @@ import 'package:sqflite/sqflite.dart';
 class CardRegister extends StatefulWidget {
   final EmpresaModel? empresaCR;
   final LocalModel? localCR;
+  final int? idECR;
   final String? emailCR;
   CardRegister({
     Key? key,
     this.empresaCR,
     this.localCR,
+    this.idECR,
     this.emailCR,
     //this.emailE,
   }) : super(key: key);
@@ -93,9 +95,9 @@ class _CardRegisterState extends State<CardRegister> {
         // 2.1. Lógica de insertar en la bd sqlite
         //  String palabrasClavesString = keywords.join(', ');
         // Obtener el ID de la empresa antes de registrar el local
-        int? idEm = await Databasehelper.instance
+        /* int? idEm = await Databasehelper.instance
             .obtenerIdEmpresaDesdeBD('${widget.emailCR}');
-        print('idEmpresa: ${idEm}');
+        print('idEmpresa: ${idEm}'); */
         LocalModel local = LocalModel(
             imageLocal: "assets/images/10.jpg",
             nombreLocal: nombreLocal.text,
@@ -110,12 +112,12 @@ class _CardRegisterState extends State<CardRegister> {
             turistaPrice: turista.text,
             feriadoPrice: feriado.text,
             estadoLocal: _status,
-            idEmpresa: idEm);
+            idEmpresa: widget.idECR);
         // 2.2. Condicional para que se realice el registro
         if (widget.localCR == null) {
-          /* await Databasehelper.instance.insertLocal(local);
-          print("Se regsitró local con éxito");
- */
+          /*   await Databasehelper.instance.insertLocal(local);
+          print("Se regsitró local con éxito"); */
+
           print("Lista del local");
           await Databasehelper.instance.mostrarLocales();
         }
@@ -249,7 +251,8 @@ class _CardRegisterState extends State<CardRegister> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("Datos del local: ${widget.emailCR}",
+                                    Text(
+                                        "Datos del local:${widget.idECR} ${widget.emailCR}",
                                         style: TextStyle(
                                             fontSize: 15.0,
                                             fontWeight: FontWeight.bold,

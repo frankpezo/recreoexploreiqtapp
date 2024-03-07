@@ -56,12 +56,15 @@ class _LoginAdminState extends State<LoginAdmin> {
 
         if (success) {
           print('Se inicio sesión con éxito');
+          int? idEm = await Databasehelper.instance
+              .obtenerIdEmpresaDesdeBD('${emailC}');
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => BottomNavAdmin(
                         empresaB: widget.empresaL,
                         emailEmpresa: emailC,
+                        idEmpre: idEm,
                       )));
         } else {
           print('Los datos no coinciden');
