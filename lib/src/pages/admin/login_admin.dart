@@ -61,6 +61,7 @@ class _LoginAdminState extends State<LoginAdmin> {
               MaterialPageRoute(
                   builder: (context) => BottomNavAdmin(
                         empresaB: widget.empresaL,
+                        emailEmpresa: emailC,
                       )));
         } else {
           print('Los datos no coinciden');

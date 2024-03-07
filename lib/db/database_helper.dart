@@ -95,8 +95,9 @@ class Databasehelper {
       adultoPrice TEXT NOT NULL, 
       turistaPrice TEXT NOT NULL, 
       feriadoPrice TEXT NOT NULL, 
-      estadoLocal TEXT NOT NULL
-
+      estadoLocal TEXT NOT NULL,
+      idEmpresa INTEGER, -- Nueva columna para almacenar el ID de la empresa
+     FOREIGN KEY(idEmpresa) REFERENCES $_tblEmpresa(idEmpresa)
      );
   ''');
 /* 
@@ -219,7 +220,7 @@ class Databasehelper {
       whereArgs: [emailEmpresa],
     );
     if (empresas.isNotEmpty) {
-      return empresas.first['idEmpresa'] as int;
+      return empresas.first['idEmpresa'] as int?;
     } else {
       return null;
     }
@@ -271,6 +272,4 @@ class Databasehelper {
       print('--------------------------');
     }
   }
-
-  obtenerUsuarioPorEmail(String? emailEmpresa) {}
 }
