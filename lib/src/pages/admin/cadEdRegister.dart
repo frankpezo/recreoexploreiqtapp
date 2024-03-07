@@ -143,7 +143,7 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
+                              /*  Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ViewCardAdmin(
@@ -151,7 +151,7 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                     placeViewA: widget.placeViewEd,
                                   ),
                                 ),
-                              );
+                              ); */
                             },
                             child: Row(
                               children: [

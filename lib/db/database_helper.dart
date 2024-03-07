@@ -295,6 +295,15 @@ class Databasehelper {
         .query(_tblLocal, where: 'idEmpresa = ?', whereArgs: [idEmpresa]);
   }
 
+  //Traer locales para el card
+  // Traer los locales para un idLocal específico
+// Traer los datos de un local específico por su ID
+  Future<List<Map<String, dynamic>>> traerLocalPorId(int? idLocal) async {
+    Database db = await instance.database;
+    return await db
+        .query(_tblLocal, where: 'idLocal = ?', whereArgs: [idLocal]);
+  }
+
   //traemos el id de un local en específico por el nombre
   //id de la Empresa
   Future<int?> obtenerIdLocal(String? nombreLocal) async {

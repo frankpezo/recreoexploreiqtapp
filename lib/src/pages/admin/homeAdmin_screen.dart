@@ -5,6 +5,7 @@ import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cardRegister.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/viewAdminCard.dart';
 import 'package:recreoexploreiqtapp/src/widgets/carEditPlaces.dart';
 
 class HomeAdminScreen extends StatefulWidget {
@@ -303,15 +304,20 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                               GestureDetector(
                                                 onTap: () {
                                                   // Aquí puedes agregar la lógica para editar
-                                                  /*  Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ViewCardAdmin(
-                                  placeViewA: place,
-                                  userViewA: widget.userC,
-                                ),
-                              ),
-                            ); */
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ViewCardAdmin(
+                                                        idEmpresaVC:
+                                                            widget.idEA,
+                                                        idlocalVC:
+                                                            usuarios[index]
+                                                                .idLocal,
+                                                        emailVC: widget.emailEA,
+                                                      ),
+                                                    ),
+                                                  );
                                                 },
                                                 child: Container(
                                                   padding: EdgeInsets.all(5),

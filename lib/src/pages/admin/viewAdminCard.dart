@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottom_UserNav.dart';
@@ -9,16 +11,43 @@ import 'package:recreoexploreiqtapp/src/pages/admin/cadEdRegister.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/instaEd.dart';
 
 class ViewCardAdmin extends StatefulWidget {
-  final PlaceModel placeViewA;
-  final EmpresaModel userViewA;
-  ViewCardAdmin({Key? key, required this.userViewA, required this.placeViewA})
-      : super(key: key);
+  final EmpresaModel? empresaVC;
+  final int? idEmpresaVC;
+  final int? idlocalVC;
+  final String? emailVC;
+  ViewCardAdmin({
+    Key? key,
+    this.idEmpresaVC,
+    this.idlocalVC,
+    this.emailVC,
+    this.empresaVC,
+  }) : super(key: key);
 
   @override
   State<ViewCardAdmin> createState() => _ViewCardAdminState();
 }
 
 class _ViewCardAdminState extends State<ViewCardAdmin> {
+  //Traemos el id del local
+  LocalModel? _local;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocalData();
+  }
+
+  Future<void> _loadLocalData() async {
+    Databasehelper dbHelper = Databasehelper.instance;
+    List<Map<String, dynamic>> localData =
+        await dbHelper.traerLocalPorId(widget.idlocalVC);
+    if (localData.isNotEmpty) {
+      setState(() {
+        _local = LocalModel.fromMap(localData.first);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,10 +55,16 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Row(
+              children: [
+                Text(
+                    "idEmpresa: ${widget.idEmpresaVC} - emailE: ${widget.emailVC} | idLocal: ${widget.idlocalVC}")
+              ],
+            ),
             Stack(
               children: [
                 Image.asset(
-                  'assets/images/${widget.placeViewA.imagePlace}',
+                  'assets/images/10.jpg',
                   width: MediaQuery.of(context).size.width,
                   //height: 100.0,
                   fit: BoxFit.cover,
@@ -43,21 +78,25 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      /*  Navigator.pushReplacement(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
                             return BottomNavAdmin(
+                                empresaB: widget.empresaVC,
+                                idEmpre: widget.idEmpresaVC,
+                                emailEmpresa: widget.emailVC
                                 // empresaB: widget.userViewA,
                                 );
                           },
                         ),
-                      ); */
+                      );
                     },
                   ),
                 ),
               ],
             ),
+
             //1. Card description
             Card(
               color: Colors.white,
@@ -73,7 +112,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${widget.placeViewA.nombrePlace}',
+                          _local?.nombreLocal ?? '',
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -93,7 +132,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                             GestureDetector(
                               onTap: () {
                                 // Aquí puedes agregar la lógica para editar
-                                Navigator.push(
+                                /*  Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => CardEdRegister(
@@ -101,7 +140,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                                       placeViewEd: widget.placeViewA,
                                     ),
                                   ),
-                                );
+                                ); */
                               },
                               child: Container(
                                 padding: EdgeInsets.all(5),
@@ -131,7 +170,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                             Icon(Icons.location_on,
                                 color: Colors.red, size: 16.0),
                             Text(
-                              '${widget.placeViewA.direPlace}',
+                              _local?.direccionLocal ?? '',
                               style: TextStyle(fontSize: 13.0),
                             ),
                           ],
@@ -141,12 +180,11 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                           children: [
                             Text(
                               //Realizamos una condicional para hacer el cambio de estado
-                              '${widget.placeViewA.estadoPlace}',
+                              _local?.estadoLocal ?? '',
                               style: TextStyle(
-                                color:
-                                    widget.placeViewA.estadoPlace == "Abierto"
-                                        ? Colors.green
-                                        : Colors.red,
+                                color: _local?.estadoLocal == "Abierto"
+                                    ? Colors.green
+                                    : Colors.red,
                                 fontSize: 15,
                               ),
                             ),
@@ -157,7 +195,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                     //Distrito
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: [Text('${widget.placeViewA.distritoPlace}')],
+                      children: [Text(_local?.distritoLocal ?? '')],
                     ),
                     //Precios
                     SizedBox(
@@ -185,7 +223,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                                     color: Color(0xFF238F8F), size: 16.0),
                                 SizedBox(width: 5.0),
                                 Text(
-                                  '${widget.placeViewA.horarioPlace}',
+                                  _local?.horarioLocal ?? '',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
@@ -201,19 +239,19 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Niño - S/. ${widget.placeViewA.nino_price}",
+                              "Niño - S/. ${_local?.ninoPrice ?? ''}",
                               style: TextStyle(fontSize: 13),
                             ),
                             Text(
-                              "Adulto - S/. ${widget.placeViewA.adulto_price}",
+                              "Adulto - S/.${_local?.adultoPrice ?? ''}",
                               style: TextStyle(fontSize: 13),
                             ),
                             Text(
-                              "Turistas - S/. ${widget.placeViewA.turista_price}",
+                              "Turistas - S/. ${_local?.turistaPrice ?? ''}",
                               style: TextStyle(fontSize: 13),
                             ),
                             Text(
-                              "Feriados - S/. ${widget.placeViewA.feriado_price}",
+                              "Feriados - S/. ${_local?.feriadoPrice ?? ''}",
                               style: TextStyle(fontSize: 13),
                             ),
                           ],
@@ -224,7 +262,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                                 color: Color(0xFF238F8F), size: 16.0),
                             SizedBox(width: 5.0),
                             Text(
-                              '${widget.placeViewA.phonePlace}',
+                              _local?.telefonoLocal ?? '',
                               style: TextStyle(fontSize: 12.0),
                             ),
                           ],
@@ -245,7 +283,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF238F8F)),
                         ),
-                        Text("${widget.placeViewA.descriptionPlace}",
+                        Text(_local?.descripcionLocal ?? '',
                             textAlign: TextAlign.justify),
 
                         SizedBox(
@@ -262,7 +300,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                               ),
                             ),
                             Text(
-                              "${widget.placeViewA.palabrasClavesP?.join(', ')}",
+                              _local!.palabrasClaves?.join(', ') ?? '',
                               style: TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.bold,
