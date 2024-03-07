@@ -256,6 +256,7 @@ class Databasehelper {
     // Imprimir los locales en la terminal
     for (var local in locales) {
       print('Id: ${local['idLocal']}');
+      print('Image: ${local['imageLocal']}');
       print('Nombre: ${local['nombreLocal']}');
       print('Dirección: ${local['direccionLocal']}');
       print('Distrito: ${local['distritoLocal']}');
