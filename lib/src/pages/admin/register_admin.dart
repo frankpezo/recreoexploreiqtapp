@@ -43,35 +43,57 @@ class _RegisterAdminState extends State<RegisterAdmin> {
       //print("Registro con éxito");
       // Lógica para consumir la API
       try {
-        //2.1. Instanciamos
-        EmpresaModel empresa = EmpresaModel(
-            // idEmpresa: widget.empresaM?.idEmpresa,
-            nombreEmpresa: nombre.text,
-            emailEmpresa: email.text,
-            passwordEmpresa: password.text,
-            imgEmpresa: "assets/images/10.jpg");
-        //2.2. Hacemos condicional para ver si se registra
-        if (widget.empresaM == null) {
-          await Databasehelper.instance.insertEmpresa(empresa);
-          print("Se registró empresa con éxitoo");
-          //Para que nos mande al Login
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => LoginAdmin()));
+        //Verificar si ya existe la empresa registrada
+        // 2.1. Lógica de verificación de existencia del local
+        bool empresaExistente = await Databasehelper.instance
+            .existeEmpresa('${nombre.text}', '${email.text}');
+
+        //Hacemos la verificación
+        if (empresaExistente) {
+          // Mostrar mensaje de error porque el local ya existe
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Color.fromARGB(255, 36, 246, 116),
+            backgroundColor: Color.fromARGB(255, 242, 48, 48),
             content: Text(
-              'Se subió con éxito',
+              'La empresa ya está registrado.',
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold),
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            duration: Duration(seconds: 5),
+            duration: Duration(seconds: 3),
           ));
-          print("Lista de empresas registradas");
-          await Databasehelper.instance.mostrarEmpresas();
         } else {
-          print("Error al registrar");
+          //2.1. Instanciamos
+          EmpresaModel empresa = EmpresaModel(
+              // idEmpresa: widget.empresaM?.idEmpresa,
+              nombreEmpresa: nombre.text,
+              emailEmpresa: email.text,
+              passwordEmpresa: password.text,
+              imgEmpresa: "assets/images/10.jpg");
+          //2.2. Hacemos condicional para ver si se registra
+          if (widget.empresaM == null) {
+            await Databasehelper.instance.insertEmpresa(empresa);
+            print("Se registró empresa con éxitoo");
+            //Para que nos mande al Login
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginAdmin()));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Color.fromARGB(255, 36, 246, 116),
+              content: Text(
+                'Se subió con éxito',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              duration: Duration(seconds: 5),
+            ));
+            print("Lista de empresas registradas");
+            await Databasehelper.instance.mostrarEmpresas();
+          } else {
+            print("Error al registrar");
+          }
         }
       } catch (e) {
         print("El error es: ${e}");

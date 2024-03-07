@@ -92,55 +92,48 @@ class _CardRegisterState extends State<CardRegister> {
         print(feriado.text);
         print(_status);
 
-        // 2.1. Lógica de insertar en la bd sqlite
-        //  String palabrasClavesString = keywords.join(', ');
-        // Obtener el ID de la empresa antes de registrar el local
-        /* int? idEm = await Databasehelper.instance
-            .obtenerIdEmpresaDesdeBD('${widget.emailCR}');
-        print('idEmpresa: ${idEm}'); */
-        LocalModel local = LocalModel(
-            imageLocal: "assets/images/10.jpg",
-            nombreLocal: nombreLocal.text,
-            direccionLocal: direccionLocal.text,
-            distritoLocal: selectedValue,
-            telefonoLocal: telefono.text,
-            horarioLocal: horario.text,
-            descripcionLocal: descripcion.text,
-            palabrasClaves: keywords.toList(), // Convertir lista a cadena
-            ninoPrice: ninos.text,
-            adultoPrice: adulto.text,
-            turistaPrice: turista.text,
-            feriadoPrice: feriado.text,
-            estadoLocal: _status,
-            idEmpresa: widget.idECR);
-        // 2.2. Condicional para que se realice el registro
-        if (widget.localCR == null) {
-          await Databasehelper.instance.insertLocal(local);
-          print("Se regsitró local con éxito");
+        // 2.1. Lógica de verificación de existencia del local
+        bool localExistente = await Databasehelper.instance
+            .existeLocal('${nombreLocal.text}', '${direccionLocal.text}');
 
-          /*    print("Lista del local");
-          await Databasehelper.instance.mostrarLocales(); */
+        if (localExistente) {
+          // Mostrar mensaje de error porque el local ya existe
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Color.fromARGB(255, 242, 48, 48),
+            content: Text(
+              'El local ya está registrado.',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ));
+        } else {
+          // El local no existe, proceder con el registro
+          LocalModel local = LocalModel(
+              imageLocal: "assets/images/10.jpg",
+              nombreLocal: nombreLocal.text,
+              direccionLocal: direccionLocal.text,
+              distritoLocal: selectedValue,
+              telefonoLocal: telefono.text,
+              horarioLocal: horario.text,
+              descripcionLocal: descripcion.text,
+              palabrasClaves: keywords.toList(), // Convertir lista a cadena
+              ninoPrice: ninos.text,
+              adultoPrice: adulto.text,
+              turistaPrice: turista.text,
+              feriadoPrice: feriado.text,
+              estadoLocal: _status,
+              idEmpresa: widget.idECR);
+
+          // 2.2. Condicional para que se realice el registro
+          if (widget.localCR == null) {
+            await Databasehelper.instance.insertLocal(local);
+            print("Se registró local con éxito");
+          }
         }
-
-        /*    print("Subido");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Color.fromARGB(255, 36, 246, 116),
-        content: Text(
-          'Se subió con éxito',
-          style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        duration: Duration(seconds: 5),
-      )); */
-        //No llevará a la parte de seleccionar instalaciones
-        /*  Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CardInsta(
-            userI: widget.userCard,
-          ),
-        ),
-      ); */
       } catch (e) {
         print("El error fue: ${e}");
       }

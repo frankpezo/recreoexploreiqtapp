@@ -167,6 +167,21 @@ class Databasehelper {
     return await db.insert(_tblEmpresa, empresa.toMap());
   }
 
+//Verificar si la empresa ya existe en la bd
+// En tu clase Databasehelper
+
+// Verificar si el correo electrónico de la empresa ya está registrado
+  Future<bool> existeEmpresa(String nombre, String email) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> result = await db.query(
+      _tblEmpresa,
+      where: 'nombreEmpresa= ? OR emailEmpresa = ?',
+      whereArgs: [nombre, email],
+    );
+
+    return result.isNotEmpty;
+  }
+
 //Login
   Future<bool> loginEmpresa(String email, String password) async {
     Database db = await instance.database;
@@ -247,6 +262,18 @@ class Databasehelper {
   Future<int> insertLocal(LocalModel local) async {
     Database db = await instance.database;
     return await db.insert(_tblLocal, local.toMap());
+  }
+
+  //Verificar si local ya existe
+  Future<bool> existeLocal(String nombre, String direccion) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> result = await db.query(
+      _tblLocal,
+      where: 'nombreLocal = ? OR direccionLocal = ?',
+      whereArgs: [nombre, direccion],
+    );
+
+    return result.isNotEmpty;
   }
 
   //Traer los locales por id correspondiente de empresa
