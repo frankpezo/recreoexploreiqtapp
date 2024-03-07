@@ -263,7 +263,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                '${usuarios[index].nombreLocal}',
+                                                '${usuarios[index].nombreLocal}  id: ${usuarios[index].idLocal}',
                                                 style: TextStyle(
                                                   fontSize: 17.0,
                                                   fontWeight: FontWeight.bold,

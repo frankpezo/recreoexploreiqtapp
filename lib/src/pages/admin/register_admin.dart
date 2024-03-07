@@ -81,7 +81,7 @@ class _RegisterAdminState extends State<RegisterAdmin> {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Color.fromARGB(255, 36, 246, 116),
               content: Text(
-                'Se subió con éxito',
+                'Se registró con éxito',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,

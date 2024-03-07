@@ -100,6 +100,16 @@ class Databasehelper {
      FOREIGN KEY(idEmpresa) REFERENCES $_tblEmpresa(idEmpresa)
      );
   ''');
+
+//TABLA INSTALACIONES
+    await db.execute('''
+ CREATE TABLE $_tblInstalaciones(
+  idInstalaciones INTEGER PRIMARY KEY AUTOINCREMENT, 
+  idLocal INTEGER NOT NULL,
+  nombreInstalacion TEXT NOT NULL,
+  FOREIGN KEY(idLocal) REFERENCES $_tblLocal(idLocal)
+ )
+''');
 /* 
     //Tabla INSTALACIONES
     await db.execute('''
@@ -277,11 +287,28 @@ class Databasehelper {
   }
 
   //Traer los locales por id correspondiente de empresa
+
   // Traer los locales para una empresa específica
   Future<List<Map<String, dynamic>>> traerLocales(int? idEmpresa) async {
     Database db = await instance.database;
     return await db
         .query(_tblLocal, where: 'idEmpresa = ?', whereArgs: [idEmpresa]);
+  }
+
+  //traemos el id de un local en específico por el nombre
+  //id de la Empresa
+  Future<int?> obtenerIdLocal(String? nombreLocal) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> local = await db.query(
+      _tblLocal,
+      where: 'nombreLocal = ?',
+      whereArgs: [nombreLocal],
+    );
+    if (local.isNotEmpty) {
+      return local.first['idLocal'] as int?;
+    } else {
+      return null;
+    }
   }
 
   //Mostrar locales registrados
@@ -305,6 +332,37 @@ class Databasehelper {
       print('Precio en Feriados: ${local['feriadoPrice']}');
       print('Estado: ${local['estadoLocal']}');
       print('Id de la Empresa: ${local['idEmpresa']}');
+      print('--------------------------');
+    }
+  }
+
+  //6.2. INSTALACIONES
+  //Registrar instalaciones
+  Future<void> insertInstalaciones(
+      int idLocal, List<String> instalaciones) async {
+    Database db = await instance.database;
+    for (String instalacion in instalaciones) {
+      await db.insert(_tblInstalaciones, {
+        'idLocal': idLocal,
+        'nombreInstalacion': instalacion,
+      });
+    }
+  }
+
+  //MOstrar instalaciones
+  // Función para mostrar las instalaciones registradas con el ID del local
+  Future<void> mostrarInstalaciones(int idLocal) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> instalaciones = await db.query(
+      _tblInstalaciones,
+      where: 'idLocal = ?',
+      whereArgs: [idLocal],
+    );
+
+    // Imprimir las instalaciones en la terminal
+    for (var instalacion in instalaciones) {
+      print('Id del Local: ${instalacion['idLocal']}');
+      print('Nombre de la Instalación: ${instalacion['nombreInstalacion']}');
       print('--------------------------');
     }
   }

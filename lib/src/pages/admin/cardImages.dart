@@ -4,10 +4,18 @@ import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cardInsta.dart';
 
 class CardImages extends StatefulWidget {
-  final EmpresaModel userIma;
+  //final EmpresaModel userIma;
+
   final List<String> selectedInstallations;
+  final EmpresaModel? empresaCIM;
+  final int? idempresaCIM;
+  final int? idlocalCIM;
   CardImages(
-      {Key? key, required this.userIma, required this.selectedInstallations})
+      {Key? key,
+      required this.selectedInstallations,
+      this.idempresaCIM,
+      this.idlocalCIM,
+      this.empresaCIM})
       : super(key: key);
 
   @override
@@ -34,9 +42,9 @@ class _CardImagesState extends State<CardImages> {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Container(
+                    /*  Container(
                       padding: const EdgeInsets.only(
                         top: 8,
                         right: 20,
@@ -48,7 +56,8 @@ class _CardImagesState extends State<CardImages> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => CardInsta(
-                                userI: widget.userIma,
+                                idEmpresaCI: widget.idempresaCIM,
+                                idLocalCI: widget.idlocalCIM,
                               ),
                             ),
                           );
@@ -70,7 +79,7 @@ class _CardImagesState extends State<CardImages> {
                           ],
                         ),
                       ),
-                    ),
+                    ), */
                     Container(
                       padding: const EdgeInsets.only(
                         top: 8,
@@ -79,14 +88,15 @@ class _CardImagesState extends State<CardImages> {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                         /*  Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => BottomNavAdmin(
-                                  //  empresaB: widget.userIma,
-                                  ),
+                                empresaB: widget.empresaCIM,
+                                idEmpre: widget.idempresaCIM,
+                              ),
                             ),
-                          ); */
+                          );
                         },
                         child: Text(
                           'Omitir',
@@ -127,6 +137,8 @@ class _CardImagesState extends State<CardImages> {
                                     color: Color(0xFF238F8F),
                                   ),
                                 ),
+                                Text(
+                                    "idEmpresa: ${widget.idempresaCIM} -- idLocal: ${widget.idlocalCIM}")
                               ],
                             ),
                             SizedBox(height: 15),

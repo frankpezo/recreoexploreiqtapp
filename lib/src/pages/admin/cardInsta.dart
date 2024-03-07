@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:recreoexploreiqtapp/model/empresa_model.dart';
-import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
-import 'package:recreoexploreiqtapp/src/pages/admin/cardImages.dart';
-import 'package:recreoexploreiqtapp/src/pages/admin/cardRegister.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/cardImages.dart'; // Asegúrate de importar el archivo de ayuda de la base de datos
 
 class CardInsta extends StatefulWidget {
-  final EmpresaModel userI;
-  CardInsta({Key? key, required this.userI}) : super(key: key);
+  final int? idEmpresaCI;
+  final int? idLocalCI;
+  CardInsta({
+    Key? key,
+    this.idEmpresaCI,
+    this.idLocalCI,
+  }) : super(key: key);
 
   @override
   State<CardInsta> createState() => _CardInstaState();
@@ -23,7 +26,7 @@ class _CardInstaState extends State<CardInsta> {
     'Zona de juegos': false,
     'Zoológico': false,
   };
-
+//Para ver las instalaciones seleccionadas
   List<String> getSelectedInstallations() {
     List<String> selectedInstallations = [];
     categories.forEach((key, value) {
@@ -41,7 +44,6 @@ class _CardInstaState extends State<CardInsta> {
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Form(
-            //key: formKeySix, // Asignar la nueva GlobalKey al Form
             child: SafeArea(
               child: Container(
                 child: Column(
@@ -49,7 +51,7 @@ class _CardInstaState extends State<CardInsta> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
+                        /* Container(
                           padding: const EdgeInsets.only(
                             top: 8,
                             right: 20,
@@ -57,14 +59,7 @@ class _CardInstaState extends State<CardInsta> {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              /*  Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CardRegister(
-                                    userCard: widget.userI,
-                                  ),
-                                ),
-                              ); */
+                              Navigator.pop(context);
                             },
                             child: Row(
                               children: [
@@ -83,41 +78,7 @@ class _CardInstaState extends State<CardInsta> {
                               ],
                             ),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.only(
-                                top: 8,
-                                right: 20,
-                                left: 20,
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  /*   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BottomNavAdmin(
-                                       // empresaB: widget.userI,
-                                      ),
-                                    ),
-                                  ); */
-                                },
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Omitir',
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        ), */
                       ],
                     ),
                     Container(
@@ -144,7 +105,9 @@ class _CardInstaState extends State<CardInsta> {
                                         style: TextStyle(
                                             fontSize: 15.0,
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF238F8F)))
+                                            color: Color(0xFF238F8F))),
+                                    Text(
+                                        "idEmpresa: ${widget.idEmpresaCI} -- idLocal: ${widget.idLocalCI}")
                                   ],
                                 ),
                                 SizedBox(height: 15),
@@ -164,42 +127,55 @@ class _CardInstaState extends State<CardInsta> {
                                     );
                                   }).toList(),
                                 ),
-                                SizedBox(
-                                    height:
-                                        20), // Espacio adicional para separar del botón
+                                SizedBox(height: 20),
                                 GestureDetector(
-                                  onTap: () {
-                                    // Aquí puedes guardar las categorías seleccionadas para su uso en otra página
-                                    // Por ejemplo, puedes usar el estado 'categories'
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 36, 246, 116),
-                                      content: Text(
-                                        'Se guardó instalaciones',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      duration: Duration(seconds: 5),
-                                    ));
-                                    //No llevará a la parte de seleccionar instalaciones
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CardImages(
-                                          userIma: widget.userI,
-                                          selectedInstallations:
-                                              getSelectedInstallations(),
+                                  onTap: () async {
+                                    List<String> selectedInstallations =
+                                        getSelectedInstallations();
+                                    int? idLocal = widget.idLocalCI;
+                                    if (idLocal != null) {
+                                      //Regisrar instalaciones
+                                      await Databasehelper.instance
+                                          .insertInstalaciones(
+                                              idLocal, selectedInstallations);
+                                      //Mostrar instalaciones por terminal
+                                      /*  await Databasehelper.instance
+                                          .mostrarInstalaciones(idLocal); */
+                                      //Mensaje y cambio de página
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => CardImages(
+                                                    selectedInstallations:
+                                                        selectedInstallations,
+                                                    idempresaCIM:
+                                                        widget.idEmpresaCI,
+                                                    idlocalCIM:
+                                                        widget.idLocalCI,
+                                                  )));
+
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 36, 246, 116),
+                                        content: Text(
+                                          'Se guardaron las instalaciones',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      ),
-                                    );
+                                        duration: Duration(seconds: 3),
+                                      ));
+                                      //Redireccionar
+                                    } else {
+                                      print("error al guardar instalaciones");
+                                    }
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(
                                         left: 20, right: 10, top: 20),
-                                    width: 325, // Ancho original del botón
+                                    width: 325,
                                     height: 45,
                                     padding:
                                         const EdgeInsets.only(top: 3, left: 10),

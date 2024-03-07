@@ -132,6 +132,27 @@ class _CardRegisterState extends State<CardRegister> {
           if (widget.localCR == null) {
             await Databasehelper.instance.insertLocal(local);
             print("Se registró local con éxito");
+            //traemos el id del local
+            int? idDelLocal = await Databasehelper.instance
+                .obtenerIdLocal('${nombreLocal.text}');
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CardInsta(
+                          idEmpresaCI: widget.idECR,
+                          idLocalCI: idDelLocal,
+                        )));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Color.fromARGB(255, 36, 246, 116),
+              content: Text(
+                'Se registró local con éxito',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              duration: Duration(seconds: 5),
+            ));
           }
         }
       } catch (e) {
