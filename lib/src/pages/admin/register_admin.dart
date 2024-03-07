@@ -53,7 +53,7 @@ class _RegisterAdminState extends State<RegisterAdmin> {
         //2.2. Hacemos condicional para ver si se registra
         if (widget.empresaM == null) {
           await Databasehelper.instance.insertEmpresa(empresa);
-          print("Se registró empresa con éxito");
+          print("Se registró empresa con éxitoo");
           //Para que nos mande al Login
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => LoginAdmin()));
