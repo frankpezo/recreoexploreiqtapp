@@ -118,7 +118,7 @@ class _CardRegisterState extends State<CardRegister> {
           await Databasehelper.instance.insertLocal(local);
           print("Se regsitró local con éxito");
 
-          /*  print("Lista del local");
+          /*    print("Lista del local");
           await Databasehelper.instance.mostrarLocales(); */
         }
 
@@ -185,7 +185,7 @@ class _CardRegisterState extends State<CardRegister> {
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Form(
-            key: formKeySix, // Asignar la nueva GlobalKey al Form
+            key: formKeySeven, // Asignar la nueva GlobalKey al Form
             child: SafeArea(
               child: Container(
                 child: Column(
@@ -916,7 +916,8 @@ class _CardRegisterState extends State<CardRegister> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      if (formKeySix.currentState!.validate()) {
+                                      if (formKeySeven.currentState!
+                                          .validate()) {
                                         registrarLocal();
                                       }
                                     });
