@@ -31,8 +31,10 @@ class _BottomNavAdminState extends State<BottomNavAdmin> {
         emailEA: widget.emailEmpresa,
       ),
       ProfileAdminScreen(
-          //empresaP: widget.empresaB,
-          ) // Inicializar pages después de que widget.user esté disponible
+        empresaP: widget.empresaB,
+        idEP: widget.idEmpre,
+        emailEP: widget.emailEmpresa,
+      ) // Inicializar pages después de que widget.user esté disponible
     ];
   }
 

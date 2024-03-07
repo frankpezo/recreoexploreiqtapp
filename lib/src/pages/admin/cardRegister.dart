@@ -115,11 +115,11 @@ class _CardRegisterState extends State<CardRegister> {
             idEmpresa: widget.idECR);
         // 2.2. Condicional para que se realice el registro
         if (widget.localCR == null) {
-          /*   await Databasehelper.instance.insertLocal(local);
-          print("Se regsitró local con éxito"); */
+          await Databasehelper.instance.insertLocal(local);
+          print("Se regsitró local con éxito");
 
-          print("Lista del local");
-          await Databasehelper.instance.mostrarLocales();
+          /*  print("Lista del local");
+          await Databasehelper.instance.mostrarLocales(); */
         }
 
         /*    print("Subido");
@@ -207,6 +207,8 @@ class _CardRegisterState extends State<CardRegister> {
                                 MaterialPageRoute(
                                   builder: (context) => BottomNavAdmin(
                                     empresaB: widget.empresaCR,
+                                    idEmpre: widget.idECR,
+                                    emailEmpresa: widget.emailCR,
                                   ),
                                 ),
                               );

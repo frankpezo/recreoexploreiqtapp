@@ -249,6 +249,14 @@ class Databasehelper {
     return await db.insert(_tblLocal, local.toMap());
   }
 
+  //Traer los locales por id correspondiente de empresa
+  // Traer los locales para una empresa específica
+  Future<List<Map<String, dynamic>>> traerLocales(int? idEmpresa) async {
+    Database db = await instance.database;
+    return await db
+        .query(_tblLocal, where: 'idEmpresa = ?', whereArgs: [idEmpresa]);
+  }
+
   //Mostrar locales registrados
   Future<void> mostrarLocales() async {
     Database db = await instance.database;

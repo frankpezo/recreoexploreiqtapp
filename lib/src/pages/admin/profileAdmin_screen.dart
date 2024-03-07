@@ -4,9 +4,14 @@ import 'package:recreoexploreiqtapp/src/pages/admin/edProfileAd.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/login_admin.dart';
 
 class ProfileAdminScreen extends StatefulWidget {
-  //final EmpresaModel? empresaP;
+  final EmpresaModel? empresaP;
+  final int? idEP;
+  final String? emailEP;
   ProfileAdminScreen({
     Key? key,
+    this.empresaP,
+    this.idEP,
+    this.emailEP,
     /*  required this.empresaP */
   }) : super(key: key);
 
@@ -73,6 +78,7 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                           "Mi Perfil",
                           style: TextStyle(fontSize: 17),
                         ),
+                        Text('id: ${widget.idEP} - email: ${widget.emailEP}'),
                       ],
                     ),
                     SizedBox(

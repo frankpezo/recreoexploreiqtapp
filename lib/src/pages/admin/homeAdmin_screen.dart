@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cardRegister.dart';
 import 'package:recreoexploreiqtapp/src/widgets/carEditPlaces.dart';
@@ -71,23 +72,23 @@ class HomeAdminScreen extends StatefulWidget {
 
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
   int? idEmpresaa;
-  List<EmpresaModel> usuarios = [];
+  List<LocalModel> usuarios = [];
 
   @override
   void initState() {
     super.initState();
-    //_cargarUsuarios();
+    _cargarUsuarios();
   }
 
-  /*  Future<void> _cargarUsuarios() async {
+  Future<void> _cargarUsuarios() async {
     List<Map<String, dynamic>> listaUsuarios =
-        await Databasehelper.instance.traerTodosEmpresas();
-    List<EmpresaModel> empresa =
-        listaUsuarios.map((ele) => EmpresaModel.fromMap(ele)).toList();
+        await Databasehelper.instance.traerLocales(widget.idEA);
+    List<LocalModel> empresa =
+        listaUsuarios.map((ele) => LocalModel.fromMap(ele)).toList();
     setState(() {
       usuarios = empresa;
     });
-  } */
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +201,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                         ),
                       ),
                     ),
-                    /*  Flexible(
+                    Flexible(
                       child: ListView.builder(
                         padding: EdgeInsets.only(bottom: 10),
                         itemCount: HomeAdminScreen.placeE.length,
@@ -211,16 +212,16 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                           );
                         },
                       ),
-                    ), */
+                    ),
 
                     /*  Flexible(
                       child: ListView.builder(
                         itemCount: usuarios.length,
                         itemBuilder: (context, index) {
                           return ListTile(
-                            //title: Text('${usuarios[index].nombreEmpresa}'),
-                            //subtitle: Text('${usuarios[index].emailEmpresa}'),
-                            trailing: Text('ID: ${usuarios[index].idEmpresa}'),
+                            title: Text('${usuarios[index].nombreLocal}'),
+                            subtitle: Text('${usuarios[index].distritoLocal}'),
+                            trailing: Text('ID: ${usuarios[index].idLocal}'),
                           );
                         },
                       ),
