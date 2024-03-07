@@ -353,7 +353,8 @@ class Databasehelper {
     for (String instalacion in instalaciones) {
       await db.insert(_tblInstalaciones, {
         'idLocal': idLocal,
-        'nombreInstalacion': instalacion,
+        'nombreInstalacion':
+            instalacion, // Almacenar el nombre de la instalación en lugar de su ID
       });
     }
   }
@@ -374,5 +375,21 @@ class Databasehelper {
       print('Nombre de la Instalación: ${instalacion['nombreInstalacion']}');
       print('--------------------------');
     }
+  }
+
+  //taer instalacions del local para card
+  // Función para obtener las instalaciones de un local específico por su ID
+// Función para obtener las instalaciones de un local específico por su ID
+  Future<List<String>> obtenerInstalacionesPorIdLocal(int? idLocal) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> result = await db.query(
+      _tblInstalaciones,
+      where: 'idLocal = ?',
+      whereArgs: [idLocal],
+    );
+    List<String> nombresInstalaciones = result
+        .map((instalacion) => instalacion['nombreInstalacion'] as String)
+        .toList();
+    return nombresInstalaciones;
   }
 }
