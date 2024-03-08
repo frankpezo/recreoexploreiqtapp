@@ -5,10 +5,12 @@ import 'package:recreoexploreiqtapp/src/pages/admin/cardImages.dart'; // Asegúr
 class CardInsta extends StatefulWidget {
   final int? idEmpresaCI;
   final int? idLocalCI;
+  final String? emailCI;
   CardInsta({
     Key? key,
     this.idEmpresaCI,
     this.idLocalCI,
+    this.emailCI,
   }) : super(key: key);
 
   @override
@@ -152,6 +154,7 @@ class _CardInstaState extends State<CardInsta> {
                                                         widget.idEmpresaCI,
                                                     idlocalCIM:
                                                         widget.idLocalCI,
+                                                    emailCIM: widget.emailCI,
                                                   )));
 
                                       ScaffoldMessenger.of(context)

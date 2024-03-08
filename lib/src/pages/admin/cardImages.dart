@@ -10,12 +10,14 @@ class CardImages extends StatefulWidget {
   final EmpresaModel? empresaCIM;
   final int? idempresaCIM;
   final int? idlocalCIM;
+  final String? emailCIM;
   CardImages(
       {Key? key,
       required this.selectedInstallations,
       this.idempresaCIM,
       this.idlocalCIM,
-      this.empresaCIM})
+      this.empresaCIM,
+      this.emailCIM})
       : super(key: key);
 
   @override
@@ -94,6 +96,7 @@ class _CardImagesState extends State<CardImages> {
                               builder: (context) => BottomNavAdmin(
                                 empresaB: widget.empresaCIM,
                                 idEmpre: widget.idempresaCIM,
+                                emailEmpresa: widget.emailCIM,
                               ),
                             ),
                           );

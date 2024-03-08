@@ -338,8 +338,64 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                                 width: 10,
                                               ),
                                               GestureDetector(
-                                                onTap: () {
-                                                  // Aquí puedes agregar la lógica para editar el perfil
+                                                onTap: () async {
+                                                  // Aquí puedes agregar la lógica para eliminar el local
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                            "Confirmar eliminación"),
+                                                        content: Text(
+                                                            "¿Estás seguro de que quieres eliminar este local?"),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(); // Cerrar el diálogo
+                                                            },
+                                                            child: Text(
+                                                                "Cancelar",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        15.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Color(
+                                                                        0xFF238F8F))),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed:
+                                                                () async {
+                                                              await Databasehelper
+                                                                  .instance
+                                                                  .eliminarLocal(
+                                                                      usuarios[
+                                                                              index]
+                                                                          .idLocal);
+                                                              _cargarUsuarios();
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(); // Recargar la lista de usuarios
+                                                            },
+                                                            child: Text(
+                                                                "Eliminar",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        15.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .redAccent)),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
                                                 },
                                                 child: Container(
                                                   padding: EdgeInsets.all(5),

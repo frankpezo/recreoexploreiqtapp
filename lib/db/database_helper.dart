@@ -390,6 +390,16 @@ class Databasehelper {
     }
   }
 
+  //Elimianr local
+  Future<void> eliminarLocal(int? idLocal) async {
+    Database db = await instance.database;
+    await db.delete(
+      _tblLocal,
+      where: 'idLocal = ?',
+      whereArgs: [idLocal],
+    );
+  }
+
   //taer instalacions del local para card
   // Función para obtener las instalaciones de un local específico por su ID
 // Función para obtener las instalaciones de un local específico por su ID

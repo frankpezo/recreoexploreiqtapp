@@ -141,6 +141,7 @@ class _CardRegisterState extends State<CardRegister> {
                     builder: (context) => CardInsta(
                           idEmpresaCI: widget.idECR,
                           idLocalCI: idDelLocal,
+                          emailCI: widget.emailCR,
                         )));
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Color.fromARGB(255, 36, 246, 116),
