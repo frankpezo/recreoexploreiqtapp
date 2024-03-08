@@ -251,6 +251,19 @@ class Databasehelper {
     }
   }
 
+  //Actualizar empresa
+  Future<void> actualizarLocal(LocalModel local) async {
+    Database db = await instance.database;
+    await db.update(
+      _tblLocal,
+      local.toMap(),
+      where: 'idLocal = ?',
+      whereArgs: [
+        local.idLocal
+      ], // Utilizamos el ID del local para identificar el registro a actualizar
+    );
+  }
+
 // Obtener el ID de la empresa por su ID
 /*   Future<int?> obtenerIdEmpresaDesdeBD(int idEmpresa) async {
     Database db = await instance.database;

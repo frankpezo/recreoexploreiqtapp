@@ -153,15 +153,16 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                                   GestureDetector(
                                     onTap: () {
                                       // Aquí puedes agregar la lógica para editar
-                                      /*  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CardEdRegister(
-                                          userCardEd: widget.userViewA,
-                                          placeViewEd: widget.placeViewA,
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => CardEdRegister(
+                                            idEmpresaCER: widget.idEmpresaVC,
+                                            idlocalCER: widget.idlocalVC,
+                                            emailCER: widget.emailVC,
+                                          ),
                                         ),
-                                      ),
-                                    ); */
+                                      );
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(5),
