@@ -405,4 +405,30 @@ class Databasehelper {
         .toList();
     return nombresInstalaciones;
   }
+  //actualizar lista
+  // En tu clase Databasehelper
+
+// Actualizar las instalaciones para un local específico por su ID
+  Future<void> actualizarInstalaciones(
+      int idLocal, List<String> nuevasInstalaciones) async {
+    Database db = await instance.database;
+
+    // Eliminar las instalaciones existentes para este local
+    await db.delete(
+      _tblInstalaciones,
+      where: 'idLocal = ?',
+      whereArgs: [idLocal],
+    );
+
+    // Insertar las nuevas instalaciones
+    for (String instalacion in nuevasInstalaciones) {
+      await db.insert(
+        _tblInstalaciones,
+        {
+          'idLocal': idLocal,
+          'nombreInstalacion': instalacion,
+        },
+      );
+    }
+  }
 }

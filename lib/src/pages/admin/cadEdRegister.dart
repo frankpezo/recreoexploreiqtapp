@@ -147,17 +147,17 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                         idEmpresaCI: widget.idECR,
                         idLocalCI: idDelLocal,
                       ))); */
-          /*   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Color.fromARGB(255, 36, 246, 116),
             content: Text(
-              'Se registró local con éxito',
+              'El local fue modificado',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold),
             ),
             duration: Duration(seconds: 5),
-          )); */
+          ));
         }
       } catch (e) {
         print("El error fue: ${e}");

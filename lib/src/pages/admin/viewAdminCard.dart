@@ -391,14 +391,15 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    /*  Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => InstaEd(
-                                        placeViewEd: widget.placeViewA,
-                                        userInstEd: widget.userViewA),
-                                  ),
-                                ); */
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => InstaEd(
+                                          idEmpresaIED: widget.idEmpresaVC,
+                                          idLocalCIED: widget.idlocalVC,
+                                        ),
+                                      ),
+                                    );
                                   },
                                   child: Container(
                                     padding: EdgeInsets.all(5),
