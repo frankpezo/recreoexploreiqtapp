@@ -37,7 +37,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
   @override
   void initState() {
     super.initState();
-    _loadLocalData();
+    _loadLocalData(); //Para obtener infor del local
     _loadInstalacionesData();
   }
 
@@ -89,7 +89,7 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
                   Stack(
                     children: [
                       Image.asset(
-                        'assets/images/10.jpg',
+                        _local?.imageLocal ?? '',
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
                       ),

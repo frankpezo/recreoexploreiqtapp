@@ -251,19 +251,25 @@ class Databasehelper {
     }
   }
 
-  //Actualizar empresa
-  Future<void> actualizarLocal(LocalModel local) async {
+//trer info empresa  para card
+  Future<List<Map<String, dynamic>>> traerEmpresaPorId(int? idEmpresa) async {
     Database db = await instance.database;
-    await db.update(
-      _tblLocal,
-      local.toMap(),
-      where: 'idLocal = ?',
-      whereArgs: [
-        local.idLocal
-      ], // Utilizamos el ID del local para identificar el registro a actualizar
-    );
+    return await db
+        .query(_tblEmpresa, where: 'idEmpresa = ?', whereArgs: [idEmpresa]);
   }
 
+//Actualizar datos de la empresa
+  Future<void> actualizarEmpresa(EmpresaModel empresa) async {
+    Database db = await instance.database;
+    await db.update(
+      _tblEmpresa,
+      empresa.toMap(),
+      where: 'idEmpresa = ?',
+      whereArgs: [
+        empresa.idEmpresa
+      ], // Utilizamos el ID del empresa para identificar el registro a actualizar
+    );
+  }
 // Obtener el ID de la empresa por su ID
 /*   Future<int?> obtenerIdEmpresaDesdeBD(int idEmpresa) async {
     Database db = await instance.database;
@@ -333,6 +339,45 @@ class Databasehelper {
     }
   }
 
+  //Actualizar local
+  Future<void> actualizarLocal(LocalModel local) async {
+    Database db = await instance.database;
+    await db.update(
+      _tblLocal,
+      local.toMap(),
+      where: 'idLocal = ?',
+      whereArgs: [
+        local.idLocal
+      ], // Utilizamos el ID del local para identificar el registro a actualizar
+    );
+  }
+
+  //Elimianr local
+  Future<void> eliminarLocal(int? idLocal) async {
+    Database db = await instance.database;
+    await db.delete(
+      _tblLocal,
+      where: 'idLocal = ?',
+      whereArgs: [idLocal],
+    );
+  }
+
+  //taer instalacions del local para card
+  // Función para obtener las instalaciones de un local específico por su ID
+// Función para obtener las instalaciones de un local específico por su ID
+  Future<List<String>> obtenerInstalacionesPorIdLocal(int? idLocal) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> result = await db.query(
+      _tblInstalaciones,
+      where: 'idLocal = ?',
+      whereArgs: [idLocal],
+    );
+    List<String> nombresInstalaciones = result
+        .map((instalacion) => instalacion['nombreInstalacion'] as String)
+        .toList();
+    return nombresInstalaciones;
+  }
+
   //Mostrar locales registrados
   Future<void> mostrarLocales() async {
     Database db = await instance.database;
@@ -390,31 +435,6 @@ class Databasehelper {
     }
   }
 
-  //Elimianr local
-  Future<void> eliminarLocal(int? idLocal) async {
-    Database db = await instance.database;
-    await db.delete(
-      _tblLocal,
-      where: 'idLocal = ?',
-      whereArgs: [idLocal],
-    );
-  }
-
-  //taer instalacions del local para card
-  // Función para obtener las instalaciones de un local específico por su ID
-// Función para obtener las instalaciones de un local específico por su ID
-  Future<List<String>> obtenerInstalacionesPorIdLocal(int? idLocal) async {
-    Database db = await instance.database;
-    List<Map<String, dynamic>> result = await db.query(
-      _tblInstalaciones,
-      where: 'idLocal = ?',
-      whereArgs: [idLocal],
-    );
-    List<String> nombresInstalaciones = result
-        .map((instalacion) => instalacion['nombreInstalacion'] as String)
-        .toList();
-    return nombresInstalaciones;
-  }
   //actualizar lista
   // En tu clase Databasehelper
 
