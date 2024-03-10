@@ -3,6 +3,7 @@ import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/edProfileAd.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/login_admin.dart';
+import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
 
 class ProfileAdminScreen extends StatefulWidget {
   final int? idEmpresP;
@@ -101,8 +102,8 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                           "Mi Perfil",
                           style: TextStyle(fontSize: 17),
                         ),
-                        Text(
-                            'id: ${widget.idEmpresP} - email: ${widget.emailEP}'),
+                        /* Text(
+                            'id: ${widget.idEmpresP} - email: ${widget.emailEP}'), */
                       ],
                     ),
                     SizedBox(
@@ -235,8 +236,60 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                     ),
                                     SizedBox(height: 40),
                                     ElevatedButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         // Acción para eliminar cuenta
+                                        await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title:
+                                                  Text("Confirmar eliminación"),
+                                              content: Text(
+                                                  "¿Estás seguro que desea eliminar su perfil?"),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(); // Cerrar el diálogo
+                                                  },
+                                                  child: Text("Cancelar",
+                                                      style: TextStyle(
+                                                          fontSize: 15.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color(
+                                                              0xFF238F8F))),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    await Databasehelper
+                                                        .instance
+                                                        .eliminarEmpresa(
+                                                            widget.idEmpresP);
+                                                    //_cargarUsuarios();
+
+                                                    Navigator.of(context)
+                                                        .pop(); // Cerrar diálogo
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            WelcomeSplah(),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text("Eliminar",
+                                                      style: TextStyle(
+                                                          fontSize: 15.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors
+                                                              .redAccent)),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors

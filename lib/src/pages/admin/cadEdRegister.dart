@@ -273,11 +273,11 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                   children: [
                                     Text("Datos del local",
                                         style: TextStyle(
-                                            fontSize: 15.0,
+                                            fontSize: 18.0,
                                             fontWeight: FontWeight.bold,
                                             color: Color(0xFF238F8F))),
-                                    Text(
-                                        "idEmpresa: ${widget.idEmpresaCER} - Localid: ${widget.idlocalCER}"),
+                                    /*  Text(
+                                        "idEmpresa: ${widget.idEmpresaCER} - Localid: ${widget.idlocalCER}"), */
                                   ],
                                 ),
                                 SizedBox(height: 15),

@@ -268,12 +268,12 @@ class _CardRegisterState extends State<CardRegister> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                        "Datos del local:${widget.idECR} ${widget.emailCR}",
+                                    Text("Datos del local",
                                         style: TextStyle(
                                             fontSize: 15.0,
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF238F8F)))
+                                            color: Color(0xFF238F8F))),
+                                    // Text(":${widget.idECR} ${widget.emailCR}")
                                   ],
                                 ),
                                 SizedBox(height: 15),

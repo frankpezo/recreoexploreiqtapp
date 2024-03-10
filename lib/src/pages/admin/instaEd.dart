@@ -136,8 +136,8 @@ class _InstaEdState extends State<InstaEd> {
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.bold,
                                           color: Color(0xFF238F8F))),
-                                  Text(
-                                      "idEmpresa: ${widget.idEmpresaIED} -- idLocal: ${widget.idLocalCIED}")
+                                  /*  Text(
+                                      "idEmpresa: ${widget.idEmpresaIED} -- idLocal: ${widget.idLocalCIED}") */
                                 ],
                               ),
                               SizedBox(height: 15),

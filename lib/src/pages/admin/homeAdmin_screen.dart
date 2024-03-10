@@ -147,9 +147,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       children: [
                         // Text("ID: ${usuarios[0].idEmpresa}S"),
                         Text(
-                          "Mi local ${widget.idEA}${widget.emailEA}",
+                          "Mi local",
                           style: TextStyle(fontSize: 17),
                         ),
+                        // Text(" ${widget.idEA}${widget.emailEA}")
                       ],
                     ),
                     GestureDetector(
@@ -202,19 +203,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                         ),
                       ),
                     ),
-                    /*  Flexible(
-                      child: ListView.builder(
-                        padding: EdgeInsets.only(bottom: 10),
-                        itemCount: HomeAdminScreen.placeE.length,
-                        itemBuilder: (context, index) {
-                          return YourWidgetEditP(
-                            place: HomeAdminScreen.placeE[index],
-                            userC: widget.empresaH!, //####
-                          );
-                        },
-                      ),
-                    ), */
-
                     Flexible(
                       child: ListView.builder(
                         itemCount: usuarios.length,
@@ -264,12 +252,14 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                '${usuarios[index].nombreLocal}  id: ${usuarios[index].idLocal}',
+                                                '${usuarios[index].nombreLocal} ',
                                                 style: TextStyle(
                                                   fontSize: 17.0,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
+                                              /*      Text(
+                                                  "id: ${usuarios[index].idLocal}") */
                                             ],
                                           ),
                                           SizedBox(

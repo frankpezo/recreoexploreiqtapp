@@ -80,12 +80,12 @@ class _ViewCardAdminState extends State<ViewCardAdmin> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Row(
+                  /* Row(
                     children: [
                       Text(
                           "idEmpresa: ${widget.idEmpresaVC} - emailE: ${widget.emailVC} | idLocal: ${widget.idlocalVC}")
                     ],
-                  ),
+                  ), */
                   Stack(
                     children: [
                       Image.asset(

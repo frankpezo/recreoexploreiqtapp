@@ -46,42 +46,6 @@ class _CardImagesState extends State<CardImages> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    /*  Container(
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                        right: 20,
-                        left: 20,
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CardInsta(
-                                idEmpresaCI: widget.idempresaCIM,
-                                idLocalCI: widget.idlocalCIM,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.arrow_back_ios,
-                              size: 24,
-                              color: Colors.black,
-                            ),
-                            Text(
-                              'Regresar',
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ), */
                     Container(
                       padding: const EdgeInsets.only(
                         top: 8,
@@ -135,13 +99,13 @@ class _CardImagesState extends State<CardImages> {
                                 Text(
                                   "Instalaciones",
                                   style: TextStyle(
-                                    fontSize: 15.0,
+                                    fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFF238F8F),
                                   ),
                                 ),
-                                Text(
-                                    "idEmpresa: ${widget.idempresaCIM} -- idLocal: ${widget.idlocalCIM}")
+                                /* Text(
+                                    "idEmpresa: ${widget.idempresaCIM} -- idLocal: ${widget.idlocalCIM}") */
                               ],
                             ),
                             SizedBox(height: 15),

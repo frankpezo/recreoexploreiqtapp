@@ -270,21 +270,16 @@ class Databasehelper {
       ], // Utilizamos el ID del empresa para identificar el registro a actualizar
     );
   }
-// Obtener el ID de la empresa por su ID
-/*   Future<int?> obtenerIdEmpresaDesdeBD(int idEmpresa) async {
+
+//Eliminar empresa
+  Future<void> eliminarEmpresa(int? idEmpresa) async {
     Database db = await instance.database;
-    List<Map<String, dynamic>> empresas = await db.query(
+    await db.delete(
       _tblEmpresa,
-      columns: ['idEmpresa'], // Seleccionar solo el ID de la empresa
       where: 'idEmpresa = ?',
       whereArgs: [idEmpresa],
     );
-    if (empresas.isNotEmpty) {
-      return empresas.first['idEmpresa'] as int?;
-    } else {
-      return null;
-    }
-  } */
+  }
 
   //6.2. Local
   //Registrar Local

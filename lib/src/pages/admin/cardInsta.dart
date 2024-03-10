@@ -105,11 +105,11 @@ class _CardInstaState extends State<CardInsta> {
                                   children: [
                                     Text("Instalaciones",
                                         style: TextStyle(
-                                            fontSize: 15.0,
+                                            fontSize: 18.0,
                                             fontWeight: FontWeight.bold,
                                             color: Color(0xFF238F8F))),
-                                    Text(
-                                        "idEmpresa: ${widget.idEmpresaCI} -- idLocal: ${widget.idLocalCI}")
+                                    /*      Text(
+                                        "idEmpresa: ${widget.idEmpresaCI} -- idLocal: ${widget.idLocalCI}") */
                                   ],
                                 ),
                                 SizedBox(height: 15),

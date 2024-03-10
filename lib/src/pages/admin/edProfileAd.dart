@@ -74,7 +74,7 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
           print("Se modificó perfil");
         }
 
-        /* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Color.fromARGB(255, 36, 246, 116),
           content: Text(
             'Se modificó perfil',
@@ -82,7 +82,7 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
                 color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
           ),
           duration: Duration(seconds: 5),
-        )); */
+        ));
       } catch (e) {
         print("El error: ${e}");
       }
@@ -175,8 +175,8 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold,
                                             color: Color(0xFF238F8F))),
-                                    Text(
-                                        "idEmpresa: ${widget.idEmpresaCEP} - email: ${widget.emailCEP}"),
+                                    /*  Text(
+                                        "idEmpresa: ${widget.idEmpresaCEP} - email: ${widget.emailCEP}"), */
                                   ],
                                 ),
                                 SizedBox(height: 15),

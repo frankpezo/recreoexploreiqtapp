@@ -67,10 +67,10 @@ class _BottomNavAdminState extends State<BottomNavAdmin> {
             },
             items: [
               //4.1. Aquí se producirá el cambio de página y de iconos
-              _buildNavItem(Icons.home_outlined, Icons.home,
-                  "Inicio ${widget.emailEmpresa}", currentIndex == 0),
-              _buildNavItem(Icons.person_outline, Icons.person,
-                  "Perfil ${widget.idEmpre}", currentIndex == 1),
+              _buildNavItem(
+                  Icons.home_outlined, Icons.home, "Inicio", currentIndex == 0),
+              _buildNavItem(Icons.person_outline, Icons.person, "Perfil",
+                  currentIndex == 1),
             ],
           ),
         ),
