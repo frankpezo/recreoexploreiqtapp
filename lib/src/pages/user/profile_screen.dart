@@ -1,17 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/edit_perfil.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/login_user.dart';
 
 class ProfileUserScreen extends StatefulWidget {
-  final ModelUser currentUser;
-  ProfileUserScreen({Key? key, required this.currentUser}) : super(key: key);
+  final int? idUserP;
+  final String? emailUserP;
+  ProfileUserScreen({
+    Key? key,
+    this.idUserP,
+    this.emailUserP,
+  }) : super(key: key);
 
   @override
   State<ProfileUserScreen> createState() => _ProfileUserScreenState();
 }
 
 class _ProfileUserScreenState extends State<ProfileUserScreen> {
+  //1. Creamos model del user aquí
+  ModelUser? _user;
+  //1.1. Aquí inicialermos la función creada abajo
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //1.1.1 Aquí irá la función
+    _loadUserData();
+  }
+
+  //2. Función que permitirá traer los datos
+  Future<void> _loadUserData() async {
+    //2.1. Sqlite
+    Databasehelper dbHelper = Databasehelper.instance;
+    //2.2. Mapeo
+    List<Map<String, dynamic>> userData =
+        await dbHelper.traerUserPorId(widget.idUserP);
+    if (userData.isNotEmpty) {
+      setState(() {
+        _user = ModelUser.fromMap(userData.first);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,21 +78,22 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber),
-                    Text('4.0'),
-                  ],
-                ),
               ],
             ),
             SizedBox(height: 50),
             // Texto "Perfil"
-            Text(
-              'Perfil',
-              style: TextStyle(
-                fontSize: 18,
-              ),
+            Row(
+              children: [
+                Text(
+                  'Perfil',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  'IDUSER: ${widget.idUserP} - EmailUse: ${widget.emailUserP}',
+                )
+              ],
             ),
             SizedBox(height: 10),
             SingleChildScrollView(
@@ -81,8 +113,8 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CircleAvatar(
-                              backgroundImage: AssetImage(
-                                  'assets/images/${widget.currentUser.imgUser}'), // Ruta de la imagen del usuario
+                              backgroundImage: AssetImage(_user?.imgUser ??
+                                  ''), // Ruta de la imagen del usuario
                               radius: 35,
                             ),
                             SizedBox(
@@ -93,13 +125,13 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${widget.currentUser.nombreUser} ${widget.currentUser.apellidoUser}', //Datos dinámicos
+                                  "${_user?.nombreUser ?? ''} ${_user?.apellidoUser ?? ''}", //Datos dinámicos
                                   style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  '${widget.currentUser.emailUser}',
+                                  "${_user?.emailUser ?? ''}",
                                   style: TextStyle(fontSize: 15),
                                 ),
                               ],
@@ -114,11 +146,11 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  Navigator.pushReplacement(
+                                  /*  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => EditPefil(
-                                              userEdt: widget.currentUser)));
+                                              userEdt: widget.userP))); */
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors

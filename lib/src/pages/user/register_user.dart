@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
+import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/login_user.dart';
 import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
 
 import '../../../componentes/controller.dart';
 
 class RegisterUser extends StatefulWidget {
-  RegisterUser({Key? key}) : super(key: key);
+  final ModelUser? userR;
+  RegisterUser({Key? key, this.userR}) : super(key: key);
 
   @override
   State<RegisterUser> createState() => _RegisterUserState();
@@ -13,6 +16,7 @@ class RegisterUser extends StatefulWidget {
 
 class _RegisterUserState extends State<RegisterUser> {
   //1. Text Controllers
+  final GlobalKey<FormState> formKeyDos = GlobalKey<FormState>();
   TextEditingController nombre = TextEditingController();
   TextEditingController apellido = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -20,14 +24,75 @@ class _RegisterUserState extends State<RegisterUser> {
   bool obscurePassword = true;
   List<dynamic> userData = []; //Nos servirá para el registro
 
+  //3. Inicializamos los campos para poder hacer el registro
+  @override
+  void initState() {
+    super.initState();
+    if (widget.userR != null) {
+      nombre.text = widget.userR!.nombreUser!;
+      apellido.text = widget.userR!.apellidoUser!;
+      email.text = widget.userR!.emailUser!;
+      password.text = widget.userR!.passwordUser!;
+    }
+  }
+
   //2. Api para insertar en la bd
   Future<void> insertUser() async {
     if (nombre.text.isNotEmpty &&
         apellido.text.isNotEmpty &&
         email.text.isNotEmpty &&
         password.text.isNotEmpty) {
-      print("Registro con éxito");
-      // Lógica para consumir la API
+      // Lógica para hacer el registro
+      try {
+        //4. Verifcación si existe el usuario ya registrado
+        bool userExiste =
+            await Databasehelper.instance.existeUser('${email.text}');
+        if (userExiste) {
+          print("El usuario ya existe");
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Color.fromARGB(255, 242, 48, 48),
+            content: Text(
+              'El email ya existe',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ));
+        } else {
+          //3.1. Traemos el modelUser
+          ModelUser user = ModelUser(
+              nombreUser: nombre.text,
+              apellidoUser: apellido.text,
+              emailUser: email.text,
+              passwordUser: password.text,
+              imgUser: "assets/images/10.jpg");
+          //3.2. Condicional para verificar que todo va bien en el registro
+          if (widget.userR == null) {
+            await Databasehelper.instance.registerUser(user);
+            print("Se registro usuario con éxito");
+            //Direccionar al login
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginUser()));
+            //Mensaje de éxito
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Color.fromARGB(255, 36, 246, 116),
+              content: Text(
+                'Se registró con éxito',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              duration: Duration(seconds: 5),
+            ));
+          }
+        }
+      } catch (e) {
+        print("El error fue: ${e}");
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Color.fromARGB(255, 242, 48, 48),
@@ -360,10 +425,10 @@ class _RegisterUserState extends State<RegisterUser> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      if (formKeyDos.currentState!
-                                          .validate()) {}
+                                      if (formKeyDos.currentState!.validate()) {
+                                        insertUser();
+                                      }
                                     });
-                                    insertUser();
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(

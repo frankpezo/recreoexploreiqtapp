@@ -8,8 +8,11 @@ import 'package:recreoexploreiqtapp/src/pages/categorias/sanjuan_cate.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/top_cate.dart';
 
 class HomeUserScreen extends StatefulWidget {
-  final ModelUser userH;
-  HomeUserScreen({Key? key, required this.userH}) : super(key: key);
+  final ModelUser? userH;
+  HomeUserScreen({
+    Key? key,
+    this.userH,
+  }) : super(key: key);
 
   @override
   State<HomeUserScreen> createState() => _HomeUserScreenState();

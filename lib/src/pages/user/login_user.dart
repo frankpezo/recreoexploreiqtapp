@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/register_user.dart';
 import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
@@ -6,13 +7,15 @@ import '../../../componentes/controller.dart';
 import '../../bottomNav/bottom_UserNav.dart';
 
 class LoginUser extends StatefulWidget {
-  LoginUser({Key? key}) : super(key: key);
+  final ModelUser? userL;
+  LoginUser({Key? key, this.userL}) : super(key: key);
 
   @override
   State<LoginUser> createState() => _LoginUserState();
 }
 
 class _LoginUserState extends State<LoginUser> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   //1. Controller para los campos
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -22,7 +25,7 @@ class _LoginUserState extends State<LoginUser> {
   //lISTA DEL USUARIO
   final List<ModelUser> users = [
     ModelUser(
-      id: 1,
+      idUser: 1,
       nombreUser: "Pierina",
       apellidoUser: "Ruíz",
       emailUser: "pierina@gmail.com",
@@ -30,7 +33,7 @@ class _LoginUserState extends State<LoginUser> {
       imgUser: '6.jpg',
     ),
     ModelUser(
-      id: 2,
+      idUser: 2,
       nombreUser: "Josefa",
       apellidoUser: "Torres",
       emailUser: "josefa@gmail.com",
@@ -43,10 +46,46 @@ class _LoginUserState extends State<LoginUser> {
   Future<void> getDatos() async {
     if (email.text.isNotEmpty && password.text.isNotEmpty) {
       try {
+        //2.1. Inicializamos los campos limpiándolos
         final emailC = email.text.trim();
         final passC = password.text.trim();
-        //Verificamos si coinciden
-        final user = users.firstWhere(
+        //2.2. Comprobamos si existe el email y la contra
+        final success = await Databasehelper.instance.loginUser(emailC, passC);
+        //2.3. Condicional en caso de éxito
+        if (success) {
+          print('Se inició sesión con éxito');
+          //2.3.1. Vamos a tener que obtener el id del usuario por medio del email
+          int? idUserL =
+              await Databasehelper.instance.obtenerIdUserDesdeBD('${emailC}');
+          //2.3.2. Cambio de pantalla a la principal
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BottomNavUser(
+                        userBN: widget.userL,
+                        idUserBN: idUserL,
+                        emailUserBN: emailC,
+                      )));
+        } else {
+          print('Los datos no coinciden');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Color.fromARGB(255, 242, 48, 48),
+              content: Text(
+                'Los datos no coinciden',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+
+        //Verificamos si coinciden de los datos estáticos
+        /*   final user = users.firstWhere(
           (user) => user.emailUser == emailC && user.passwordUser == passC,
           orElse: null,
         );
@@ -77,7 +116,7 @@ class _LoginUserState extends State<LoginUser> {
               duration: Duration(seconds: 3),
             ),
           ); */
-        }
+        } */
       } catch (e) {
         String e = "fallo";
         print(e);
@@ -347,9 +386,10 @@ class _LoginUserState extends State<LoginUser> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      if (formKey.currentState!.validate()) {}
+                                      if (formKey.currentState!.validate()) {
+                                        getDatos();
+                                      }
                                     });
-                                    getDatos();
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(

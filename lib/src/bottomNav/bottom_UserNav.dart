@@ -5,8 +5,11 @@ import 'package:recreoexploreiqtapp/src/pages/user/home_screen.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/profile_screen.dart';
 
 class BottomNavUser extends StatefulWidget {
-  final ModelUser user;
-  BottomNavUser({Key? key, required this.user}) : super(key: key);
+  final ModelUser? userBN;
+  final int? idUserBN;
+  final String? emailUserBN;
+  BottomNavUser({Key? key, this.userBN, this.idUserBN, this.emailUserBN})
+      : super(key: key);
 
   @override
   State<BottomNavUser> createState() => _BottomNavUserState();
@@ -24,14 +27,15 @@ class _BottomNavUserState extends State<BottomNavUser> {
     super.initState();
     pages = [
       HomeUserScreen(
-        userH: widget.user,
+        userH: widget.userBN,
       ),
       FavoriteUserScreen(
-        userF: widget.user,
+        userF: widget.userBN,
       ),
       ProfileUserScreen(
-          currentUser: widget
-              .user), // Inicializar pages después de que widget.user esté disponible
+        idUserP: widget.idUserBN,
+        emailUserP: widget.emailUserBN,
+      ), // Inicializar pages después de que widget.user esté disponible
     ];
   }
 
@@ -65,10 +69,10 @@ class _BottomNavUserState extends State<BottomNavUser> {
             },
             items: [
               //4.1. Aquí se producirá el cambio de página y de iconos
-              _buildNavItem(
-                  Icons.home_outlined, Icons.home, "Inicio", currentIndex == 0),
-              _buildNavItem(Icons.favorite_outline, Icons.favorite, "Favoritos",
-                  currentIndex == 1),
+              _buildNavItem(Icons.home_outlined, Icons.home,
+                  "Inicio ${widget.idUserBN}", currentIndex == 0),
+              _buildNavItem(Icons.favorite_outline, Icons.favorite,
+                  "Favoritos ${widget.emailUserBN}", currentIndex == 1),
               _buildNavItem(Icons.person_outline, Icons.person, "Perfil",
                   currentIndex == 2),
             ],

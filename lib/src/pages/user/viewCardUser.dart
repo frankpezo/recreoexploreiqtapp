@@ -62,16 +62,14 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      /* Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return BottomNavUser(
-                              user: widget.userView,
-                            );
+                            return BottomNavUser();
                           },
                         ),
-                      );
+                      ); */
                     },
                   ),
                 ),

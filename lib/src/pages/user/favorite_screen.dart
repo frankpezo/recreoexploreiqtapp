@@ -4,8 +4,8 @@ import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/widgets/cardPlaces.dart';
 
 class FavoriteUserScreen extends StatefulWidget {
-  final ModelUser userF;
-  FavoriteUserScreen({Key? key, required this.userF}) : super(key: key);
+  final ModelUser? userF;
+  FavoriteUserScreen({Key? key, this.userF}) : super(key: key);
 
   @override
   State<FavoriteUserScreen> createState() => _FavoriteUserScreenState();
@@ -116,7 +116,7 @@ class _FavoriteUserScreenState extends State<FavoriteUserScreen> {
                 itemBuilder: (context, index) {
                   return YourWidget(
                     place: listFavorite[index],
-                    userCard: widget.userF,
+                    userCard: widget.userF!,
                   );
                 },
               ),

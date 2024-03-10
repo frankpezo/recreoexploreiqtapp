@@ -60,12 +60,12 @@ class _EditPefilState extends State<EditPefil> {
   void initState() {
     super.initState();
     // Inicializar los controladores de los campos de texto con los datos del usuario
-    id.text = widget.userEdt.id.toString();
+    /*  id.text = widget.userEdt.id.toString();
     nombre.text = widget.userEdt.nombreUser;
     apellido.text = widget.userEdt.apellidoUser;
     email.text = widget.userEdt.emailUser;
     password.text = widget.userEdt.passwordUser;
-    imgUser.text = widget.userEdt.imgUser;
+    imgUser.text = widget.userEdt.imgUser; */
     // Puedes inicializar el campo de contraseña si es necesario
     // password.text = widget.userEdt.password;
   }
@@ -90,14 +90,14 @@ class _EditPefilState extends State<EditPefil> {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          /* Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => BottomNavUser(
-                                user: widget.userEdt,
+                               
                               ),
                             ),
-                          );
+                          ); */
                         },
                         child: Row(
                           children: [

@@ -2,6 +2,7 @@
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
+import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 //1.1. Vamos a importar los modelos necesarios luego de crear las tablas
@@ -50,12 +51,12 @@ class Databasehelper {
     //Tabla Usuario
     await db.execute('''
     CREATE TABLE $_tblUsuario(
-      idUsuario INTEGER PRIMARY KEY AUTOINCREMENT, 
-      nombreUsuario TEXT NOT NULL, 
-      apellidoUsuario TEXT NOT NULL, 
-      emailUsuario TEXT NOT NULL, 
-      passwordUsuario TEXT NOT NULL,
-      imgUsuario TEXT NOT NULL
+      idUser INTEGER PRIMARY KEY AUTOINCREMENT, 
+      nombreUser TEXT NOT NULL, 
+      apellidoUser TEXT NOT NULL, 
+      emailUser TEXT NOT NULL, 
+      passwordUser TEXT NOT NULL,
+      imgUser TEXT NOT NULL
     )
 ''');
     /*    //Taba PUNTUACIÓN
@@ -111,13 +112,7 @@ class Databasehelper {
  )
 ''');
 /* 
-    //Tabla INSTALACIONES
-    await db.execute('''
- CREATE TABLE $_tblInstalaciones(
-  idInstalaciones INTEGER PRIMARY KEY AUTOINCREMENT, 
-  nombreInstalacion TEXT NOT NULL
- )
-''');
+    
 
     //Tabla IMAGEN
     await db.execute('''
@@ -456,4 +451,80 @@ class Databasehelper {
       );
     }
   }
+
+//6.3. Usuarios
+//Registro de usuario
+  Future<int> registerUser(ModelUser user) async {
+    Database db = await instance.database;
+    return await db.insert(_tblUsuario, user.toMap());
+  }
+
+  //Verificar si usuario ya existe
+  Future<bool> existeUser(String email) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> result = await db.query(
+      _tblUsuario,
+      where: 'emailUser = ? ',
+      whereArgs: [email],
+    );
+    return result.isNotEmpty;
+  }
+
+//Login de usuario
+  Future<bool> loginUser(String email, String password) async {
+    Database db = await instance.database;
+    // Recorremos con una lista
+    List<Map<String, dynamic>> result = await db.query(
+      _tblUsuario,
+      where: 'emailUser= ?',
+      whereArgs: [email],
+    );
+
+    // Si no se encuentra un usuario con ese email, retornar falso
+    if (result.isEmpty) {
+      return false;
+    }
+    // Verificar la contraseña (sensible a mayúsculas y minúsculas)
+    String storedPassword = result.first['passwordUser'];
+    if (password.toLowerCase() == storedPassword.toLowerCase()) {
+      return true; // Las contraseñas coinciden
+    } else {
+      return false; // Las contraseñas no coinciden
+    }
+  }
+
+  //id del usuario
+  Future<int?> obtenerIdUserDesdeBD(String? emailUser) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> users = await db.query(
+      _tblUsuario,
+      where: 'emailUser = ?',
+      whereArgs: [emailUser],
+    );
+    if (users.isNotEmpty) {
+      return users.first['idUser'] as int?;
+    } else {
+      return null;
+    }
+  }
+
+  //Traer info del usuario a través de su ID
+  Future<List<Map<String, dynamic>>> traerUserPorId(int? idUser) async {
+    Database db = await instance.database;
+    return await db
+        .query(_tblUsuario, where: 'idUser = ?', whereArgs: [idUser]);
+  }
+
+//Actualizar datos de la empresa
+  /* Future<void> actualizarEmpresa(EmpresaModel empresa) async {
+    Database db = await instance.database;
+    await db.update(
+      _tblEmpresa,
+      empresa.toMap(),
+      where: 'idUser = ?',
+      whereArgs: [
+        empresa.idUser
+      ], // Utilizamos el ID del empresa para identificar el registro a actualizar
+    );
+  } */
 }

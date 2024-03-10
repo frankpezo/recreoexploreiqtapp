@@ -4,8 +4,8 @@ import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/widgets/cardPlaces.dart';
 
 class TopCate extends StatefulWidget {
-  final ModelUser userT;
-  TopCate({Key? key, required this.userT}) : super(key: key);
+  final ModelUser? userT;
+  TopCate({Key? key, this.userT}) : super(key: key);
 
   @override
   State<TopCate> createState() => _TopCateState();
@@ -163,7 +163,7 @@ class _TopCateState extends State<TopCate> {
         itemBuilder: (context, index) {
           return YourWidget(
             place: TopCate.placesTop[index],
-            userCard: widget.userT,
+            userCard: widget.userT!,
           ); // Accede a placesTop utilizando el nombre de la clase
         },
       ),

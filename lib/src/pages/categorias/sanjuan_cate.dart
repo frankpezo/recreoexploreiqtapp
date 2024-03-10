@@ -4,8 +4,8 @@ import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/widgets/cardPlaces.dart';
 
 class SanjuanCate extends StatefulWidget {
-  final ModelUser userS;
-  SanjuanCate({Key? key, required this.userS}) : super(key: key);
+  final ModelUser? userS;
+  SanjuanCate({Key? key, this.userS}) : super(key: key);
 
   @override
   State<SanjuanCate> createState() => _SanjuanCateState();
@@ -67,7 +67,7 @@ class _SanjuanCateState extends State<SanjuanCate> {
             itemBuilder: (context, index) {
               return YourWidget(
                 place: placeSanJuan[index],
-                userCard: widget.userS,
+                userCard: widget.userS!,
               );
             }));
   }
