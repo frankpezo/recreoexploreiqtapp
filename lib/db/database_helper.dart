@@ -515,16 +515,26 @@ class Databasehelper {
         .query(_tblUsuario, where: 'idUser = ?', whereArgs: [idUser]);
   }
 
-//Actualizar datos de la empresa
-  /* Future<void> actualizarEmpresa(EmpresaModel empresa) async {
+//Actualizar datos del usuario
+  Future<void> actualizarUser(ModelUser user) async {
     Database db = await instance.database;
     await db.update(
-      _tblEmpresa,
-      empresa.toMap(),
+      _tblUsuario,
+      user.toMap(),
       where: 'idUser = ?',
       whereArgs: [
-        empresa.idUser
+        user.idUser
       ], // Utilizamos el ID del empresa para identificar el registro a actualizar
     );
-  } */
+  }
+
+  //Eliminar Usuario
+  Future<void> eliminarUser(int? idUser) async {
+    Database db = await instance.database;
+    await db.delete(
+      _tblUsuario,
+      where: 'idUser = ?',
+      whereArgs: [idUser],
+    );
+  }
 }

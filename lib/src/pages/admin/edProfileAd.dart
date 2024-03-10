@@ -126,10 +126,10 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ProfileAdminScreen(
-                                      idEmpresP: widget.idEmpresaCEP,
-                                      emailEP: widget.emailCEP,
-                                    )),
+                                builder: (context) => BottomNavAdmin(
+                                    empresaB: widget.empresaCEP,
+                                    idEmpre: widget.idEmpresaCEP,
+                                    emailEmpresa: widget.emailCEP)),
                           );
                         },
                         child: Row(

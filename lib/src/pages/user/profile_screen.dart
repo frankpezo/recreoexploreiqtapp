@@ -3,6 +3,7 @@ import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/edit_perfil.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/login_user.dart';
+import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
 
 class ProfileUserScreen extends StatefulWidget {
   final int? idUserP;
@@ -146,11 +147,13 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  /*  Navigator.pushReplacement(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => EditPefil(
-                                              userEdt: widget.userP))); */
+                                              idUserEdt: widget.idUserP,
+                                              emailUserEdt:
+                                                  widget.emailUserP)));
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors
@@ -216,8 +219,53 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                               ),
                               SizedBox(height: 40),
                               ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   // Acción para eliminar cuenta
+                                  await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Confirmar eliminación"),
+                                        content: Text(
+                                            "¿Estás seguro que desea eliminar su perfil?"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Cerrar el diálogo
+                                            },
+                                            child: Text("Cancelar",
+                                                style: TextStyle(
+                                                    fontSize: 15.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFF238F8F))),
+                                          ),
+                                          TextButton(
+                                            onPressed: () async {
+                                              await Databasehelper.instance
+                                                  .eliminarUser(widget.idUserP);
+                                              //_cargarUsuarios();
+
+                                              Navigator.of(context)
+                                                  .pop(); // Cerrar diálogo
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      WelcomeSplah(),
+                                                ),
+                                              );
+                                            },
+                                            child: Text("Eliminar",
+                                                style: TextStyle(
+                                                    fontSize: 15.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.redAccent)),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors
