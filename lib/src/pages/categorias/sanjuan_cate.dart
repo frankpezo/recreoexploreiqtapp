@@ -3,6 +3,7 @@ import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
+import 'package:recreoexploreiqtapp/src/pages/user/viewCardUser.dart';
 import 'package:recreoexploreiqtapp/src/widgets/cardPlaces.dart';
 
 class SanjuanCate extends StatefulWidget {
@@ -96,15 +97,17 @@ class _SanjuanCateState extends State<SanjuanCate> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  /*  Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ViewCardUser(
-                        placeView: place,
-                        userView: widget.userCard,
+                        userVC: widget.userS,
+                        idUserVC: widget.idUserSan,
+                        emailUserVc: widget.emailUserSan,
+                        idLocalVC: localSanJuan[index].idLocal,
                       ),
                     ),
-                  ); */
+                  );
                 },
                 child: Card(
                   margin: EdgeInsets.all(18.0),

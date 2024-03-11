@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
+import 'package:recreoexploreiqtapp/src/pages/user/viewCardUser.dart';
 
 class IquitosCate extends StatefulWidget {
   final ModelUser? usersI;
@@ -50,15 +51,17 @@ class _IquitosCateState extends State<IquitosCate> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  /*  Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ViewCardUser(
-                        placeView: place,
-                        userView: widget.userCard,
+                        userVC: widget.usersI,
+                        idUserVC: widget.idUserIqt,
+                        emailUserVc: widget.emailUserIqt,
+                        idLocalVC: localIquitos[index].idLocal,
                       ),
                     ),
-                  ); */
+                  );
                 },
                 child: Card(
                   margin: EdgeInsets.all(18.0),

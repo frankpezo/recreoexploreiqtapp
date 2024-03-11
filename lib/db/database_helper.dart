@@ -111,6 +111,20 @@ class Databasehelper {
   FOREIGN KEY(idLocal) REFERENCES $_tblLocal(idLocal)
  )
 ''');
+
+// Tabla PUNTUACION_LOCAL
+    await db.execute('''
+CREATE TABLE $_tblPuntuacionLocal (
+  idPuntuacionLocal INTEGER PRIMARY KEY AUTOINCREMENT, 
+  idLocal INTEGER NOT NULL,
+  idUsuario INTEGER NOT NULL,
+  puntuacion INTEGER NOT NULL,
+  comentario TEXT,
+  FOREIGN KEY(idLocal) REFERENCES $_tblLocal(idLocal),
+  FOREIGN KEY(idUsuario) REFERENCES $_tblUsuario(idUser)
+)
+''');
+
 /* 
     
 
@@ -547,4 +561,38 @@ class Databasehelper {
       whereArgs: [idUser],
     );
   }
+
+//Para insertar Puntuación y comentario
+  Future<int> insertPuntuacionLocal(
+      int? idLocal, int? idUsuario, int? puntuacion, String? comentario) async {
+    Database db = await instance.database;
+    return await db.insert(_tblPuntuacionLocal, {
+      'idLocal': idLocal,
+      'idUsuario': idUsuario,
+      'puntuacion': puntuacion,
+      'comentario': comentario,
+    });
+  }
+
+//Datos del comentario
+  Future<List<Map<String, dynamic>>> obtenerComentariosPorLocal(
+      int idLocal) async {
+    Database db = await instance.database;
+    return await db.rawQuery('''
+      SELECT u.idUser, u.nombreUser, u.apellidoUser, u.imgUser, p.puntuacion, p.comentario
+      FROM $_tblUsuario u
+      INNER JOIN $_tblPuntuacionLocal p ON u.idUser = p.idUsuario
+      WHERE p.idLocal = ?
+    ''', [idLocal]);
+  }
+
+  /* Future<List<Map<String, dynamic>>> traerPuntuacionesPorLocal(
+      int idLocal) async {
+    Database db = await instance.database;
+    return await db.query(
+      _tblPuntuacionLocal,
+      where: 'idLocal = ?',
+      whereArgs: [idLocal],
+    );
+  } */
 }

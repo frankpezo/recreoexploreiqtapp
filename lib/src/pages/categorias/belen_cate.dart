@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/local_model.dart';
+import 'package:recreoexploreiqtapp/model/user_model.dart';
+import 'package:recreoexploreiqtapp/src/pages/user/viewCardUser.dart';
 
 class BelenCate extends StatefulWidget {
-  BelenCate({Key? key}) : super(key: key);
+  final ModelUser? userBe;
+  final int? idUserBe;
+  final String? emailUserBe;
+  BelenCate({Key? key, this.userBe, this.idUserBe, this.emailUserBe})
+      : super(key: key);
 
   @override
   State<BelenCate> createState() => _BelenCateState();
@@ -45,15 +51,17 @@ class _BelenCateState extends State<BelenCate> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  /*  Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ViewCardUser(
-                        placeView: place,
-                        userView: widget.userCard,
+                        userVC: widget.userBe,
+                        idUserVC: widget.idUserBe,
+                        emailUserVc: widget.emailUserBe,
+                        idLocalVC: localBelen[index].idLocal,
                       ),
                     ),
-                  ); */
+                  );
                 },
                 child: Card(
                   margin: EdgeInsets.all(18.0),

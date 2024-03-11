@@ -28,6 +28,8 @@ class _BottomNavUserState extends State<BottomNavUser> {
     pages = [
       HomeUserScreen(
         userH: widget.userBN,
+        idUserH: widget.idUserBN,
+        emailUserH: widget.emailUserBN,
       ),
       FavoriteUserScreen(
         userF: widget.userBN,

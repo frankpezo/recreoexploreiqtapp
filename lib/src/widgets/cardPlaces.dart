@@ -27,7 +27,7 @@ class _YourWidgetState extends State<YourWidget> {
   Widget buildPlaceCard(BuildContext context, PlaceModel place) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        /*  Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ViewCardUser(
@@ -35,7 +35,7 @@ class _YourWidgetState extends State<YourWidget> {
               userView: widget.userCard,
             ),
           ),
-        );
+        ); */
       },
       child: Card(
         margin: EdgeInsets.all(18.0),

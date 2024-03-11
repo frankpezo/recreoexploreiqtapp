@@ -9,9 +9,13 @@ import 'package:recreoexploreiqtapp/src/pages/categorias/top_cate.dart';
 
 class HomeUserScreen extends StatefulWidget {
   final ModelUser? userH;
+  final int? idUserH;
+  final String? emailUserH;
   HomeUserScreen({
     Key? key,
     this.userH,
+    this.idUserH,
+    this.emailUserH,
   }) : super(key: key);
 
   @override
@@ -81,6 +85,8 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
                       ),
                     ],
                   ),
+                  Text(
+                      "idUser: ${widget.idUserH} - EmailUser: ${widget.emailUserH}"),
                   SizedBox(
                     height: 30.0,
                   ),
@@ -134,12 +140,26 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
         TopCate(
           userT: widget.userH,
         ),
-        IquitosCate(),
+        IquitosCate(
+          usersI: widget.userH,
+          idUserIqt: widget.idUserH,
+          emailUserIqt: widget.emailUserH,
+        ),
         SanjuanCate(
           userS: widget.userH,
+          idUserSan: widget.idUserH,
+          emailUserSan: widget.emailUserH,
         ),
-        PunchanaCate(),
-        BelenCate()
+        PunchanaCate(
+          usersPun: widget.userH,
+          idUserPun: widget.idUserH,
+          emailUserPun: widget.emailUserH,
+        ),
+        BelenCate(
+          userBe: widget.userH,
+          idUserBe: widget.idUserH,
+          emailUserBe: widget.emailUserH,
+        )
       ],
     );
   }
