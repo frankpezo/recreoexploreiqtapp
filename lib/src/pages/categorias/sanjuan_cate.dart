@@ -77,7 +77,7 @@ class _SanjuanCateState extends State<SanjuanCate> {
   //2. Función que no Permitirá traer la lista
   Future<void> _cargarLocalSanJuan() async {
     List<Map<String, dynamic>> listLocal =
-        await Databasehelper.instance.traerLocalesSanJuan('San Juan Bautista');
+        await Databasehelper.instance.traerLocalesDistrito('San Juan Bautista');
     List<LocalModel> local =
         listLocal.map((ele) => LocalModel.fromMap(ele)).toList();
     //Inicaializamos

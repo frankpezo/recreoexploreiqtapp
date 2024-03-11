@@ -394,8 +394,9 @@ class Databasehelper {
   }
 
   //Traer local por categorías
+
   //San Juan
-  Future<List<Map<String, dynamic>>> traerLocalesSanJuan(
+  Future<List<Map<String, dynamic>>> traerLocalesDistrito(
       String? distritoLocal) async {
     Database db = await instance.database;
     return await db.query(_tblLocal,
