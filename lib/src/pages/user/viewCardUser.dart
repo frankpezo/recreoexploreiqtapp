@@ -427,7 +427,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
               children: [
                 //Card Comentarios
                 Container(
-                  width: 180,
+                  width: 250,
                   child: Card(
                     margin: EdgeInsets.all(9.0),
                     child: SizedBox(
@@ -444,15 +444,40 @@ class _ViewCardUserState extends State<ViewCardUser> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CircleAvatar(
                                       backgroundImage: AssetImage(
-                                          'assets/images/profile.jpg'),
-                                      radius: 30,
+                                          "${_comentarios[index]['imgUser']}"), // Ruta de la imagen del usuario
+                                      radius: 20,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    // Nombre de usuario y Email
+                                    Container(
+                                      width: 120,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${_comentarios[index]['nombreUser']}', //Datos dinámicos
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              '${_comentarios[index]['comentario']}',
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Icon(
                                           Icons.star,
@@ -465,19 +490,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                       ],
                                     ),
                                   ],
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  '${_comentarios[index]['nombreUser']}', // Aquí deberías reemplazar con el nombre del usuario
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  '${_comentarios[index]['comentario']}', // Aquí deberías reemplazar con el comentario del usuario
-                                ),
-                                SizedBox(height: 5),
+                                )
                               ],
                             ),
                           );
