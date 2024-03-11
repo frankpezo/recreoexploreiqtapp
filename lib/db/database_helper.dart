@@ -393,6 +393,15 @@ class Databasehelper {
     }
   }
 
+  //Traer local por categorías
+  //San Juan
+  Future<List<Map<String, dynamic>>> traerLocalesSanJuan(
+      String? distritoLocal) async {
+    Database db = await instance.database;
+    return await db.query(_tblLocal,
+        where: 'distritoLocal = ?', whereArgs: [distritoLocal]);
+  }
+
   //6.2. INSTALACIONES
   //Registrar instalaciones
   Future<void> insertInstalaciones(
