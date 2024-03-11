@@ -575,8 +575,8 @@ CREATE TABLE $_tblPuntuacionLocal (
   }
 
 //Datos del comentario
-  Future<List<Map<String, dynamic>>> obtenerComentariosPorLocal(
-      int idLocal) async {
+  Future<List<Map<String, dynamic>>> obtenerComentariosPorIdLocal(
+      int? idLocal) async {
     Database db = await instance.database;
     return await db.rawQuery('''
       SELECT u.idUser, u.nombreUser, u.apellidoUser, u.imgUser, p.puntuacion, p.comentario

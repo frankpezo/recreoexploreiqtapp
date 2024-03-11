@@ -56,6 +56,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
     super.initState();
     _loadLocalData(); //Para obtener infor del local
     _loadInstalacionesData();
+    _loadComentariosData();
   }
 
 //2.1. FUnción para obtener info de local
@@ -134,6 +135,16 @@ class _ViewCardUserState extends State<ViewCardUser> {
       // Puedes manejar esta situación de acuerdo a tus necesidades
       print("No se pudo obtener la información del local");
     }
+  }
+
+  //Cargar comentarios
+  Future<void> _loadComentariosData() async {
+    Databasehelper dbHelper = Databasehelper.instance;
+    List<Map<String, dynamic>> comentariosData =
+        await dbHelper.obtenerComentariosPorIdLocal(widget.idLocalVC);
+    setState(() {
+      _comentarios = comentariosData;
+    });
   }
 
   @override
@@ -424,7 +435,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                           150, // Ajusta la altura del Card según sea necesario
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
-                        itemCount: 3, // Número de usuarios que deseas mostrar
+                        itemCount: _comentarios
+                            .length, // Número de usuarios que deseas mostrar
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -448,7 +460,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                           size: 17,
                                         ),
                                         Text(
-                                          '3.0', // Aquí deberías reemplazar con la puntuación del usuario
+                                          '${_comentarios[index]['puntuacion']}', // Aquí deberías reemplazar con la puntuación del usuario
                                         ),
                                       ],
                                     ),
@@ -456,14 +468,14 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                 ),
                                 SizedBox(height: 5),
                                 Text(
-                                  'Nombre Usuario $index', // Aquí deberías reemplazar con el nombre del usuario
+                                  '${_comentarios[index]['nombreUser']}', // Aquí deberías reemplazar con el nombre del usuario
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 SizedBox(height: 5),
                                 Text(
-                                  'Comentario $index', // Aquí deberías reemplazar con el comentario del usuario
+                                  '${_comentarios[index]['comentario']}', // Aquí deberías reemplazar con el comentario del usuario
                                 ),
                                 SizedBox(height: 5),
                               ],
