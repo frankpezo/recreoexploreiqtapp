@@ -1,17 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/edit_perfil.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/login_user.dart';
+import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
 
 class ProfileUserScreen extends StatefulWidget {
-  final ModelUser currentUser;
-  ProfileUserScreen({Key? key, required this.currentUser}) : super(key: key);
+  final int? idUserP;
+  final String? emailUserP;
+  ProfileUserScreen({
+    Key? key,
+    this.idUserP,
+    this.emailUserP,
+  }) : super(key: key);
 
   @override
   State<ProfileUserScreen> createState() => _ProfileUserScreenState();
 }
 
 class _ProfileUserScreenState extends State<ProfileUserScreen> {
+  //1. Creamos model del user aquí
+  ModelUser? _user;
+  //1.1. Aquí inicialermos la función creada abajo
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //1.1.1 Aquí irá la función
+    _loadUserData();
+  }
+
+  //2. Función que permitirá traer los datos
+  Future<void> _loadUserData() async {
+    //2.1. Sqlite
+    Databasehelper dbHelper = Databasehelper.instance;
+    //2.2. Mapeo
+    List<Map<String, dynamic>> userData =
+        await dbHelper.traerUserPorId(widget.idUserP);
+    if (userData.isNotEmpty) {
+      setState(() {
+        _user = ModelUser.fromMap(userData.first);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,26 +79,28 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber),
-                    Text('4.0'),
-                  ],
-                ),
               ],
             ),
             SizedBox(height: 50),
             // Texto "Perfil"
-            Text(
-              'Perfil',
-              style: TextStyle(
-                fontSize: 18,
-              ),
+            Row(
+              children: [
+                Text(
+                  'Perfil',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                /*  Text(
+                  'IDUSER: ${widget.idUserP} - EmailUse: ${widget.emailUserP}',
+                ) */
+              ],
             ),
             SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Card(
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
                         20.0), // Ajustar el radio del borde del Card
@@ -80,8 +114,8 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CircleAvatar(
-                              backgroundImage: AssetImage(
-                                  'assets/images/${widget.currentUser.imgUser}'), // Ruta de la imagen del usuario
+                              backgroundImage: AssetImage(_user?.imgUser ??
+                                  ''), // Ruta de la imagen del usuario
                               radius: 35,
                             ),
                             SizedBox(
@@ -92,13 +126,13 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${widget.currentUser.nombreUser} ${widget.currentUser.apellidoUser}', //Datos dinámicos
+                                  "${_user?.nombreUser ?? ''} ${_user?.apellidoUser ?? ''}", //Datos dinámicos
                                   style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  '${widget.currentUser.emailUser}',
+                                  "${_user?.emailUser ?? ''}",
                                   style: TextStyle(fontSize: 15),
                                 ),
                               ],
@@ -117,7 +151,9 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => EditPefil(
-                                              userEdt: widget.currentUser)));
+                                              idUserEdt: widget.idUserP,
+                                              emailUserEdt:
+                                                  widget.emailUserP)));
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors
@@ -183,8 +219,53 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                               ),
                               SizedBox(height: 40),
                               ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   // Acción para eliminar cuenta
+                                  await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Confirmar eliminación"),
+                                        content: Text(
+                                            "¿Estás seguro que desea eliminar su perfil?"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Cerrar el diálogo
+                                            },
+                                            child: Text("Cancelar",
+                                                style: TextStyle(
+                                                    fontSize: 15.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFF238F8F))),
+                                          ),
+                                          TextButton(
+                                            onPressed: () async {
+                                              await Databasehelper.instance
+                                                  .eliminarUser(widget.idUserP);
+                                              //_cargarUsuarios();
+
+                                              Navigator.of(context)
+                                                  .pop(); // Cerrar diálogo
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      WelcomeSplah(),
+                                                ),
+                                              );
+                                            },
+                                            child: Text("Eliminar",
+                                                style: TextStyle(
+                                                    fontSize: 15.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.redAccent)),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors
@@ -202,9 +283,12 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                   children: [
                                     // Icono a la izquierda del texto
                                     // Espacio entre el icono y el texto
-                                    Text('Eliminar cuenta'),
+                                    Text(
+                                      'Eliminar cuenta',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                     SizedBox(width: 10),
-                                    Icon(Icons.delete),
+                                    Icon(Icons.delete, color: Colors.white),
                                   ],
                                 ),
                               ),

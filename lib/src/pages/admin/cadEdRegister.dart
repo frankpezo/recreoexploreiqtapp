@@ -1,40 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
-import 'package:recreoexploreiqtapp/model/places_model.dart';
+import 'package:recreoexploreiqtapp/model/local_model.dart';
 
 import 'package:recreoexploreiqtapp/src/pages/admin/viewAdminCard.dart';
 
 class CardEdRegister extends StatefulWidget {
-  final EmpresaModel userCardEd;
-  final PlaceModel placeViewEd;
-  CardEdRegister(
-      {Key? key, required this.userCardEd, required this.placeViewEd})
-      : super(key: key);
+  //Traemos los datos necesarios
+  final EmpresaModel? empresaCER;
+  final LocalModel? localCER;
+  final int? idEmpresaCER;
+  final int? idlocalCER;
+  final String? emailCER;
+  //Los datos
+  /*  final int? idLocalCER;
+  final String? nombreLocalCER;
+  final String?  */
+  CardEdRegister({
+    Key? key,
+    this.empresaCER,
+    this.idEmpresaCER,
+    this.idlocalCER,
+    this.emailCER,
+    this.localCER,
+  }) : super(key: key);
 
   @override
   State<CardEdRegister> createState() => _CardEdRegisterState();
 }
 
 class _CardEdRegisterState extends State<CardEdRegister> {
+  //11. TREAMOS EL ID
+  LocalModel? _local;
+  //1. Creamos los campos
   final GlobalKey<FormState> formKeySeven =
       GlobalKey<FormState>(); // Nueva GlobalKey
-  TextEditingController id = TextEditingController();
+  //   TextEditingController imgUser = TextEditingController();
+  //TextEditingController id = TextEditingController();
   TextEditingController nombreLocal = TextEditingController();
   TextEditingController direccionLocal = TextEditingController();
+  String selectedValue = '';
   TextEditingController telefono = TextEditingController();
   TextEditingController horario = TextEditingController();
   TextEditingController descripcion = TextEditingController();
   TextEditingController palabrasCLave = TextEditingController();
-  TextEditingController imgUser = TextEditingController();
-  String selectedValue = '';
   TextEditingController ninos = TextEditingController();
   TextEditingController adulto = TextEditingController();
   TextEditingController turista = TextEditingController();
   TextEditingController feriado = TextEditingController();
   String? _status = 'Abierto';
+  String? imgLocal = '';
   List<String> keywords = []; //Lista donde se almacenará las palabras claves
-  //Para mensaje de Scaffol
-  Future<void> insertLocal() async {
+
+  //1.1.  Inicalizamos los campos
+  @override
+  void initState() {
+    super.initState();
+    _loadLocalData();
+  }
+
+  //1. Obtener info por medi de idLocal
+  // 1. Obtener info por medio de idLocal
+  Future<void> _loadLocalData() async {
+    Databasehelper dbHelper = Databasehelper.instance;
+    List<Map<String, dynamic>> localData =
+        await dbHelper.traerLocalPorId(widget.idlocalCER);
+    if (localData.isNotEmpty) {
+      setState(() {
+        _local = LocalModel.fromMap(localData.first);
+        // Asignación de valores después de verificar que _local no sea null
+        imgLocal = _local?.imageLocal ?? '';
+        nombreLocal.text = _local?.nombreLocal ?? '';
+        direccionLocal.text = _local?.direccionLocal ?? '';
+        selectedValue = _local?.distritoLocal ?? '';
+        telefono.text = _local?.telefonoLocal ?? '';
+        horario.text = _local?.horarioLocal ?? '';
+        descripcion.text = _local?.descripcionLocal ?? '';
+        palabrasCLave.text = _local?.palabrasClaves?.join(', ') ?? '';
+        ninos.text = _local?.ninoPrice ?? '';
+        adulto.text = _local?.adultoPrice ?? '';
+        turista.text = _local?.turistaPrice ?? '';
+        feriado.text = _local?.feriadoPrice ?? '';
+        _status = _local?.estadoLocal ?? 'Abierto'; // Valor predeterminado
+      });
+    }
+  }
+
+  // 2. Función para insertar local
+  Future<void> modificarLocal() async {
     if (nombreLocal.text.isNotEmpty &&
         direccionLocal.text.isNotEmpty &&
         telefono.text.isNotEmpty &&
@@ -43,26 +96,72 @@ class _CardEdRegisterState extends State<CardEdRegister> {
         keywords
             .isNotEmpty && // Al menos una palabra clave debe estar ingresada
         _status != null) {
-      print("Registro de local con éxito");
-      print("Subido");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Color.fromARGB(255, 36, 246, 116),
-        content: Text(
-          'Se subió con éxito',
-          style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        duration: Duration(seconds: 5),
-      ));
-      //No llevará a la parte de seleccionar instalaciones
-      /*  Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CardInsta(
-            userI: widget.userCard,
-          ),
-        ),
-      ); */
+      try {
+        print(imgLocal);
+        print(nombreLocal.text);
+        print(direccionLocal.text);
+        print(selectedValue);
+        print(telefono.text);
+        print(horario.text);
+        print(descripcion.text);
+        print(keywords);
+        print(ninos.text);
+        print(adulto.text);
+        print(turista.text);
+        print(feriado.text);
+        print(_status);
+        print(widget.idEmpresaCER);
+
+        // El local no existe, proceder con el registro
+        LocalModel local = LocalModel(
+            imageLocal: "assets/images/10.jpg",
+            nombreLocal: nombreLocal.text,
+            direccionLocal: direccionLocal.text,
+            distritoLocal: selectedValue,
+            telefonoLocal: telefono.text,
+            horarioLocal: horario.text,
+            descripcionLocal: descripcion.text,
+            palabrasClaves: keywords.toList(), // Convertir lista a cadena
+            ninoPrice: ninos.text,
+            adultoPrice: adulto.text,
+            turistaPrice: turista.text,
+            feriadoPrice: feriado.text,
+            estadoLocal: _status,
+            idEmpresa: widget.idEmpresaCER);
+        local.idLocal = widget.idlocalCER;
+
+        // 2.2. Condicional para que se realice el registro
+        if (widget.localCER == null) {
+          //Para hacer la actualización
+          await Databasehelper.instance.actualizarLocal(local);
+          print("Se modificó local con éxito");
+          //await Databasehelper.instance.mostrarLocales();
+          /*
+          //traemos el id del local
+          int? idDelLocal = await Databasehelper.instance
+              .obtenerIdLocal('${nombreLocal.text}'); */
+          /*  Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CardInsta(
+                        idEmpresaCI: widget.idECR,
+                        idLocalCI: idDelLocal,
+                      ))); */
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Color.fromARGB(255, 36, 246, 116),
+            content: Text(
+              'El local fue modificado',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+            duration: Duration(seconds: 5),
+          ));
+        }
+      } catch (e) {
+        print("El error fue: ${e}");
+      }
       // Lógica para consumir la API
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -98,28 +197,6 @@ class _CardEdRegisterState extends State<CardEdRegister> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // Inicializar los controladores de los campos de texto con los datos del usuario
-    id.text = widget.placeViewEd.id.toString();
-    nombreLocal.text = widget.placeViewEd.nombrePlace;
-    direccionLocal.text = widget.placeViewEd.direPlace;
-    telefono.text = widget.placeViewEd.phonePlace.toString();
-    horario.text = widget.placeViewEd.horarioPlace;
-    descripcion.text = widget.placeViewEd.descriptionPlace;
-    ninos.text = widget.placeViewEd.nino_price.toString();
-    adulto.text = widget.placeViewEd.adulto_price.toString();
-    turista.text = widget.placeViewEd.turista_price.toString();
-    feriado.text = widget.placeViewEd.feriado_price.toString();
-    imgUser.text = widget.placeViewEd.imagePlace;
-    // Flata que se vea el distrito en la lista, las palabras claves y el estado
-    selectedValue = widget.placeViewEd
-        .distritoPlace; // Asumiendo que tienes un campo distrito en tu modelo
-    _status = widget.placeViewEd.estadoPlace;
-    palabrasCLave.text = widget.placeViewEd.palabrasClavesP.join(', ');
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -147,8 +224,9 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ViewCardAdmin(
-                                    userViewA: widget.userCardEd,
-                                    placeViewA: widget.placeViewEd,
+                                    idEmpresaVC: widget.idEmpresaCER,
+                                    idlocalVC: widget.idlocalCER,
+                                    emailVC: widget.emailCER,
                                   ),
                                 ),
                               );
@@ -195,9 +273,11 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                   children: [
                                     Text("Datos del local",
                                         style: TextStyle(
-                                            fontSize: 15.0,
+                                            fontSize: 18.0,
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF238F8F)))
+                                            color: Color(0xFF238F8F))),
+                                    /*  Text(
+                                        "idEmpresa: ${widget.idEmpresaCER} - Localid: ${widget.idlocalCER}"), */
                                   ],
                                 ),
                                 SizedBox(height: 15),
@@ -214,8 +294,8 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                         alignment: Alignment.center,
                                         children: [
                                           CircleAvatar(
-                                            backgroundImage: AssetImage(
-                                                'assets/images/${widget.placeViewEd.imagePlace}'),
+                                            backgroundImage:
+                                                AssetImage('${imgLocal}'),
                                             radius: 35,
                                           ),
                                           Positioned(
@@ -394,7 +474,7 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                   child: TextFormField(
                                     controller: telefono,
                                     obscureText: false,
-                                    keyboardType: TextInputType.number,
+                                    keyboardType: TextInputType.text,
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'Por favor, ingrese un teléfono';
@@ -611,7 +691,7 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                         child: TextFormField(
                                           controller: ninos,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -667,7 +747,7 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                         child: TextFormField(
                                           controller: adulto,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -722,7 +802,7 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                         child: TextFormField(
                                           controller: turista,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -778,7 +858,7 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                         child: TextFormField(
                                           controller: feriado,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -854,9 +934,10 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                   onTap: () {
                                     setState(() {
                                       if (formKeySeven.currentState!
-                                          .validate()) {}
+                                          .validate()) {
+                                        modificarLocal();
+                                      }
                                     });
-                                    insertLocal();
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(
@@ -872,7 +953,7 @@ class _CardEdRegisterState extends State<CardEdRegister> {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        'Registrar local',
+                                        'Modificar local',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 20,

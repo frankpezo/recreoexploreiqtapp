@@ -27,7 +27,7 @@ class _YourWidgetState extends State<YourWidget> {
   Widget buildPlaceCard(BuildContext context, PlaceModel place) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        /*  Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ViewCardUser(
@@ -35,7 +35,7 @@ class _YourWidgetState extends State<YourWidget> {
               userView: widget.userCard,
             ),
           ),
-        );
+        ); */
       },
       child: Card(
         margin: EdgeInsets.all(18.0),
@@ -59,7 +59,7 @@ class _YourWidgetState extends State<YourWidget> {
                 ),
               ),
               //id
-              Visibility(visible: false, child: Text("${place.id}")),
+              Visibility(visible: false, child: Text("${place.idLocal}")),
               SizedBox(width: 10.0), // Espacio entre la imagen y el texto
               // 3.2. Contenido del lugar
               Expanded(
@@ -71,7 +71,7 @@ class _YourWidgetState extends State<YourWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          place.nombrePlace,
+                          '${place.nombrePlace}',
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
@@ -80,7 +80,7 @@ class _YourWidgetState extends State<YourWidget> {
                         Row(
                           children: [
                             Icon(Icons.star, color: Colors.amber),
-                            Text('${place.rakingPlace}'),
+                            Text('4'),
                           ],
                         ),
                       ],
@@ -92,7 +92,7 @@ class _YourWidgetState extends State<YourWidget> {
                         Icon(Icons.location_on, color: Colors.red, size: 16.0),
                         SizedBox(width: 5.0),
                         Text(
-                          place.direPlace,
+                          '${place.direPlace}',
                           style: TextStyle(fontSize: 13.0),
                         ),
                       ],

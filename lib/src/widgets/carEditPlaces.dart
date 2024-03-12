@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/viewAdminCard.dart';
 
 class YourWidgetEditP extends StatefulWidget {
-  final PlaceModel place;
-  final EmpresaModel userC;
-  YourWidgetEditP({Key? key, required this.place, required this.userC})
-      : super(key: key);
+  final int? idEEP;
+  final LocalModel? localEEP;
+  final EmpresaModel? empresaEEP;
+  YourWidgetEditP({
+    Key? key,
+    this.idEEP,
+    this.localEEP,
+    this.empresaEEP,
+  }) : super(key: key);
 
   @override
   State<YourWidgetEditP> createState() => _YourWidgetEditPState();
@@ -18,12 +24,12 @@ class _YourWidgetEditPState extends State<YourWidgetEditP> {
   bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
-    return buildPlaceCard(context, widget.place);
+    return buildPlaceCard(context, widget.localEEP!);
   }
 
   //3. Crearemos un widget que servirá de retorno en cada categoría
   @override
-  Widget buildPlaceCard(BuildContext context, PlaceModel place) {
+  Widget buildPlaceCard(BuildContext context, LocalModel local) {
     return GestureDetector(
       onTap: () {
         ;
@@ -43,14 +49,14 @@ class _YourWidgetEditPState extends State<YourWidgetEditP> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Image.asset(
-                  'assets/images/${place.imagePlace}',
+                  'assets/images/${local.imageLocal}',
                   width: 100.0,
                   height: 100.0,
                   fit: BoxFit.cover,
                 ),
               ),
               //id
-              Visibility(visible: false, child: Text("${place.id}")),
+              Visibility(visible: false, child: Text("${local.idLocal}")),
               SizedBox(width: 10.0), // Espacio entre la imagen y el texto
               // 3.2. Contenido del lugar
               Expanded(
@@ -62,7 +68,7 @@ class _YourWidgetEditPState extends State<YourWidgetEditP> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          place.nombrePlace,
+                          '${local.nombreLocal}',
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
@@ -78,9 +84,9 @@ class _YourWidgetEditPState extends State<YourWidgetEditP> {
                       children: [
                         Text(
                           //Realizamos una condicional para hacer el cambio de estado
-                          '${place.estadoPlace}',
+                          '${local.estadoLocal}',
                           style: TextStyle(
-                            color: place.estadoPlace == "Abierto"
+                            color: local.estadoLocal == "Abierto"
                                 ? Colors.green
                                 : Colors.red,
                             fontSize: 15,
@@ -98,7 +104,7 @@ class _YourWidgetEditPState extends State<YourWidgetEditP> {
                         GestureDetector(
                           onTap: () {
                             // Aquí puedes agregar la lógica para editar
-                            Navigator.push(
+                            /*  Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ViewCardAdmin(
@@ -106,7 +112,7 @@ class _YourWidgetEditPState extends State<YourWidgetEditP> {
                                   userViewA: widget.userC,
                                 ),
                               ),
-                            );
+                            ); */
                           },
                           child: Container(
                             padding: EdgeInsets.all(5),

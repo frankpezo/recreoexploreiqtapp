@@ -1,4 +1,4 @@
-import 'dart:convert';
+/* import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
@@ -95,14 +95,14 @@ class _ImaEdState extends State<ImaEd> {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          /* Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => BottomNavAdmin(
-                                user: widget.userIED,
+                                empresaB: widget.userIED,
                               ),
                             ),
-                          );
+                          ); */
                         },
                         child: Text(
                           'Omitir',
@@ -266,3 +266,4 @@ class _ImaEdState extends State<ImaEd> {
     );
   }
 }
+ */

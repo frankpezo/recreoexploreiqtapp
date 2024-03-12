@@ -1,9 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:recreoexploreiqtapp/componentes/controller.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
+import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/login_admin.dart';
+//EL http, importante para que funcione la api
+import 'package:http/http.dart' as http;
+import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
 
 class RegisterAdmin extends StatefulWidget {
-  RegisterAdmin({Key? key}) : super(key: key);
+  final EmpresaModel? empresaM;
+  RegisterAdmin({Key? key, this.empresaM}) : super(key: key);
 
   @override
   State<RegisterAdmin> createState() => _RegisterAdminState();
@@ -11,19 +18,86 @@ class RegisterAdmin extends StatefulWidget {
 
 class _RegisterAdminState extends State<RegisterAdmin> {
   //1. Text Controllers
+  final GlobalKey<FormState> formKeyFour = GlobalKey<FormState>();
   TextEditingController nombre = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   bool obscurePassword = true;
   List<dynamic> userData = []; //Nos servirá para el registro
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.empresaM != null) {
+      nombre.text = widget.empresaM!.nombreEmpresa!;
+      email.text = widget.empresaM!.emailEmpresa!;
+      password.text = widget.empresaM!.passwordEmpresa!;
+    }
+  }
+
   //2. Api para insertar en la bd
   Future<void> insertUser() async {
     if (nombre.text.isNotEmpty &&
         email.text.isNotEmpty &&
         password.text.isNotEmpty) {
-      print("Registro con éxito");
+      //print("Registro con éxito");
       // Lógica para consumir la API
+      try {
+        //Verificar si ya existe la empresa registrada
+        // 2.1. Lógica de verificación de existencia del local
+        bool empresaExistente = await Databasehelper.instance
+            .existeEmpresa('${nombre.text}', '${email.text}');
+
+        //Hacemos la verificación
+        if (empresaExistente) {
+          // Mostrar mensaje de error porque el local ya existe
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Color.fromARGB(255, 242, 48, 48),
+            content: Text(
+              'La empresa ya está registrada',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ));
+        } else {
+          //2.1. Instanciamos
+          EmpresaModel empresa = EmpresaModel(
+              // idEmpresa: widget.empresaM?.idEmpresa,
+              nombreEmpresa: nombre.text,
+              emailEmpresa: email.text,
+              passwordEmpresa: password.text,
+              imgEmpresa: "assets/images/10.jpg");
+          //2.2. Hacemos condicional para ver si se registra
+          if (widget.empresaM == null) {
+            await Databasehelper.instance.insertEmpresa(empresa);
+            print("Se registró empresa con éxitoo");
+            //Para que nos mande al Login
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginAdmin()));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Color.fromARGB(255, 36, 246, 116),
+              content: Text(
+                'Se registró con éxito',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              duration: Duration(seconds: 5),
+            ));
+            print("Lista de empresas registradas");
+            await Databasehelper.instance.mostrarEmpresas();
+          } else {
+            print("Error al registrar");
+          }
+        }
+      } catch (e) {
+        print("El error es: ${e}");
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Color.fromARGB(255, 242, 48, 48),
@@ -58,6 +132,45 @@ class _RegisterAdminState extends State<RegisterAdmin> {
               child: Container(
                 child: Column(
                   children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 8,
+                            right:
+                                20, // Ajusta el padding aquí para alinear la flecha con el borde derecho
+                            left:
+                                20, // Añade un padding izquierdo para alinear la flecha con el borde izquierdo
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => WelcomeSplah(),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 24,
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  'Regresar',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     Container(
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -286,9 +399,10 @@ class _RegisterAdminState extends State<RegisterAdmin> {
                                   onTap: () {
                                     setState(() {
                                       if (formKeyFour.currentState!
-                                          .validate()) {}
+                                          .validate()) {
+                                        insertUser();
+                                      }
                                     });
-                                    insertUser();
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(

@@ -1,37 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/componentes/controller.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/model/local_model.dart';
+import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cardInsta.dart';
+import 'package:sqflite/sqflite.dart';
 
 class CardRegister extends StatefulWidget {
-  final EmpresaModel userCard;
-  CardRegister({Key? key, required this.userCard}) : super(key: key);
+  final EmpresaModel? empresaCR;
+  final LocalModel? localCR;
+  final int? idECR;
+  final String? emailCR;
+  CardRegister({
+    Key? key,
+    this.empresaCR,
+    this.localCR,
+    this.idECR,
+    this.emailCR,
+    //this.emailE,
+  }) : super(key: key);
 
   @override
   State<CardRegister> createState() => _CardRegisterState();
 }
 
 class _CardRegisterState extends State<CardRegister> {
-  final GlobalKey<FormState> formKeySix =
+  //1. Creamos los campos
+  final GlobalKey<FormState> formKeySeven =
       GlobalKey<FormState>(); // Nueva GlobalKey
-
+  //   TextEditingController imgUser = TextEditingController();
+  //TextEditingController id = TextEditingController();
   TextEditingController nombreLocal = TextEditingController();
   TextEditingController direccionLocal = TextEditingController();
+  String selectedValue = '';
   TextEditingController telefono = TextEditingController();
   TextEditingController horario = TextEditingController();
   TextEditingController descripcion = TextEditingController();
   TextEditingController palabrasCLave = TextEditingController();
-  TextEditingController imgUser = TextEditingController();
-  String selectedValue = '';
   TextEditingController ninos = TextEditingController();
   TextEditingController adulto = TextEditingController();
   TextEditingController turista = TextEditingController();
   TextEditingController feriado = TextEditingController();
   String? _status = 'Abierto';
   List<String> keywords = []; //Lista donde se almacenará las palabras claves
-  //Para mensaje de Scaffol
-  Future<void> insertLocal() async {
+
+  //1.1.  Inicalizamos los campos
+  @override
+  void initState() {
+    super.initState();
+    if (widget.empresaCR != null) {
+      nombreLocal.text = widget.localCR!.nombreLocal!;
+      direccionLocal.text = widget.localCR!.direccionLocal!;
+      selectedValue = widget.localCR!.distritoLocal!;
+      telefono.text = widget.localCR!.telefonoLocal!;
+      horario.text = widget.localCR!.horarioLocal!;
+      descripcion.text = widget.localCR!.descripcionLocal!;
+      palabrasCLave.text = widget.localCR!.palabrasClaves!.join(', ');
+      ninos.text = widget.localCR!.ninoPrice!;
+      adulto.text = widget.localCR!.adultoPrice!;
+      turista.text = widget.localCR!.turistaPrice!;
+      feriado.text = widget.localCR!.feriadoPrice!;
+      _status = widget.localCR!.estadoLocal!;
+    }
+  }
+
+  // 2. Función para insertar local
+  Future<void> registrarLocal() async {
     if (nombreLocal.text.isNotEmpty &&
         direccionLocal.text.isNotEmpty &&
         telefono.text.isNotEmpty &&
@@ -40,26 +76,89 @@ class _CardRegisterState extends State<CardRegister> {
         keywords
             .isNotEmpty && // Al menos una palabra clave debe estar ingresada
         _status != null) {
-      print("Registro de local con éxito");
-      print("Subido");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Color.fromARGB(255, 36, 246, 116),
-        content: Text(
-          'Se subió con éxito',
-          style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        duration: Duration(seconds: 5),
-      ));
-      //No llevará a la parte de seleccionar instalaciones
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CardInsta(
-            userI: widget.userCard,
-          ),
-        ),
-      );
+      try {
+        print("Registro de local con éxito");
+
+        print(nombreLocal.text);
+        print(direccionLocal.text);
+        print(selectedValue);
+        print(telefono.text);
+        print(horario.text);
+        print(descripcion.text);
+        print(keywords);
+        print(ninos.text);
+        print(adulto.text);
+        print(turista.text);
+        print(feriado.text);
+        print(_status);
+
+        // 2.1. Lógica de verificación de existencia del local
+        bool localExistente = await Databasehelper.instance
+            .existeLocal('${nombreLocal.text}', '${direccionLocal.text}');
+
+        if (localExistente) {
+          // Mostrar mensaje de error porque el local ya existe
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Color.fromARGB(255, 242, 48, 48),
+            content: Text(
+              'El local ya está registrado.',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            duration: Duration(seconds: 3),
+          ));
+        } else {
+          // El local no existe, proceder con el registro
+          LocalModel local = LocalModel(
+              imageLocal: "assets/images/10.jpg",
+              nombreLocal: nombreLocal.text,
+              direccionLocal: direccionLocal.text,
+              distritoLocal: selectedValue,
+              telefonoLocal: telefono.text,
+              horarioLocal: horario.text,
+              descripcionLocal: descripcion.text,
+              palabrasClaves: keywords.toList(), // Convertir lista a cadena
+              ninoPrice: ninos.text,
+              adultoPrice: adulto.text,
+              turistaPrice: turista.text,
+              feriadoPrice: feriado.text,
+              estadoLocal: _status,
+              idEmpresa: widget.idECR);
+
+          // 2.2. Condicional para que se realice el registro
+          if (widget.localCR == null) {
+            await Databasehelper.instance.insertLocal(local);
+            print("Se registró local con éxito");
+            //traemos el id del local
+            int? idDelLocal = await Databasehelper.instance
+                .obtenerIdLocal('${nombreLocal.text}');
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CardInsta(
+                          idEmpresaCI: widget.idECR,
+                          idLocalCI: idDelLocal,
+                          emailCI: widget.emailCR,
+                        )));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Color.fromARGB(255, 36, 246, 116),
+              content: Text(
+                'Se registró local con éxito',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              duration: Duration(seconds: 5),
+            ));
+          }
+        }
+      } catch (e) {
+        print("El error fue: ${e}");
+      }
       // Lógica para consumir la API
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -101,7 +200,7 @@ class _CardRegisterState extends State<CardRegister> {
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Form(
-            key: formKeySix, // Asignar la nueva GlobalKey al Form
+            key: formKeySeven, // Asignar la nueva GlobalKey al Form
             child: SafeArea(
               child: Container(
                 child: Column(
@@ -122,7 +221,9 @@ class _CardRegisterState extends State<CardRegister> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => BottomNavAdmin(
-                                    user: widget.userCard,
+                                    empresaB: widget.empresaCR,
+                                    idEmpre: widget.idECR,
+                                    emailEmpresa: widget.emailCR,
                                   ),
                                 ),
                               );
@@ -171,7 +272,8 @@ class _CardRegisterState extends State<CardRegister> {
                                         style: TextStyle(
                                             fontSize: 15.0,
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF238F8F)))
+                                            color: Color(0xFF238F8F))),
+                                    // Text(":${widget.idECR} ${widget.emailCR}")
                                   ],
                                 ),
                                 SizedBox(height: 15),
@@ -368,7 +470,7 @@ class _CardRegisterState extends State<CardRegister> {
                                   child: TextFormField(
                                     controller: telefono,
                                     obscureText: false,
-                                    keyboardType: TextInputType.number,
+                                    keyboardType: TextInputType.text,
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'Por favor, ingrese un teléfono';
@@ -478,7 +580,7 @@ class _CardRegisterState extends State<CardRegister> {
                                   margin: EdgeInsets.only(left: 20, right: 20),
                                   width: 325,
                                   height:
-                                      150, // Ajuste de altura para mostrar las palabras clave
+                                      190, // Ajuste de altura para mostrar las palabras clave
                                   padding:
                                       const EdgeInsets.only(top: 3, left: 15),
                                   child: Column(
@@ -527,12 +629,13 @@ class _CardRegisterState extends State<CardRegister> {
                                         ),
                                       ),
                                       SizedBox(
-                                          height:
-                                              4), // Espacio entre el campo de texto y las palabras clave
+                                        height: 4,
+                                      ), // Espacio entre el campo de texto y las palabras clave
                                       Wrap(
                                         spacing:
                                             4.0, // Espacio entre las palabras clave
-                                        children: keywords.map((keyword) {
+                                        children:
+                                            keywords.take(4).map((keyword) {
                                           return InputChip(
                                             label: Text(keyword),
                                             onDeleted: () {
@@ -544,6 +647,7 @@ class _CardRegisterState extends State<CardRegister> {
                                     ],
                                   ),
                                 ),
+
                                 SizedBox(height: 5),
                                 //pRECIOS
                                 //NIÑO
@@ -585,7 +689,7 @@ class _CardRegisterState extends State<CardRegister> {
                                         child: TextFormField(
                                           controller: ninos,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -641,7 +745,7 @@ class _CardRegisterState extends State<CardRegister> {
                                         child: TextFormField(
                                           controller: adulto,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -696,7 +800,7 @@ class _CardRegisterState extends State<CardRegister> {
                                         child: TextFormField(
                                           controller: turista,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -752,7 +856,7 @@ class _CardRegisterState extends State<CardRegister> {
                                         child: TextFormField(
                                           controller: feriado,
                                           obscureText: false,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: TextInputType.text,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return '';
@@ -827,10 +931,11 @@ class _CardRegisterState extends State<CardRegister> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      if (formKeySix.currentState!
-                                          .validate()) {}
+                                      if (formKeySeven.currentState!
+                                          .validate()) {
+                                        registrarLocal();
+                                      }
                                     });
-                                    insertLocal();
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(

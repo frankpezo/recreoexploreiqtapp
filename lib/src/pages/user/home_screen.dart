@@ -8,8 +8,15 @@ import 'package:recreoexploreiqtapp/src/pages/categorias/sanjuan_cate.dart';
 import 'package:recreoexploreiqtapp/src/pages/categorias/top_cate.dart';
 
 class HomeUserScreen extends StatefulWidget {
-  final ModelUser userH;
-  HomeUserScreen({Key? key, required this.userH}) : super(key: key);
+  final ModelUser? userH;
+  final int? idUserH;
+  final String? emailUserH;
+  HomeUserScreen({
+    Key? key,
+    this.userH,
+    this.idUserH,
+    this.emailUserH,
+  }) : super(key: key);
 
   @override
   State<HomeUserScreen> createState() => _HomeUserScreenState();
@@ -78,6 +85,8 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
                       ),
                     ],
                   ),
+                  /*    Text(
+                      "idUser: ${widget.idUserH} - EmailUser: ${widget.emailUserH}"), */
                   SizedBox(
                     height: 30.0,
                   ),
@@ -131,12 +140,26 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
         TopCate(
           userT: widget.userH,
         ),
-        IquitosCate(),
+        IquitosCate(
+          usersI: widget.userH,
+          idUserIqt: widget.idUserH,
+          emailUserIqt: widget.emailUserH,
+        ),
         SanjuanCate(
           userS: widget.userH,
+          idUserSan: widget.idUserH,
+          emailUserSan: widget.emailUserH,
         ),
-        PunchanaCate(),
-        BelenCate()
+        PunchanaCate(
+          usersPun: widget.userH,
+          idUserPun: widget.idUserH,
+          emailUserPun: widget.emailUserH,
+        ),
+        BelenCate(
+          userBe: widget.userH,
+          idUserBe: widget.idUserH,
+          emailUserBe: widget.emailUserH,
+        )
       ],
     );
   }
@@ -171,11 +194,11 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
   //3.3. Buscar contenido de la categoría
   void buscarElementoCate(String value) {
     setState(() {
-      lugares = lugares
+      /*  lugares = lugares
           .where((place) =>
               place.nombrePlace.toLowerCase().contains(value.toLowerCase()) ||
               place.direPlace.toLowerCase().contains(value.toLowerCase()))
-          .toList();
+          .toList(); */
     });
   }
 }

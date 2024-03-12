@@ -1,17 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/edProfileAd.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/login_admin.dart';
+import 'package:recreoexploreiqtapp/src/pages/welcome_splash.dart';
 
 class ProfileAdminScreen extends StatefulWidget {
-  final EmpresaModel userP;
-  ProfileAdminScreen({Key? key, required this.userP}) : super(key: key);
+  final int? idEmpresP;
+  final String? emailEP;
+  ProfileAdminScreen({
+    Key? key,
+    this.idEmpresP,
+    this.emailEP,
+
+    /*  required this.empresaP */
+  }) : super(key: key);
 
   @override
   State<ProfileAdminScreen> createState() => _ProfileAdminScreenState();
 }
 
 class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
+  //1.Usamos el Model de la empresa
+  EmpresaModel? _empresa;
+  //1.1. inicializar
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //Aquí irá la función
+    _loadEmpresaData();
+  }
+
+  //1.2.  Función para traer la data
+  Future<void> _loadEmpresaData() async {
+    Databasehelper dbHelper = Databasehelper.instance;
+    List<Map<String, dynamic>> empresaData =
+        await dbHelper.traerEmpresaPorId(widget.idEmpresP);
+    if (empresaData.isNotEmpty) {
+      setState(() {
+        _empresa = EmpresaModel.fromMap(empresaData.first);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,12 +102,15 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                           "Mi Perfil",
                           style: TextStyle(fontSize: 17),
                         ),
+                        /* Text(
+                            'id: ${widget.idEmpresP} - email: ${widget.emailEP}'), */
                       ],
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Card(
+                        color: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                               20.0), // Ajustar el radio del borde del Card
@@ -89,8 +124,9 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        'assets/images/${widget.userP.img}'), // Ruta de la imagen del usuario
+                                    backgroundImage: AssetImage(_empresa
+                                            ?.imgEmpresa ??
+                                        ''), // Ruta de la imagen del usuario
                                     radius: 35,
                                   ),
                                   SizedBox(
@@ -102,13 +138,14 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '${widget.userP.nombreEmpresa} ', //Datos dinámicos
+                                        _empresa?.nombreEmpresa ??
+                                            '', //Datos dinámicos
                                         style: TextStyle(
                                             fontSize: 17,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        '${widget.userP.emailEmpresa}',
+                                        _empresa?.emailEmpresa ?? '',
                                         style: TextStyle(fontSize: 15),
                                       ),
                                     ],
@@ -129,8 +166,10 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     EdProfileAdmin(
-                                                        userAdEd:
-                                                            widget.userP)));
+                                                      idEmpresaCEP:
+                                                          widget.idEmpresP,
+                                                      emailCEP: widget.emailEP,
+                                                    )));
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors
@@ -197,8 +236,60 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                     ),
                                     SizedBox(height: 40),
                                     ElevatedButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         // Acción para eliminar cuenta
+                                        await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title:
+                                                  Text("Confirmar eliminación"),
+                                              content: Text(
+                                                  "¿Estás seguro que desea eliminar su perfil?"),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(); // Cerrar el diálogo
+                                                  },
+                                                  child: Text("Cancelar",
+                                                      style: TextStyle(
+                                                          fontSize: 15.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color(
+                                                              0xFF238F8F))),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    await Databasehelper
+                                                        .instance
+                                                        .eliminarEmpresa(
+                                                            widget.idEmpresP);
+                                                    //_cargarUsuarios();
+
+                                                    Navigator.of(context)
+                                                        .pop(); // Cerrar diálogo
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            WelcomeSplah(),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text("Eliminar",
+                                                      style: TextStyle(
+                                                          fontSize: 15.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors
+                                                              .redAccent)),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors
@@ -216,9 +307,14 @@ class _ProfileAdminScreenState extends State<ProfileAdminScreen> {
                                         children: [
                                           // Icono a la izquierda del texto
                                           // Espacio entre el icono y el texto
-                                          Text('Eliminar cuenta'),
+                                          Text(
+                                            'Eliminar cuenta',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
                                           SizedBox(width: 10),
-                                          Icon(Icons.delete),
+                                          Icon(Icons.delete,
+                                              color: Colors.white),
                                         ],
                                       ),
                                     ),

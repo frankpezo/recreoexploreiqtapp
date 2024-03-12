@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
+import 'package:recreoexploreiqtapp/model/local_model.dart';
 
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
@@ -9,9 +11,12 @@ import 'package:recreoexploreiqtapp/src/bottomNav/bottom_UserNav.dart';
 import '../categorias/subcat/subCat1.dart';
 
 class ViewCardUser extends StatefulWidget {
-  final PlaceModel placeView;
-  final ModelUser userView;
-  ViewCardUser({Key? key, required this.placeView, required this.userView})
+  final ModelUser? userVC;
+  final int? idUserVC;
+  final String? emailUserVc;
+  final int? idLocalVC;
+  ViewCardUser(
+      {Key? key, this.userVC, this.idUserVC, this.emailUserVc, this.idLocalVC})
       : super(key: key);
 
   @override
@@ -35,9 +40,138 @@ class _ViewCardUserState extends State<ViewCardUser> {
     "Zona de juegos",
     "Zoológico"
   ]; */
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController comentarioU = TextEditingController();
   double fontSize = 11.0; // Definir la variable fontSize aquí
   int selectedValue = 1;
+  //2. Traemos info para mostra local e instalaciones
+  LocalModel? _local;
+  List<Map<String, dynamic>> _instalaciones =
+      []; // Lista de instalaciones del local
+  List<Map<String, dynamic>> _comentarios = []; // Lista de comentarios
+  bool _isLoading = true; // Variable para controlar el estado de carga
+  late double puntajeFinal;
+  @override
+  void initState() {
+    super.initState();
+    _loadLocalData(); //Para obtener infor del local
+    _loadInstalacionesData();
+    _loadComentariosData();
+    //Para calcular el puntaje
+    puntajeFinal = 0.0;
+    calcularPuntajeFinal(widget.idLocalVC).then((value) {
+      setState(() {
+        puntajeFinal = value;
+      });
+    });
+  }
+
+//2.1. FUnción para obtener info de local
+  Future<void> _loadLocalData() async {
+    Databasehelper dbHelper = Databasehelper.instance;
+    List<Map<String, dynamic>> localData =
+        await dbHelper.traerLocalPorId(widget.idLocalVC);
+    if (localData.isNotEmpty) {
+      setState(() {
+        _local = LocalModel.fromMap(localData.first);
+      });
+    }
+  }
+
+  //2.2. obtener info de instlaciones del local
+  Future<void> _loadInstalacionesData() async {
+    Databasehelper dbHelper = Databasehelper.instance;
+    List<String> nombresInstalaciones =
+        await dbHelper.obtenerInstalacionesPorIdLocal(widget.idLocalVC);
+    setState(() {
+      _instalaciones = nombresInstalaciones
+          .map((nombre) => {
+                'categoria':
+                    nombre, // Cambiar 'nombreInstalacion' a 'categoria'
+              })
+          .toList();
+      _isLoading = false;
+    });
+  }
+
+  //Para registrar
+  Future<void> inserComentario() async {
+    if (_local != null) {
+      int? idLocal = widget.idLocalVC;
+      // Suponiendo que tienes una forma de obtener el ID del usuario actual
+      int? idUsuario = widget.idUserVC /* Obtener el ID del usuario actual */;
+      int puntuacion = selectedValue;
+      String comentario = comentarioU.text;
+
+      /*    print(idLocal);
+      print(idUsuario);
+      print(puntuacion);
+      print(comentario); */
+      // Llama al método insertPuntuacionLocal para insertar la puntuación y el comentario
+      int result = await Databasehelper.instance
+          .insertPuntuacionLocal(idLocal, idUsuario, puntuacion, comentario);
+      if (result != null && result > 0) {
+        // La puntuación y el comentario se insertaron correctamente
+        // Aquí puedes realizar cualquier acción adicional, como mostrar un mensaje de éxito
+        print("Puntuación y comentario insertados correctamente");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Color.fromARGB(255, 36, 246, 116),
+          content: Text(
+            'Se subió con éxito',
+            style: TextStyle(
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          duration: Duration(seconds: 5),
+        ));
+      } else {
+        // Ocurrió un error al insertar la puntuación y el comentario
+        // Puedes mostrar un mensaje de error o manejar la situación de otra manera
+        print("Error al insertar la puntuación y el comentario");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            'Ocurrió un error al subir',
+            style: TextStyle(
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          duration: Duration(seconds: 5),
+        ));
+      }
+    } else {
+      // Si el objeto _local es nulo, significa que no se cargó correctamente la información del local
+      // Puedes manejar esta situación de acuerdo a tus necesidades
+      print("No se pudo obtener la información del local");
+    }
+  }
+
+  //Cargar comentarios
+  Future<void> _loadComentariosData() async {
+    Databasehelper dbHelper = Databasehelper.instance;
+    List<Map<String, dynamic>> comentariosData =
+        await dbHelper.obtenerComentariosPorIdLocal(widget.idLocalVC);
+    setState(() {
+      _comentarios = comentariosData;
+    });
+  }
+
+//Función para calcular el puntaje final
+  Future<double> calcularPuntajeFinal(int? idLocal) async {
+    List<Map<String, dynamic>> puntuaciones = await Databasehelper.instance
+        .obtenerPuntuacionesPorIdLocal(widget.idLocalVC);
+    if (puntuaciones.isEmpty) {
+      return 0.0; // Si no hay puntuaciones, devuelve 0 como puntaje final
+    }
+
+    double sumaPuntajes = 0.0;
+    for (var puntaje in puntuaciones) {
+      sumaPuntajes += puntaje['puntuacion'];
+    }
+
+    // Calcula el promedio de los puntajes
+    double puntajeFinal = sumaPuntajes / puntuaciones.length;
+    return puntajeFinal;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,10 +179,16 @@ class _ViewCardUserState extends State<ViewCardUser> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Row(
+              children: [
+                /*  Text(
+                    "IDUSER:${widget.idUserVC} EmaiUser: ${widget.emailUserVc} | IDLOCAL: ${widget.idLocalVC} ") */
+              ],
+            ),
             Stack(
               children: [
                 Image.asset(
-                  'assets/images/${widget.placeView.imagePlace}',
+                  _local?.imageLocal ?? '',
                   width: MediaQuery.of(context).size.width,
                   //height: 100.0,
                   fit: BoxFit.cover,
@@ -67,8 +207,9 @@ class _ViewCardUserState extends State<ViewCardUser> {
                         MaterialPageRoute(
                           builder: (context) {
                             return BottomNavUser(
-                              user: widget.userView,
-                            );
+                                userBN: widget.userVC,
+                                idUserBN: widget.idUserVC,
+                                emailUserBN: widget.emailUserVc);
                           },
                         ),
                       );
@@ -77,6 +218,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                 ),
               ],
             ),
+
             //1. Card description
             Card(
               margin: EdgeInsets.all(15),
@@ -91,7 +233,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${widget.placeView.nombrePlace}',
+                          _local?.nombreLocal ?? '',
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -100,7 +242,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
                         Row(
                           children: [
                             Icon(Icons.star, color: Colors.amber),
-                            Text('${widget.placeView.rakingPlace}'),
+                            //Text('${widget.placeView.rakingPlace}'),
+                            Text('${puntajeFinal.toStringAsFixed(1)}'),
                           ],
                         ),
                       ],
@@ -116,7 +259,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                             Icon(Icons.location_on,
                                 color: Colors.red, size: 16.0),
                             Text(
-                              '${widget.placeView.direPlace}',
+                              _local?.direccionLocal ?? '',
                               style: TextStyle(fontSize: 13.0),
                             ),
                           ],
@@ -126,9 +269,9 @@ class _ViewCardUserState extends State<ViewCardUser> {
                           children: [
                             Text(
                               //Realizamos una condicional para hacer el cambio de estado
-                              '${widget.placeView.estadoPlace}',
+                              _local?.estadoLocal ?? '',
                               style: TextStyle(
-                                color: widget.placeView.estadoPlace == "Abierto"
+                                color: _local?.estadoLocal == "Abierto"
                                     ? Colors.green
                                     : Colors.red,
                                 fontSize: 15,
@@ -141,7 +284,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                     //Distrito
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: [Text('${widget.placeView.distritoPlace}')],
+                      children: [Text(_local?.distritoLocal ?? '')],
                     ),
                     //Precios
                     SizedBox(
@@ -169,7 +312,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                     color: Color(0xFF238F8F), size: 16.0),
                                 SizedBox(width: 5.0),
                                 Text(
-                                  '${widget.placeView.horarioPlace}',
+                                  _local?.horarioLocal ?? '',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
@@ -185,19 +328,19 @@ class _ViewCardUserState extends State<ViewCardUser> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Niño - S/. ${widget.placeView.nino_price}",
+                              "Niño - S/. ${_local?.ninoPrice ?? ''}",
                               style: TextStyle(fontSize: 13),
                             ),
                             Text(
-                              "Adulto - S/. ${widget.placeView.adulto_price}",
+                              "Adulto - S/. ${_local?.adultoPrice ?? ''}",
                               style: TextStyle(fontSize: 13),
                             ),
                             Text(
-                              "Turistas - S/. ${widget.placeView.turista_price}",
+                              "Turistas - S/. ${_local?.turistaPrice ?? ''}",
                               style: TextStyle(fontSize: 13),
                             ),
                             Text(
-                              "Feriados - S/. ${widget.placeView.feriado_price}",
+                              "Feriados - S/. ${_local?.feriadoPrice ?? ''}",
                               style: TextStyle(fontSize: 13),
                             ),
                           ],
@@ -208,7 +351,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                 color: Color(0xFF238F8F), size: 16.0),
                             SizedBox(width: 5.0),
                             Text(
-                              '${widget.placeView.phonePlace}',
+                              _local?.telefonoLocal ?? '',
                               style: TextStyle(fontSize: 12.0),
                             ),
                           ],
@@ -229,7 +372,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF238F8F)),
                         ),
-                        Text("${widget.placeView.descriptionPlace}",
+                        Text(_local?.descripcionLocal ?? '',
                             textAlign: TextAlign.justify),
 
                         SizedBox(
@@ -246,7 +389,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                               ),
                             ),
                             Text(
-                              "${widget.placeView.palabrasClavesP.join(', ')}",
+                              _local!.palabrasClaves?.join(', ') ?? '',
                               style: TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.bold,
@@ -267,7 +410,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
               child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: DefaultTabController(
-                  length: widget.placeView.catePlace.length,
+                  length: _instalaciones.length,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -278,112 +421,105 @@ class _ViewCardUserState extends State<ViewCardUser> {
                           unselectedLabelColor: Colors.black,
                           indicator: BoxDecoration(
                             color: Color(0xFF238F8F),
-                            borderRadius: BorderRadius.circular(
-                                24.0), // Puedes cambiar el color del círculo resaltado
+                            borderRadius: BorderRadius.circular(24.0),
                           ),
                           isScrollable: true,
-                          tabs: (widget.placeView.catePlace.keys.toList())
-                              .map((category) {
+                          tabs: _instalaciones.map((instalacion) {
                             return Tab(
-                              text: category,
+                              text: instalacion['categoria'] ?? 'Sin categoría',
                             );
                           }).toList(),
                         ),
                       ),
+                      SizedBox(height: 20),
                       SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        height: 100, // Tamaño fijo para el TabBarView
+                        height: 100,
                         child: TabBarView(
-                          children: (widget.placeView.catePlace.keys.toList())
-                              .map((category) {
-                            return _buildCategoryContent(category);
+                          children: _instalaciones.map((instalacion) {
+                            return _buildCategoryContent(instalacion);
                           }).toList(),
                         ),
                       ),
-
-                      /*  Expanded(
-                        child: TabBarView(
-                          children: categoryList.map((category) {
-                            return _buildCategoryContent(category);
-                          }).toList(),
-                        ),
-                      ), */
                     ],
                   ),
                 ),
               ),
             ),
+
             //Card comentario y puntuación
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 //Card Comentarios
-                SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
+                Container(
+                  width: 250,
                   child: Card(
-                    margin: EdgeInsets.all(10.0),
-                    child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Comentarios',
-                            style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF238F8F)),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: AssetImage(
-                                    'assets/images/profile.jpg'), // Ruta de la imagen del usuario
-                                radius: 20,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              // Nombre de usuario y Email
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Josefa Torres', //Datos dinámicos
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'El lugar está bonito', //Datos dinámicos
-                                    style: TextStyle(
-                                      fontSize: 13,
+                    margin: EdgeInsets.all(9.0),
+                    child: SizedBox(
+                      height:
+                          150, // Ajusta la altura del Card según sea necesario
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: _comentarios
+                            .length, // Número de usuarios que deseas mostrar
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          "${_comentarios[index]['imgUser']}"), // Ruta de la imagen del usuario
+                                      radius: 20,
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                    size: 17,
-                                  ),
-                                  Text('3.0'),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    // Nombre de usuario y Email
+                                    Container(
+                                      width: 120,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${_comentarios[index]['nombreUser']}', //Datos dinámicos
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              '${_comentarios[index]['comentario']}',
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                          size: 17,
+                                        ),
+                                        Text(
+                                          '${_comentarios[index]['puntuacion']}', // Aquí deberías reemplazar con la puntuación del usuario
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -393,7 +529,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                 SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Card(
-                    margin: EdgeInsets.all(10.0),
+                    margin: EdgeInsets.all(5.0),
                     child: Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Column(children: [
@@ -438,6 +574,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                                 // Actualiza el estado con el nuevo valor seleccionado
                                 setState(() {
                                   selectedValue = value!;
+                                  print(selectedValue);
                                 });
                               },
                             ),
@@ -449,7 +586,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                         //Comentario
                         Container(
                           margin: EdgeInsets.only(right: 20),
-                          width: 110,
+                          width: 100,
                           height: 50,
                           padding: const EdgeInsets.only(top: 3, left: 15),
                           child: TextFormField(
@@ -496,25 +633,9 @@ class _ViewCardUserState extends State<ViewCardUser> {
 
                         GestureDetector(
                           onTap: () {
-                            /* setState(() {
-                                      if (formKey.currentState!.validate()) {}
-                                    });
-                                    getDatos(); */
-                            //. Mensaje de éxito en caso se subió
-                            //
-                            print("Subido");
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor:
-                                  Color.fromARGB(255, 36, 246, 116),
-                              content: Text(
-                                'Se subió con éxito',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              duration: Duration(seconds: 5),
-                            ));
+                            setState(() {
+                              inserComentario();
+                            });
                           },
                           child: Container(
                             margin:
@@ -551,187 +672,185 @@ class _ViewCardUserState extends State<ViewCardUser> {
   }
 
   //1.1. Función de la categoría
-  Widget _buildCategoryContent(category) {
-    // Aquí puedes personalizar el contenido según la categoría seleccionada
-    switch (category) {
+  Widget _buildCategoryContent(instalacion) {
+    switch (instalacion['categoria']) {
       case "Cancha deportiva":
         return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.placeView.catePlace['Cancha deportiva'] != null)
-                  for (final image in jsonDecode(
-                      widget.placeView.catePlace['Cancha deportiva']!))
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: SizedBox(
-                          width: 160,
-                          height: 160,
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Image.asset('assets/images/$image'),
-                          ),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (instalacion['imagenes'] != null)
+                for (final image in jsonDecode(instalacion['imagenes']))
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: SizedBox(
+                        width: 160,
+                        height: 160,
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Image.asset('assets/images/$image'),
                         ),
                       ),
                     ),
-              ],
-            ));
+                  ),
+            ],
+          ),
+        );
       case "Lugar":
         return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.placeView.catePlace['Lugar'] != null)
-                  for (final image
-                      in jsonDecode(widget.placeView.catePlace['Lugar']!))
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: SizedBox(
-                          width: 160,
-                          height: 160,
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Image.asset('assets/images/$image'),
-                          ),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (instalacion['imagenes'] != null)
+                for (final image in jsonDecode(instalacion['imagenes']))
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: SizedBox(
+                        width: 160,
+                        height: 160,
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Image.asset('assets/images/$image'),
                         ),
                       ),
                     ),
-              ],
-            ));
+                  ),
+            ],
+          ),
+        );
       case "Parqueo":
         return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.placeView.catePlace['Parqueo'] != null)
-                  for (final image
-                      in jsonDecode(widget.placeView.catePlace['Parqueo']!))
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: SizedBox(
-                          width: 160,
-                          height: 160,
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Image.asset('assets/images/$image'),
-                          ),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (instalacion['imagenes'] != null)
+                for (final image in jsonDecode(instalacion['imagenes']))
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: SizedBox(
+                        width: 160,
+                        height: 160,
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Image.asset('assets/images/$image'),
                         ),
                       ),
                     ),
-              ],
-            ));
+                  ),
+            ],
+          ),
+        );
       case "Piscina":
         return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.placeView.catePlace['Piscina'] != null)
-                  for (final image
-                      in jsonDecode(widget.placeView.catePlace['Piscina']!))
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: SizedBox(
-                          width: 160,
-                          height: 160,
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Image.asset('assets/images/$image'),
-                          ),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (instalacion['imagenes'] != null)
+                for (final image in jsonDecode(instalacion['imagenes']))
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: SizedBox(
+                        width: 160,
+                        height: 160,
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Image.asset('assets/images/$image'),
                         ),
                       ),
                     ),
-              ],
-            ));
+                  ),
+            ],
+          ),
+        );
       case "Playa":
         return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.placeView.catePlace['Playa'] != null)
-                  for (final image
-                      in jsonDecode(widget.placeView.catePlace['Playa']!))
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: SizedBox(
-                          width: 160,
-                          height: 160,
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Image.asset('assets/images/$image'),
-                          ),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (instalacion['imagenes'] != null)
+                for (final image in jsonDecode(instalacion['imagenes']))
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: SizedBox(
+                        width: 160,
+                        height: 160,
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Image.asset('assets/images/$image'),
                         ),
                       ),
                     ),
-              ],
-            ));
+                  ),
+            ],
+          ),
+        );
       case "Restaurante":
         return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.placeView.catePlace['Restaurante'] != null)
-                  for (final image
-                      in jsonDecode(widget.placeView.catePlace['Restaurante']!))
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: SizedBox(
-                          width: 160,
-                          height: 160,
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Image.asset('assets/images/$image'),
-                          ),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (instalacion['imagenes'] != null)
+                for (final image in jsonDecode(instalacion['imagenes']))
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: SizedBox(
+                        width: 160,
+                        height: 160,
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Image.asset('assets/images/$image'),
                         ),
                       ),
                     ),
-              ],
-            ));
+                  ),
+            ],
+          ),
+        );
       case "Zoológico":
         return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.placeView.catePlace['Zoológico'] != null)
-                  for (final image
-                      in jsonDecode(widget.placeView.catePlace['Zoológico']!))
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: SizedBox(
-                          width: 160,
-                          height: 160,
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Image.asset('assets/images/$image'),
-                          ),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (instalacion['imagenes'] != null)
+                for (final image in jsonDecode(instalacion['imagenes']))
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: SizedBox(
+                        width: 160,
+                        height: 160,
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Image.asset('assets/images/$image'),
                         ),
                       ),
                     ),
-              ],
-            ));
-
+                  ),
+            ],
+          ),
+        );
       default:
-        return Container(); // Por defecto, un contenedor vacío
+        return Container();
     }
   }
 }

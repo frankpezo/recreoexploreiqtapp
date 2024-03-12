@@ -4,10 +4,20 @@ import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cardInsta.dart';
 
 class CardImages extends StatefulWidget {
-  final EmpresaModel userIma;
+  //final EmpresaModel userIma;
+
   final List<String> selectedInstallations;
+  final EmpresaModel? empresaCIM;
+  final int? idempresaCIM;
+  final int? idlocalCIM;
+  final String? emailCIM;
   CardImages(
-      {Key? key, required this.userIma, required this.selectedInstallations})
+      {Key? key,
+      required this.selectedInstallations,
+      this.idempresaCIM,
+      this.idlocalCIM,
+      this.empresaCIM,
+      this.emailCIM})
       : super(key: key);
 
   @override
@@ -34,7 +44,7 @@ class _CardImagesState extends State<CardImages> {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
                       padding: const EdgeInsets.only(
@@ -47,43 +57,10 @@ class _CardImagesState extends State<CardImages> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CardInsta(
-                                userI: widget.userIma,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.arrow_back_ios,
-                              size: 24,
-                              color: Colors.black,
-                            ),
-                            Text(
-                              'Regresar',
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                        right: 20,
-                        left: 20,
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
                               builder: (context) => BottomNavAdmin(
-                                user: widget.userIma,
+                                empresaB: widget.empresaCIM,
+                                idEmpre: widget.idempresaCIM,
+                                emailEmpresa: widget.emailCIM,
                               ),
                             ),
                           );
@@ -122,11 +99,13 @@ class _CardImagesState extends State<CardImages> {
                                 Text(
                                   "Instalaciones",
                                   style: TextStyle(
-                                    fontSize: 15.0,
+                                    fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFF238F8F),
                                   ),
                                 ),
+                                /* Text(
+                                    "idEmpresa: ${widget.idempresaCIM} -- idLocal: ${widget.idlocalCIM}") */
                               ],
                             ),
                             SizedBox(height: 15),

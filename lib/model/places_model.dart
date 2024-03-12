@@ -1,42 +1,76 @@
 class PlaceModel {
   // Atributos
-  int id;
-  String imagePlace;
-  String nombrePlace;
-  String direPlace;
-  String distritoPlace;
-  int phonePlace;
-  List<String> palabrasClavesP;
-  double nino_price;
-  double adulto_price;
-  double turista_price;
-  double feriado_price;
-  String horarioPlace;
-  String estadoPlace;
-  double rakingPlace;
-  String descriptionPlace;
-  Map<String, String> catePlace;
-  List<Map<String, dynamic>> comentPlace;
+  int? idLocal;
+  String? imagePlace;
+  String? nombrePlace;
+  String? direPlace;
+  String? distritoPlace;
+  String? phonePlace;
+  String? horarioPlace;
+  String? descriptionPlace;
+  List<String>? palabrasClavesP;
+  String? nino_price;
+  String? adulto_price;
+  String? turista_price;
+  String? feriado_price;
+  String? estadoPlace;
 
   // Constructor
-  PlaceModel(
-      {required this.id,
-      required this.imagePlace,
-      required this.nombrePlace,
-      required this.direPlace,
-      required this.distritoPlace,
-      required this.phonePlace,
-      required this.palabrasClavesP,
-      required this.nino_price,
-      required this.adulto_price,
-      required this.turista_price,
-      required this.feriado_price,
-      required this.horarioPlace,
-      required this.estadoPlace,
-      required this.rakingPlace,
-      required this.descriptionPlace,
-      required this.catePlace,
-      required this.comentPlace});
+  PlaceModel({
+    this.idLocal,
+    this.imagePlace,
+    this.nombrePlace,
+    this.direPlace,
+    this.distritoPlace,
+    this.phonePlace,
+    this.horarioPlace,
+    this.descriptionPlace,
+    this.palabrasClavesP,
+    this.nino_price,
+    this.adulto_price,
+    this.turista_price,
+    this.feriado_price,
+    this.estadoPlace,
+  });
 
-  // Otros métodos si los tienes
+  // Lógica de sqlite
+  factory PlaceModel.fromMap(Map<String, dynamic> map) {
+    return PlaceModel(
+      idLocal: map['idLocal'],
+      imagePlace: map['imageLocal'],
+      nombrePlace: map['nombreLocal'],
+      direPlace: map['direccionLocal'],
+      distritoPlace: map['distritoLocal'],
+      phonePlace: map['telefonoLocal'],
+      horarioPlace: map['horarioLocal'],
+      descriptionPlace: map['descripcionLocal'],
+      palabrasClavesP: (map['palabrasClaves'] as String?)?.split(', '), // Convertir cadena a lista
+      nino_price: map['ninoPrice'],
+      adulto_price: map['adultoPrice'],
+      turista_price: map['turistaPrice'],
+      feriado_price: map['feriadoPrice'],
+      estadoPlace: map['estadoLocal'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    // Convertir la lista de palabras clave a una cadena
+    String palabrasClavesString = palabrasClavesP?.join(', ') ?? '';
+    return {
+      'idLocal': idLocal,
+      'imageLocal': imagePlace,
+      'nombreLocal': nombrePlace,
+      'direccionLocal': direPlace,
+      'distritoLocal': distritoPlace,
+      'telefonoLocal': phonePlace,
+      'horarioLocal': horarioPlace,
+      'descripcionLocal': descriptionPlace,
+      'palabrasClaves': palabrasClavesString, // Guardar como cadena en la base de datos
+      'ninoPrice': nino_price,
+      'adultoPrice': adulto_price,
+      'turistaPrice': turista_price,
+      'feriadoPrice': feriado_price,
+      'estadoLocal': estadoPlace,
+    };
+  }
 }

@@ -1,41 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:recreoexploreiqtapp/componentes/controller.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
 import 'package:recreoexploreiqtapp/src/bottomNav/bottm_AdminNav.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/profileAdmin_screen.dart';
 
 class EdProfileAdmin extends StatefulWidget {
-  final EmpresaModel userAdEd;
-  EdProfileAdmin({Key? key, required this.userAdEd}) : super(key: key);
+  final EmpresaModel? empresaCEP;
+  final int? idEmpresaCEP;
+  final String? emailCEP;
+  //Los datos
+  EdProfileAdmin({
+    Key? key,
+    this.empresaCEP,
+    this.idEmpresaCEP,
+    this.emailCEP,
+  }) : super(key: key);
 
   @override
   State<EdProfileAdmin> createState() => _EdProfileAdminState();
 }
 
 class _EdProfileAdminState extends State<EdProfileAdmin> {
+  EmpresaModel? _empresa;
+
   final GlobalKey<FormState> formKeyO = GlobalKey<FormState>();
   //1. Text Controllers
-  TextEditingController id = TextEditingController();
+  // TextEditingController id = TextEditingController();
   TextEditingController nombre = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   bool obscurePassword = true;
-  List<dynamic> userData = []; //Nos servirá para el registro
+  String imgEmpresa = '';
+  //3.1. Inicializamos
+  @override
+  void initState() {
+    super.initState();
+    _loadEmpresalData();
+  }
+
+//3. Obtener info por medio del id
+  Future<void> _loadEmpresalData() async {
+    Databasehelper dbHelper = Databasehelper.instance;
+    List<Map<String, dynamic>> empresaData =
+        await dbHelper.traerEmpresaPorId(widget.idEmpresaCEP);
+    if (empresaData.isNotEmpty) {
+      setState(() {
+        _empresa = EmpresaModel.fromMap(empresaData.first);
+        // Asignación de valores después de verificar que _local no sea null
+        imgEmpresa = _empresa?.imgEmpresa ?? '';
+        nombre.text = _empresa?.nombreEmpresa ?? '';
+        email.text = _empresa?.emailEmpresa ?? '';
+        password.text = _empresa?.passwordEmpresa ?? '';
+      });
+    }
+  }
 
   //2. Api para insertar en la bd
   Future<void> modifyAdmin() async {
     if (nombre.text.isNotEmpty &&
         email.text.isNotEmpty &&
         password.text.isNotEmpty) {
-      print("Registro con éxito");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Color.fromARGB(255, 36, 246, 116),
-        content: Text(
-          'Se modificó perfil',
-          style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        duration: Duration(seconds: 5),
-      ));
+      try {
+        EmpresaModel empresa = EmpresaModel(
+            imgEmpresa: "assets/images/10.jpg",
+            nombreEmpresa: nombre.text,
+            emailEmpresa: email.text,
+            passwordEmpresa: password.text);
+        empresa.idEmpresa = widget.idEmpresaCEP;
+
+        if (widget.empresaCEP == null) {
+          await Databasehelper.instance.actualizarEmpresa(empresa);
+          print("Se modificó perfil");
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Color.fromARGB(255, 36, 246, 116),
+          content: Text(
+            'Se modificó perfil',
+            style: TextStyle(
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          duration: Duration(seconds: 5),
+        ));
+      } catch (e) {
+        print("El error: ${e}");
+      }
       // Lógica para consumir la API
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -51,18 +101,6 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
         duration: Duration(seconds: 3),
       ));
     }
-  }
-
-  void initState() {
-    super.initState();
-    // Inicializar los controladores de los campos de texto con los datos del usuario
-    id.text = widget.userAdEd.id.toString();
-    nombre.text = widget.userAdEd.nombreEmpresa;
-    email.text = widget.userAdEd.emailEmpresa;
-    password.text = widget.userAdEd.passwordEmpresa;
-    //imgUser.text = widget.userEdt.imgUser;
-    // Puedes inicializar el campo de contraseña si es necesario
-    // password.text = widget.userEdt.password;
   }
 
   @override
@@ -89,8 +127,9 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => BottomNavAdmin(
-                                      user: widget.userAdEd,
-                                    )),
+                                    empresaB: widget.empresaCEP,
+                                    idEmpre: widget.idEmpresaCEP,
+                                    emailEmpresa: widget.emailCEP)),
                           );
                         },
                         child: Row(
@@ -135,7 +174,9 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF238F8F)))
+                                            color: Color(0xFF238F8F))),
+                                    /*  Text(
+                                        "idEmpresa: ${widget.idEmpresaCEP} - email: ${widget.emailCEP}"), */
                                   ],
                                 ),
                                 SizedBox(height: 15),
@@ -152,8 +193,8 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
                                         alignment: Alignment.center,
                                         children: [
                                           CircleAvatar(
-                                            backgroundImage: AssetImage(
-                                                'assets/images/${widget.userAdEd.img}'),
+                                            backgroundImage:
+                                                AssetImage(imgEmpresa),
                                             radius: 35,
                                           ),
                                           Positioned(
@@ -186,7 +227,7 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
                                 ),
                                 SizedBox(height: 20),
                                 //ID
-                                Visibility(
+                                /* Visibility(
                                   visible: false,
                                   child: Container(
                                     margin:
@@ -227,7 +268,7 @@ class _EdProfileAdminState extends State<EdProfileAdmin> {
                                       ),
                                     ),
                                   ),
-                                ),
+                                ), */
                                 SizedBox(height: 2),
                                 //1. Nombre
                                 Container(

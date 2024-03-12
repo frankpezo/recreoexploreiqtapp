@@ -5,8 +5,11 @@ import 'package:recreoexploreiqtapp/src/pages/user/home_screen.dart';
 import 'package:recreoexploreiqtapp/src/pages/user/profile_screen.dart';
 
 class BottomNavUser extends StatefulWidget {
-  final ModelUser user;
-  BottomNavUser({Key? key, required this.user}) : super(key: key);
+  final ModelUser? userBN;
+  final int? idUserBN;
+  final String? emailUserBN;
+  BottomNavUser({Key? key, this.userBN, this.idUserBN, this.emailUserBN})
+      : super(key: key);
 
   @override
   State<BottomNavUser> createState() => _BottomNavUserState();
@@ -24,14 +27,17 @@ class _BottomNavUserState extends State<BottomNavUser> {
     super.initState();
     pages = [
       HomeUserScreen(
-        userH: widget.user,
+        userH: widget.userBN,
+        idUserH: widget.idUserBN,
+        emailUserH: widget.emailUserBN,
       ),
       FavoriteUserScreen(
-        userF: widget.user,
+        userF: widget.userBN,
       ),
       ProfileUserScreen(
-          currentUser: widget
-              .user), // Inicializar pages después de que widget.user esté disponible
+        idUserP: widget.idUserBN,
+        emailUserP: widget.emailUserBN,
+      ), // Inicializar pages después de que widget.user esté disponible
     ];
   }
 

@@ -38,6 +38,9 @@ dependencies:
   another_carousel_pro: ^1.0.2
   image_picker: ^1.0.4
   file_picker: ^5.3.1
+  http: ^1.2.1
+  sqflite: ^2.3.2
+  path_provider: ^2.1.2
 
   
 

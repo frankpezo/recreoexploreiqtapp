@@ -1,31 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart';
 import 'package:recreoexploreiqtapp/model/empresa_model.dart';
+import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/src/pages/admin/cardRegister.dart';
+import 'package:recreoexploreiqtapp/src/pages/admin/viewAdminCard.dart';
 import 'package:recreoexploreiqtapp/src/widgets/carEditPlaces.dart';
 
 class HomeAdminScreen extends StatefulWidget {
-  final EmpresaModel userH;
-  HomeAdminScreen({Key? key, required this.userH}) : super(key: key);
+  final EmpresaModel? empresaH;
+  final int? idEA;
+  final String? emailEA;
+  HomeAdminScreen({
+    Key? key,
+    required this.empresaH,
+    this.idEA,
+    this.emailEA,
+  }) : super(key: key);
 
   @override
   State<HomeAdminScreen> createState() => _HomeAdminScreenState();
   static List<PlaceModel> placeE = [
     PlaceModel(
-      id: 1,
-      imagePlace: "quis.jpg",
+      idLocal: 1,
+      //imagePlace: "quis.jpg",
       nombrePlace: "Quistococha",
       direPlace: "Carretera Iquitos - Nauta, km 6.5",
       distritoPlace: 'San Juan Bautista',
-      phonePlace: 9999999999,
+      phonePlace: '9999999999',
       palabrasClavesP: ['playa', 'piscina', 'zoológico'],
-      nino_price: 5.0,
-      adulto_price: 10.0,
-      turista_price: 15.0,
-      feriado_price: 15.0,
+      nino_price: '5.0',
+      adulto_price: '10.0',
+      turista_price: '15.0',
+      feriado_price: '15.0',
       horarioPlace: "Lunes a domingo, 7:30am - 5:30pm",
       estadoPlace: "Abierto",
-      rakingPlace: 5.0,
+      /*  rakingPlace: 5.0,
       descriptionPlace:
           "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
       catePlace: {
@@ -55,12 +66,31 @@ class HomeAdminScreen extends StatefulWidget {
           'comment': 'Comentario del usuario 3',
           'rating': 5.0,
         },
-      ],
+      ], */
     ),
   ];
 }
 
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
+  int? idEmpresaa;
+  List<LocalModel> usuarios = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _cargarUsuarios();
+  }
+
+  Future<void> _cargarUsuarios() async {
+    List<Map<String, dynamic>> listaUsuarios =
+        await Databasehelper.instance.traerLocales(widget.idEA);
+    List<LocalModel> empresa =
+        listaUsuarios.map((ele) => LocalModel.fromMap(ele)).toList();
+    setState(() {
+      usuarios = empresa;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,10 +145,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                   children: [
                     Row(
                       children: [
+                        // Text("ID: ${usuarios[0].idEmpresa}S"),
                         Text(
                           "Mi local",
                           style: TextStyle(fontSize: 17),
                         ),
+                        // Text(" ${widget.idEA}${widget.emailEA}")
                       ],
                     ),
                     GestureDetector(
@@ -127,7 +159,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => CardRegister(
-                              userCard: widget.userH,
+                              empresaCR: widget.empresaH,
+                              idECR: widget.idEA,
+                              emailCR: widget.emailEA,
+                              // ####
                             ),
                           ),
                         );
@@ -170,12 +205,213 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                     ),
                     Flexible(
                       child: ListView.builder(
-                        padding: EdgeInsets.only(bottom: 10),
-                        itemCount: HomeAdminScreen.placeE.length,
+                        itemCount: usuarios.length,
                         itemBuilder: (context, index) {
-                          return YourWidgetEditP(
-                            place: HomeAdminScreen.placeE[index],
-                            userC: widget.userH,
+                          return GestureDetector(
+                            onTap: () {
+                              ;
+                            },
+                            child: Card(
+                              margin: EdgeInsets.all(18.0),
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // 3.1. Imagen del lugar con bordes redondeados
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      child: Image.asset(
+                                        '${usuarios[index].imageLocal}',
+                                        width: 100.0,
+                                        height: 100.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    //id
+                                    Visibility(
+                                        visible: false,
+                                        child:
+                                            Text("${usuarios[index].idLocal}")),
+                                    SizedBox(
+                                        width:
+                                            10.0), // Espacio entre la imagen y el texto
+                                    // 3.2. Contenido del lugar
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // 3.3. Nombre del lugar y ranking
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '${usuarios[index].nombreLocal} ',
+                                                style: TextStyle(
+                                                  fontSize: 17.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              /*      Text(
+                                                  "id: ${usuarios[index].idLocal}") */
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                //Realizamos una condicional para hacer el cambio de estado
+                                                '${usuarios[index].estadoLocal}',
+                                                style: TextStyle(
+                                                  color: usuarios[index]
+                                                              .estadoLocal ==
+                                                          "Abierto"
+                                                      ? Colors.green
+                                                      : Colors.red,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+
+                                          //3.5.  Horario de atención con icono
+
+                                          SizedBox(height: 14.0),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  // Aquí puedes agregar la lógica para editar
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ViewCardAdmin(
+                                                        idEmpresaVC:
+                                                            widget.idEA,
+                                                        idlocalVC:
+                                                            usuarios[index]
+                                                                .idLocal,
+                                                        emailVC: widget.emailEA,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.orangeAccent,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.edit,
+                                                    size: 20,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  // Aquí puedes agregar la lógica para eliminar el local
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                            "Confirmar eliminación"),
+                                                        content: Text(
+                                                            "¿Estás seguro de que quieres eliminar este local?"),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(); // Cerrar el diálogo
+                                                            },
+                                                            child: Text(
+                                                                "Cancelar",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        15.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Color(
+                                                                        0xFF238F8F))),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed:
+                                                                () async {
+                                                              await Databasehelper
+                                                                  .instance
+                                                                  .eliminarLocal(
+                                                                      usuarios[
+                                                                              index]
+                                                                          .idLocal);
+                                                              _cargarUsuarios();
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(); // Recargar la lista de usuarios
+                                                            },
+                                                            child: Text(
+                                                                "Eliminar",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        15.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .redAccent)),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.redAccent,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.delete,
+                                                    size: 20,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          // 3.6. Estado centrado
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           );
                         },
                       ),
