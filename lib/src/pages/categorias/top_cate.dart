@@ -197,7 +197,7 @@ class _TopCateState extends State<TopCate> {
                       ),
                     ),
                     //id
-                    Visibility(visible: false, child: Text("idlocal")),
+                    Visibility(visible: false, child: Text("idlocal--")),
                     SizedBox(width: 10.0), // Espacio entre la imagen y el texto
                     // 3.2. Contenido del lugar
                     Expanded(
