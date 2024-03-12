@@ -191,18 +191,29 @@ class _SanjuanCateState extends State<SanjuanCate> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
+                                  // 2. En el código donde está el botón favorito, implementamos la lógica para actualizar el estado de favorito en la base de datos
+
                                   IconButton(
-                                    //2.2. Realizamos una condicional para hacer el cambio de estado
                                     icon: Icon(
                                       isFavorite
                                           ? Icons.favorite
                                           : Icons.favorite_border,
                                       color: Colors.redAccent,
                                     ),
-                                    onPressed: () {
+                                    onPressed: () async {
                                       setState(() {
                                         isFavorite = !isFavorite;
+                                        print(isFavorite);
                                       });
+                                      await Databasehelper.instance
+                                          .updateFavoriteStatus(
+                                              localSanJuan[index].idLocal,
+                                              isFavorite);
+                                      // Llamamos a la función para actualizar el estado de favorito en la base de datos
+                                      /*  await Databasehelper.instance
+                                          .updateFavoriteStatus(
+                                              localSanJuan[index].idLocal,
+                                              isFavorite); */
                                     },
                                   ),
                                 ],

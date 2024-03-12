@@ -71,10 +71,10 @@ class _BottomNavUserState extends State<BottomNavUser> {
             },
             items: [
               //4.1. Aquí se producirá el cambio de página y de iconos
-              _buildNavItem(Icons.home_outlined, Icons.home,
-                  "Inicio ${widget.idUserBN}", currentIndex == 0),
-              _buildNavItem(Icons.favorite_outline, Icons.favorite,
-                  "Favoritos ${widget.emailUserBN}", currentIndex == 1),
+              _buildNavItem(
+                  Icons.home_outlined, Icons.home, "Inicio", currentIndex == 0),
+              _buildNavItem(Icons.favorite_outline, Icons.favorite, "Favoritos",
+                  currentIndex == 1),
               _buildNavItem(Icons.person_outline, Icons.person, "Perfil",
                   currentIndex == 2),
             ],

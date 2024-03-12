@@ -50,13 +50,20 @@ class _ViewCardUserState extends State<ViewCardUser> {
       []; // Lista de instalaciones del local
   List<Map<String, dynamic>> _comentarios = []; // Lista de comentarios
   bool _isLoading = true; // Variable para controlar el estado de carga
-
+  late double puntajeFinal;
   @override
   void initState() {
     super.initState();
     _loadLocalData(); //Para obtener infor del local
     _loadInstalacionesData();
     _loadComentariosData();
+    //Para calcular el puntaje
+    puntajeFinal = 0.0;
+    calcularPuntajeFinal(widget.idLocalVC).then((value) {
+      setState(() {
+        puntajeFinal = value;
+      });
+    });
   }
 
 //2.1. FUnción para obtener info de local
@@ -147,6 +154,24 @@ class _ViewCardUserState extends State<ViewCardUser> {
     });
   }
 
+//Función para calcular el puntaje final
+  Future<double> calcularPuntajeFinal(int? idLocal) async {
+    List<Map<String, dynamic>> puntuaciones = await Databasehelper.instance
+        .obtenerPuntuacionesPorIdLocal(widget.idLocalVC);
+    if (puntuaciones.isEmpty) {
+      return 0.0; // Si no hay puntuaciones, devuelve 0 como puntaje final
+    }
+
+    double sumaPuntajes = 0.0;
+    for (var puntaje in puntuaciones) {
+      sumaPuntajes += puntaje['puntuacion'];
+    }
+
+    // Calcula el promedio de los puntajes
+    double puntajeFinal = sumaPuntajes / puntuaciones.length;
+    return puntajeFinal;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,8 +181,8 @@ class _ViewCardUserState extends State<ViewCardUser> {
           children: [
             Row(
               children: [
-                Text(
-                    "IDUSER:${widget.idUserVC} EmaiUser: ${widget.emailUserVc} | IDLOCAL: ${widget.idLocalVC} ")
+                /*  Text(
+                    "IDUSER:${widget.idUserVC} EmaiUser: ${widget.emailUserVc} | IDLOCAL: ${widget.idLocalVC} ") */
               ],
             ),
             Stack(
@@ -218,7 +243,7 @@ class _ViewCardUserState extends State<ViewCardUser> {
                           children: [
                             Icon(Icons.star, color: Colors.amber),
                             //Text('${widget.placeView.rakingPlace}'),
-                            Text('3'),
+                            Text('${puntajeFinal.toStringAsFixed(1)}'),
                           ],
                         ),
                       ],

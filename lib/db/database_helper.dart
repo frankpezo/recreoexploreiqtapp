@@ -417,6 +417,23 @@ CREATE TABLE $_tblPuntuacionLocal (
         where: 'distritoLocal = ?', whereArgs: [distritoLocal]);
   }
 
+  //traer id de locales por distrito
+  Future<List<int>> traerIdsLocalesDistrito(String? distritoLocal) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> result = await db.query(_tblLocal,
+        columns: ['idLocal'], // Solo necesitamos el ID del local
+        where: 'distritoLocal = ?',
+        whereArgs: [distritoLocal]);
+
+    // Extraer los IDs de los resultados y devolverlos como una lista
+    List<int> idsLocales = [];
+    for (var row in result) {
+      idsLocales.add(row['idLocal'] as int);
+    }
+
+    return idsLocales;
+  }
+
   //6.2. INSTALACIONES
   //Registrar instalaciones
   Future<void> insertInstalaciones(
@@ -586,13 +603,29 @@ CREATE TABLE $_tblPuntuacionLocal (
     ''', [idLocal]);
   }
 
-  /* Future<List<Map<String, dynamic>>> traerPuntuacionesPorLocal(
-      int idLocal) async {
+  //Para traer la puntuación
+  Future<List<Map<String, dynamic>>> obtenerPuntuacionesPorIdLocal(
+      int? idLocal) async {
     Database db = await instance.database;
     return await db.query(
       _tblPuntuacionLocal,
       where: 'idLocal = ?',
       whereArgs: [idLocal],
     );
-  } */
+  }
+  //favoritos
+  // 1. En la clase Databasehelper, agregamos el método para actualizar el estado de favorito en la base de datos
+
+  Future<void> updateFavoriteStatus(int? idLocal, bool isFavorite) async {
+    // Abrir la base de datos
+    final db = await instance.database;
+
+    // Actualizar el estado de favorito del lugar
+    await db.update(
+      _tblLocal,
+      {'isFavorite': isFavorite ? 1 : 0}, // 1 para favorito, 0 para no favorito
+      where: 'idLocal = ?',
+      whereArgs: [idLocal],
+    );
+  }
 }

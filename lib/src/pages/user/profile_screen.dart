@@ -91,9 +91,9 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                     fontSize: 18,
                   ),
                 ),
-                Text(
+                /*  Text(
                   'IDUSER: ${widget.idUserP} - EmailUse: ${widget.emailUserP}',
-                )
+                ) */
               ],
             ),
             SizedBox(height: 10),

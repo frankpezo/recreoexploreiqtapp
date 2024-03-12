@@ -85,8 +85,8 @@ class _HomeUserScreenState extends State<HomeUserScreen> {
                       ),
                     ],
                   ),
-                  Text(
-                      "idUser: ${widget.idUserH} - EmailUser: ${widget.emailUserH}"),
+                  /*    Text(
+                      "idUser: ${widget.idUserH} - EmailUser: ${widget.emailUserH}"), */
                   SizedBox(
                     height: 30.0,
                   ),

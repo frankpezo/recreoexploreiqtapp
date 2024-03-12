@@ -1,71 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:recreoexploreiqtapp/model/local_model.dart';
 import 'package:recreoexploreiqtapp/model/places_model.dart';
 import 'package:recreoexploreiqtapp/model/user_model.dart';
+import 'package:recreoexploreiqtapp/db/database_helper.dart'; // Importa la clase Databasehelper
+import 'package:recreoexploreiqtapp/src/pages/user/viewCardUser.dart';
 import 'package:recreoexploreiqtapp/src/widgets/cardPlaces.dart';
 
 class FavoriteUserScreen extends StatefulWidget {
   final ModelUser? userF;
-  FavoriteUserScreen({Key? key, this.userF}) : super(key: key);
+  final int? idUserF;
+  final String? emailUserF;
+  FavoriteUserScreen({Key? key, this.userF, this.idUserF, this.emailUserF})
+      : super(key: key);
 
   @override
   State<FavoriteUserScreen> createState() => _FavoriteUserScreenState();
 }
 
 class _FavoriteUserScreenState extends State<FavoriteUserScreen> {
-  final List<PlaceModel> listFavorite = [
-    PlaceModel(
-      idLocal: 1,
-      imagePlace: "quis.jpg",
-      nombrePlace: "Quistococha",
-      direPlace: "Carretera Iquitos - Nauta, km 6.5",
-      distritoPlace: 'San Juan Bautista',
-      phonePlace: '9999999999',
-      palabrasClavesP: ['playa', 'piscina', 'zoológico'],
-      nino_price: '5.0',
-      adulto_price: '10.0',
-      turista_price: '15.0',
-      feriado_price: '15.0',
-      horarioPlace: "Lunes a domingo, 7:30am - 5:30pm",
-      estadoPlace: "Abierto",
-      /*  rakingPlace: 5.0,
-      descriptionPlace:
-          "Ubicado junto a la laguna que lleva el mismo nombre, este complejo  turístico cuenta con una playa artificial de arena blanca, un zoológico  con alrededor de 70 especies de animales amazónicos y un vivero  botánico, además de ofrecer una excelente gastronomía amazónica.",
-      catePlace: {
-        "Zoológico": '["7.jpg", "8.jpg", "9.jpg"]',
-        "Playa": '["pquis1.jpg", "pquis2.jpg"]'
-      },
-      comentPlace: [
-        {
-          "id": 1,
-          'profileImage': 'assets/images/profile.jpg',
-          'username': 'Usuario 1',
-          'comment': 'Comentario del usuario 1',
-          'rating': 3.0,
-        },
-        {
-          "id": 2,
-          'profileImage': 'assets/images/profile.jpg',
-          'username': 'Usuario 2',
-          'comment': 'Comentario del usuario 2',
-          'rating': 4.0,
-        },
-        // Puedes agregar más comentarios aquí
-        {
-          "id": 2,
-          'profileImage': 'assets/images/profile.jpg',
-          'username': 'Usuario 3',
-          'comment': 'Comentario del usuario 3',
-          'rating': 5.0,
-        },
-      ], */
-    ),
-  ];
+  List<LocalModel> favoritePlaces =
+      []; // Lista para almacenar los lugares favoritos
+
+  @override
+  void initState() {
+    super.initState();
+    // Cargar los lugares favoritos al inicializar la pantalla
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        //  padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,18 +70,74 @@ class _FavoriteUserScreenState extends State<FavoriteUserScreen> {
             ),
             SizedBox(height: 10.0),
             Container(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
-                child: Text(
-                  "Favoritos",
-                  style: TextStyle(fontSize: 18),
-                )),
+              padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
+              child: Text(
+                "Favoritos",
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
             Expanded(
               child: ListView.builder(
-                itemCount: listFavorite.length,
+                itemCount: favoritePlaces.length,
                 itemBuilder: (context, index) {
-                  return YourWidget(
-                    place: listFavorite[index],
-                    userCard: widget.userF!,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewCardUser(
+                            userVC: widget.userF,
+                            idUserVC: widget.idUserF,
+                            emailUserVc: widget.emailUserF,
+                            idLocalVC: favoritePlaces[index].idLocal,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      margin: EdgeInsets.all(18.0),
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Aquí puedes mostrar la imagen del lugar
+                            // Se omite por brevedad, asegúrate de cargar la imagen adecuadamente
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${favoritePlaces[index].nombreLocal}',
+                                    style: TextStyle(
+                                      fontSize: 17.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.0),
+                                  Text(
+                                    '${favoritePlaces[index].distritoLocal}',
+                                    style: TextStyle(fontSize: 13.0),
+                                  ),
+                                  SizedBox(height: 5.0),
+                                  Text(
+                                    '${favoritePlaces[index].horarioLocal}',
+                                    style: TextStyle(fontSize: 12.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),
